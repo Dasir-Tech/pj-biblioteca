@@ -18,6 +18,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+
+from proj_library.library_app.views import home,saluto
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path('',home, name='home'),
+    path('saluto/<str:nome>/', saluto, name='saluto'),
 ]
