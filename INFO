@@ -1,0 +1,23 @@
+LISTA VERSIONI:
+
+    Python      3.11.9
+    asgiref     3.8.1
+    Django      5.1.6
+    mysqlclient 2.2.7
+    pip         23.2.1
+    setuptools  68.2.0
+    sqlparse    0.5.3
+    tzdata      2025.1
+    wheel       0.41.2
+
+------------------------
+
+SUPERUSER (ricordate che gli spazi prima e dopo DEVONO ESSERE TOLTI):
+
+    USERNAME: admin
+    EMAIL: lauracomparelli912@gmail.com
+    PASSWORD: Proj_Library_SuperAdmin_2025
+
+------------------------
+
+Ho già creato le cartelle dove mettere i file .css, .js e .html (template)
