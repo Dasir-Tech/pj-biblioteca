@@ -48,6 +48,8 @@ class GenreAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
+admin.site.register(Genre, GenreAdmin)
+
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('name_author', 'insert_date', 'update_date', 'activate')
     list_filter = ('name_author', 'insert_date', 'update_date', 'activate') #filtri laterali
@@ -59,6 +61,8 @@ class AuthorAdmin(admin.ModelAdmin):
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
+
+admin.site.register(Author, AuthorAdmin)
 
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
@@ -72,4 +76,4 @@ class EditorAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
-admin.site.register(Genre, Author, Editor, GenreAdmin, AuthorAdmin, EditorAdmin)
+admin.site.register(Editor, EditorAdmin)
