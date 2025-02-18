@@ -1,4 +1,5 @@
 from django.contrib import admin
+from .models import Genre
 #from .models import Nome_model, elenco dei model
 
 # RICORDA -> MIGRARE I MODEL !!!!
@@ -34,3 +35,17 @@ class CustomAdmin(admin.AdminSite):
         
 admin.site = CustomAdmin()   
 '''
+
+class GenreAdmin(admin.ModelAdmin):
+    list_display = ("genre", "insert_date", "update_date", "activate")
+    actions = ['activate', 'deactivate']
+    list_filter = ('activate',)
+    search_fields = ('genre',)
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
+admin.site.register(Genre, GenreAdmin)

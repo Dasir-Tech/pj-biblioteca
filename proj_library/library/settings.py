@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "library_app.apps.LibraryAppConfig",
 ]
 
 MIDDLEWARE = [
@@ -72,7 +73,6 @@ WSGI_APPLICATION = "library.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
 
 DATABASES = {
     'default': {
