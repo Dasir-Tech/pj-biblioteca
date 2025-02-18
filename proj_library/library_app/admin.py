@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Genre,Author
+from .models import Genre,Author,Editor
 #from .models import Nome_model, elenco dei model
 
 # RICORDA -> MIGRARE I MODEL !!!!
@@ -52,10 +52,24 @@ class AuthorAdmin(admin.ModelAdmin):
     list_display = ('name_author', 'insert_date', 'update_date', 'activate')
     list_filter = ('name_author', 'insert_date', 'update_date', 'activate') #filtri laterali
     actions = ['activate', 'deactivate']
+    search_fields = ('name_author',)
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-admin.site.register(Genre, Author, GenreAdmin, AuthorAdmin)
+
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    list_filter = ('activate',)
+    search_fields = ('editor',)
+    actions = ['activate', 'deactivate']
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
+admin.site.register(Genre, Author, Editor, GenreAdmin, AuthorAdmin, EditorAdmin)
