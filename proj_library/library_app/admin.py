@@ -8,8 +8,8 @@ from .models import Author
 # Register your models here.
 #Modificare modello in admin
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('name_author', 'insert_date', 'update_date', 'activate')
-    list_filter = ('name_author', 'insert_date', 'update_date', 'activate') #filtri laterali
+    list_display = ('author', 'insert_date', 'update_date', 'activate')
+    list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
     actions = ('activate_or_deactivate')
     def activate_or_deactivate(self, request, queryset): #cambia il boolean 'activate' in false
         attivati= queryset.filter(activate=False).queryset.update(activate=True)
