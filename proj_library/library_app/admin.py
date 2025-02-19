@@ -3,13 +3,9 @@ from django.contrib import admin
 from django.utils.timezone import now
 from .models import Loan
 
-# Register your models here.
-
-'''
 class DateFilter(admin.SimpleListFilter):
-    title = "Due Date"
-
-    parameter_name = "selct_date"
+    title = "Date"
+    parameter_name = "select_date"
 
     def lookups(self, request, model_admin):
         return [
@@ -25,11 +21,11 @@ class DateFilter(admin.SimpleListFilter):
             )
         elif self.value() == "over":
             return queryset.exclude(due_date=now().date() - timedelta(days=1))
-'''
+
 
 class LoanAdmin(admin.ModelAdmin):
     list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
-    list_filter = ("active",)
+    list_filter = ("active",DateFilter)
 
 admin.site.register(Loan, LoanAdmin)
 

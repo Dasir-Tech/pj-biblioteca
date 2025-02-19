@@ -11,7 +11,7 @@ class Loan(models.Model):
         DAMAGED = 4, "Damaged"
 
     #automatic due_date
-    def auto_due_date(self):
+    def auto_due_date():
         return now().date() + timedelta(days=30)
 
     user_ID = models.IntegerField(db_index = True)
