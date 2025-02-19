@@ -6,8 +6,8 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.urls import reverse
 from datetime import date
-# Create your models here.
 from django.db.models.functions import Now
+# Create your models here.
 
 class Loan(models.Model):
 
