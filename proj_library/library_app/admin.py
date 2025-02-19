@@ -1,26 +1,44 @@
+from datetime import timedelta
 from django.contrib import admin
-#from .models import Nome_model, elenco dei model
-
-# RICORDA -> MIGRARE I MODEL !!!!
+from django.utils.timezone import now
+from .models import Loan
 
 # Register your models here.
 
 '''
-# PERSONALIZZARE il pannello Admin
+class DateFilter(admin.SimpleListFilter):
+    title = "Due Date"
 
-admin.site.register(Nome_model)
+    parameter_name = "selct_date"
 
-class Nome_modelAdmin(admin.ModelAdmin):
-    list_display = ("title","author","genre",)
-    
-admin.site.register(Nome_model, Nome_modelAdmin)    
+    def lookups(self, request, model_admin):
+        return [
+            ("exp","Expiring"),
+            ("over","Overdue" ),
+        ]
+
+    def queryset(self, request, queryset):
+
+        if self.value() == "exp":
+            return queryset.filter(
+                due_date = now().date() + timedelta(days=2)
+            )
+        elif self.value() == "over":
+            return queryset.exclude(due_date=now().date() - timedelta(days=1))
 '''
 
+class LoanAdmin(admin.ModelAdmin):
+    list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
+    list_filter = ("active",)
+
+admin.site.register(Loan, LoanAdmin)
+
+'''
 admin.site.site_header = "Gestion Library"
 admin.site.site_title = "Admin - Library"
 admin.site.index_title = "Admin Control Pannel"
 
-'''
+
 #nome_file.CSS per personalizzare la pag dell' Admin
 
 class CustomAdmin(admin.AdminSite):

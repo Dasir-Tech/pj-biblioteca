@@ -1,6 +1,6 @@
 from datetime import timedelta
 from django.db import models
-from django.db.models.functions import Now
+from django.utils.timezone import now
 
 class Loan(models.Model):
 
@@ -10,10 +10,20 @@ class Loan(models.Model):
         LOST = 3, "Lost"
         DAMAGED = 4, "Damaged"
 
-    user = models.IntegerField(unique = True)
-    book = models.IntegerField(unique = True)
+    #automatic due_date
+    def auto_due_date(self):
+        return now().date() + timedelta(days=30)
+
+    user_ID = models.IntegerField(db_index = True)
+    book_ID = models.IntegerField(db_index = True)
     status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
-    due_date = models.DateField(db_default = Now() + timedelta(days=30))
+    due_date = models.DateField(default=auto_due_date)
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
+    active = models.BooleanField(default=True)
 
+'''
+#Non serve, lo lascio per il futuro
+    def __str__(self):
+        return (f"User_ID: {self.user_ID} - Book_ID: {self.book_ID} - Status: {self.get_status_display()} - Due_date: {self.due_date} - Insert_date: {self.insert_date} - Update_date: {self.update_date} - Active: {'active' if self.active==1 else 'deactivated'}")
+'''
