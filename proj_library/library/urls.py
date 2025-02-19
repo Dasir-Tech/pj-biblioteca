@@ -16,8 +16,9 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
+app_name = "library_app"
 urlpatterns = [
     path("admin/", admin.site.urls),
 ]
