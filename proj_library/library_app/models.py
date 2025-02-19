@@ -1,4 +1,3 @@
-from datetime import timedelta
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
@@ -66,3 +65,9 @@ class Author(models.Model):
 
     def get_absolute_url(self):
         return reverse('book-detail', args=[str(self.id)])
+
+class Genre(models.Model):
+    genre = models.CharField(max_length=255)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    activate = models.BooleanField(default=True)
