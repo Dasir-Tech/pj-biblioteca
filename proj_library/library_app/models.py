@@ -1,4 +1,3 @@
-from datetime import timedelta
 from django.db import models
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
@@ -6,6 +5,8 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.urls import reverse
 from datetime import date
+
+# Create your models here.
 from django.db.models.functions import Now
 # Create your models here.
 
@@ -57,5 +58,26 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+class Author(models.Model):
+    author = models.CharField(max_length=255)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    activate = models.BooleanField(default=True)
+
     def get_absolute_url(self):
         return reverse('book-detail', args=[str(self.id)])
+
+class Genre(models.Model):
+    genre = models.CharField(max_length=255)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    activate = models.BooleanField(default=True)
+
+class Editor(models.Model):
+    editor = models.CharField(max_length=100)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    activate = models.BooleanField(default=True) # Campo per disattivare senza cancellare
+
+    def __str__(self):
+        return self.editor
