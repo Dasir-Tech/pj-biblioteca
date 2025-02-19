@@ -1,11 +1,21 @@
 from django.contrib import admin
+from .models import Editor
 from .models import Genre
 from .models import Book
-#from .models import Nome_model, elenco dei model
 from django.utils.translation.trans_null import activate
 from .models import Author
 
-# RICORDA -> MIGRARE I MODEL !!!!
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    list_filter = ('activate',)
+    search_fields = ('editor',)
+    
+    def activate(self, request, queryset): 
+        queryset.update(activate=True)
+    def deactivate(self, request, queryset): 
+        queryset.update(activate=False)
+
+admin.site.register(Editor, EditorAdmin)
 
 # Register your models here.
 #Modificare modello in admin
@@ -62,4 +72,3 @@ class GenreAdmin(admin.ModelAdmin):
 
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Book)
-
