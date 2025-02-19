@@ -57,5 +57,12 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+class Author(models.Model):
+            author = models.CharField(max_length=255)
+            insert_date = models.DateField(auto_now_add=True)
+            update_date = models.DateField(auto_now=True)
+            activate = models.BooleanField(default=True)
+
+
     def get_absolute_url(self):
         return reverse('book-detail', args=[str(self.id)])
