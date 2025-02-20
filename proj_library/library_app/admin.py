@@ -9,8 +9,8 @@ class DateFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         return [
+            ("ong", "Ongoing"),
             ("exp","Expiring"),
-            ("over","Overdue" ),
         ]
 
     def queryset(self, request, queryset):
@@ -20,7 +20,10 @@ class DateFilter(admin.SimpleListFilter):
                 due_date = now().date() + timedelta(days=2)
             )
         elif self.value() == "over":
-            return queryset.exclude(due_date=now().date() - timedelta(days=1))
+            return queryset.exclude(
+                due_date = now().date() - timedelta(days=1)
+            )
+
 
 
 class LoanAdmin(admin.ModelAdmin):
