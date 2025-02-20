@@ -1,10 +1,25 @@
+from datetime import timedelta
 from django.contrib import admin
+from django.utils.timezone import now
+from .models import Loan
 from .models import Editor
 from .models import Genre
 from .models import Book
 from django.utils.translation.trans_null import activate
 from .models import Author
 
+class DateFilter(admin.SimpleListFilter):
+    title = "Date"
+    parameter_name = "select_date"
+
+    def lookups(self, request, model_admin):
+        return [
+            ("ong", "Ongoing"),
+            ("exp","Expiring"),
+        ]
+
+    def queryset(self, request, queryset):
+      
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
     list_filter = ('activate',)
@@ -28,35 +43,12 @@ class AuthorAdmin(admin.ModelAdmin):
         disattivati= queryset.filter(activate=True).queryset.update(activate=False)
 
 admin.site.register(Author, AuthorAdmin)
-'''
-# PERSONALIZZARE il pannello Admin
 
-admin.site.register(Nome_model)
+class LoanAdmin(admin.ModelAdmin):
+    list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
+    list_filter = ("active",DateFilter)
 
-class Nome_modelAdmin(admin.ModelAdmin):
-    list_display = ("title","author","genre",)
-
-admin.site.register(Nome_model, Nome_modelAdmin)
-'''
-
-admin.site.site_header = "Gestion Library"
-admin.site.site_title = "Admin - Library"
-admin.site.index_title = "Admin Control Pannel"
-
-'''
-#nome_file.CSS per personalizzare la pag dell' Admin
-
-class CustomAdmin(admin.AdminSite):
-    def get_urls(self):
-        return super().get_urls()
-
-    class Media:
-        css = {
-            "all" : ("admin/css/custom.css",)
-        }
-
-admin.site = CustomAdmin()
-'''
+admin.site.register(Loan, LoanAdmin)
 
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")
