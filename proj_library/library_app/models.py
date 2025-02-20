@@ -1,4 +1,6 @@
+from datetime import timedelta
 from django.db import models
+from django.db.models.functions import Now
 from django.utils.timezone import now
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
@@ -6,8 +8,8 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.urls import reverse
 from datetime import date
-from datetime import timedelta
-from django.db.models.functions import Now
+from django.contrib.auth.models import AbstractUser
+
 # Create your models here.
 
 class Author(models.Model):
@@ -92,3 +94,10 @@ class Loan(models.Model):
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
     active = models.BooleanField(default=True)
+
+class CustomUser(AbstractUser):
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    is_active = models.BooleanField(default=True)                  # Per disattivazione utenti
+
+    def __str__(self):
+        return self.username
