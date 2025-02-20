@@ -1,8 +1,9 @@
-from .models import Editor
+from django.shortcuts import render
+from django.http import HttpResponse, Http404
+from .models import Loan
 
-def disattiva_editor(id):
-    editor = Editor.objects.get(id=id)
-    editor.attivo = False
-    editor.save()
+def hello(request):
+    return HttpResponse(" << Welcome into the Library_app >> ")
 
 # Create your views here.
+
