@@ -1,29 +1,17 @@
+from datetime import timedelta
 from django.db import models
+from django.db.models.functions import Now
+from django.utils.timezone import now
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.urls import reverse
 from datetime import date
-from datetime import timedelta
-from django.db.models.functions import Now
+from django.contrib.auth.models import AbstractUser
+
 # Create your models here.
-"""
-class Loan(models.Model):
 
-    class Status(models.IntegerChoices):
-        AVAILABLE = 1, "Available"
-        ON_LOAN = 2, "On Loan"
-        LOST = 3, "Lost"
-        DAMAGED = 4, "Damaged"
-
-    user = models.IntegerField(unique = True)
-    book = models.IntegerField(unique = True)
-    status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
-    due_date = models.DateField(db_default = Now() + timedelta(days=30))
-    insert_date = models.DateField(auto_now_add = True)
-    update_date = models.DateField(auto_now = True)
-"""
 class Author(models.Model):
     author = models.CharField(max_length=255)
     insert_date = models.DateField(auto_now_add=True)
@@ -97,13 +85,20 @@ class Loan(models.Model):
         DAMAGED = 4, "Damaged"
 
     #automatic due_date
-    def auto_due_date(self):
-        return timedelta.now().date() + timedelta(days=30)
+    def AutoDueDate():
+        return now().date() + timedelta(days=30)
 
-    user_ID = models.IntegerField(null=False, default=0)
-    book_ID = models.IntegerField(null=False, default=0)
+    user_ID = models.ForeignKey(db_index = True)
+    book_ID = models.ForeignKey(db_index = True)
     status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
-    due_date = models.DateField(default=auto_due_date)
+    due_date = models.DateField(default=AutoDueDate)
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
     active = models.BooleanField(default=True)
+
+class CustomUser(AbstractUser):
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    is_active = models.BooleanField(default=True)                  # Per disattivazione utenti
+
+    def __str__(self):
+        return self.username

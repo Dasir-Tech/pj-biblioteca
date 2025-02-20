@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "library_app.apps.LibraryAppConfig"
 ]
 
@@ -67,6 +68,16 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "library.wsgi.application"
+AUTH_USER_MODEL = 'library_app.CustomUser'
+
+# Email settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'library_app.smtps.aruba.it '  # SMTP host
+EMAIL_HOST_USER = "laura.comparelli@dasir.it"  # email address
+EMAIL_HOST_PASSWORD = "$DasirLc9"  # email password
+EMAIL_PORT = 465  # SMTP port
+EMAIL_USE_SSL = True  # Use SSL for secure connection
+# Niente truffe please
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -106,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "it"
+LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "Europe/Rome"
 
