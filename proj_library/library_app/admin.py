@@ -1,7 +1,7 @@
 from datetime import timedelta
 from django.contrib import admin
 from django.utils.timezone import now
-from .models import Loan
+from .models import Loan, Author, Book, Genre, Editor
 
 class DateFilter(admin.SimpleListFilter):
     title = "Due Date"
@@ -11,7 +11,7 @@ class DateFilter(admin.SimpleListFilter):
         return [
             ("exp","Expiring"),
             ("over", "Overdue"),
-          
+        ]
     def queryset(self, request, queryset):
 
         if self.value() == "exp":
@@ -72,6 +72,9 @@ admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
 admin.site.register(Book)
 
+admin.site.register(Genre, GenreAdmin)
+admin.site.register(Editor, EditorAdmin)
+
 class Active(admin.SimpleListFilter):
     title = "Active"
     parameter_name = "select_active"
@@ -114,4 +117,3 @@ class LoanAdmin(admin.ModelAdmin):
     list_filter = (DateFilter,Status ,Active)
 
 admin.site.register(Loan, LoanAdmin)
-
