@@ -1,6 +1,5 @@
 from datetime import timedelta
 from django.db import models
-from django.db.models.functions import Now
 from django.utils.timezone import now
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
@@ -41,6 +40,7 @@ class Editor(models.Model):
 
     def __str__(self):
         return self.editor
+
 
 class Book(models.Model):
     img = models.CharField(max_length=255, null=True)
