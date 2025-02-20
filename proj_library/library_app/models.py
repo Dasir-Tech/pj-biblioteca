@@ -5,11 +5,10 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from django.urls import reverse
 from datetime import date
-
-# Create your models here.
+from datetime import timedelta
 from django.db.models.functions import Now
 # Create your models here.
-
+"""
 class Loan(models.Model):
 
     class Status(models.IntegerChoices):
@@ -24,12 +23,42 @@ class Loan(models.Model):
     due_date = models.DateField(db_default = Now() + timedelta(days=30))
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
+"""
+class Author(models.Model):
+    author = models.CharField(max_length=255)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    activate = models.BooleanField(default=True)
+
+    def get_absolute_url(self):
+        return reverse('book-detail', args=[str(self.id)])
+
+    def __str__(self):
+        return self.author
+
+class Genre(models.Model):
+    genre = models.CharField(max_length=255)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    activate = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.genre
+
+class Editor(models.Model):
+    editor = models.CharField(max_length=100)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    activate = models.BooleanField(default=True) # Campo per disattivare senza cancellare
+
+    def __str__(self):
+        return self.editor
 
 class Book(models.Model):
     title = models.CharField(max_length=200)
     author = models.ManyToManyField(Author, help_text="Select one or more author for this book", null=False)
     genre = models.ManyToManyField(Genre, help_text="Select one or more genre for this book", null=False)
-    editor = models.ForeignKey(Editor, help_text="Select an editor for this book", null=False)
+    editor = models.ForeignKey(Editor, help_text="Select an editor", null=False, on_delete=models.CASCADE)
     isbn = models.CharField('ISBN', max_length=13,
         unique=True,
         help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn'
@@ -37,11 +66,11 @@ class Book(models.Model):
     publication_date = models.DateField(null=False)
     qty = models.IntegerField(null=False)
     activate = models.BooleanField(default=True)
-    insert_date = models.DateField(default=date.now(), null=False)
-    update_date = models.DateField(null=False)
+    insert_date = models.DateField(default=date.today(), null=False)
+    update_date = models.DateField(auto_now=True, null=True)
 
     def display_author(self):
-        return ', '.join(author.first_name + ' ' + author.last_name for author in self.author.all()[:3])
+        return ', '.join(author.author for author in self.author.all()[:3])
 
     display_author.short_description = 'Author'
 
@@ -58,26 +87,22 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-class Author(models.Model):
-    author = models.CharField(max_length=255)
-    insert_date = models.DateField(auto_now_add=True)
-    update_date = models.DateField(auto_now=True)
-    activate = models.BooleanField(default=True)
+class Loan(models.Model):
 
-    def get_absolute_url(self):
-        return reverse('book-detail', args=[str(self.id)])
+    class Status(models.IntegerChoices):
+        AVAILABLE = 1, "Available"
+        ON_LOAN = 2, "On Loan"
+        LOST = 3, "Lost"
+        DAMAGED = 4, "Damaged"
 
-class Genre(models.Model):
-    genre = models.CharField(max_length=255)
-    insert_date = models.DateField(auto_now_add=True)
-    update_date = models.DateField(auto_now=True)
-    activate = models.BooleanField(default=True)
+    #automatic due_date
+    def auto_due_date(self):
+        return timedelta.now().date() + timedelta(days=30)
 
-class Editor(models.Model):
-    editor = models.CharField(max_length=100)
-    insert_date = models.DateField(auto_now_add=True)
-    update_date = models.DateField(auto_now=True)
-    activate = models.BooleanField(default=True) # Campo per disattivare senza cancellare
-
-    def __str__(self):
-        return self.editor
+    user_ID = models.IntegerField(null=False, default=0)
+    book_ID = models.IntegerField(null=False, default=0)
+    status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
+    due_date = models.DateField(default=auto_due_date)
+    insert_date = models.DateField(auto_now_add = True)
+    update_date = models.DateField(auto_now = True)
+    active = models.BooleanField(default=True)
