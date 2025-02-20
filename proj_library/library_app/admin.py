@@ -7,6 +7,7 @@ class DateFilter(admin.SimpleListFilter):
     title = "Due Date"
     parameter_name = "select_date"
 
+
     def lookups(self, request, model_admin):
         return [
             ("ong", "Ongoing"),
