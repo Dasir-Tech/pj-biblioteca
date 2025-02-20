@@ -39,6 +39,18 @@ class LoanAdmin(admin.ModelAdmin):
     list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
     list_filter = ("active",DateFilter)
 
+class GenreAdmin(admin.ModelAdmin):
+    list_display = ("genre", "insert_date", "update_date", "activate")
+    actions = ['activate', 'deactivate']
+    list_filter = ('activate',)
+    search_fields = ('genre',)
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
