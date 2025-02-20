@@ -41,6 +41,7 @@ class Editor(models.Model):
     def __str__(self):
         return self.editor
 
+
 class Book(models.Model):
     img = models.CharField(max_length=255, null=True)
     title = models.CharField(max_length=200)
@@ -94,3 +95,4 @@ class Loan(models.Model):
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
     active = models.BooleanField(default=True)
+
