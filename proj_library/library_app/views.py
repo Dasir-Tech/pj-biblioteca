@@ -7,4 +7,3 @@ def hello(request):
 
 # Create your views here.
 
-

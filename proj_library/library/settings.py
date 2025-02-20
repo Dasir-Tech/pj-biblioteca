@@ -26,7 +26,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -36,8 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-
-    "library_app.apps.LibraryAppConfig",
+    "library_app.apps.LibraryAppConfig"
 ]
 
 MIDDLEWARE = [
@@ -81,7 +79,6 @@ EMAIL_USE_SSL = True  # Use SSL for secure connection
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -90,6 +87,9 @@ DATABASES = {
         'PASSWORD': 'bibliotecadasir77',
         'HOST': '95.110.131.98',
         'PORT': '3306',
+        "OPTIONS": {
+            "init_command": "SET default_storage_engine=INNODB",
+        }
     }
 }
 
@@ -111,18 +111,16 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "it"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Rome"
 
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
