@@ -14,7 +14,7 @@ class DateFilter(admin.SimpleListFilter):
         return [
             ("exp","Expiring"),
             ("over", "Overdue"),
-        ]
+        ]     
     def queryset(self, request, queryset):
         if self.value() == "exp":
             return queryset.exclude(active=False).filter(
