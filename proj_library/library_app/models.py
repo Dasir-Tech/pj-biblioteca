@@ -1,3 +1,5 @@
+from tkinter.constants import CASCADE
+
 from django.db import models
 from django.utils.timezone import now
 from django.db.models import UniqueConstraint
@@ -8,7 +10,6 @@ from django.urls import reverse
 from datetime import date
 from datetime import timedelta
 from django.db.models.functions import Now
-# Create your models here.
 
 class Author(models.Model):
     author = models.CharField(max_length=255)
@@ -85,8 +86,8 @@ class Loan(models.Model):
     def AutoDueDate():
         return now().date() + timedelta(days=30)
 
-    user_ID = models.ForeignKey(db_index = True)
-    book_ID = models.ForeignKey(db_index = True)
+    user_ID = models.ForeignKey(CustomUser, on_delete=CASCADE)
+    book_ID = models.ForeignKey(Book, on_delete=CASCADE)
     status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
     due_date = models.DateField(default=AutoDueDate)
     insert_date = models.DateField(auto_now_add = True)
