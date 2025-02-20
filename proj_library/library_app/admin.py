@@ -3,7 +3,7 @@ from django.contrib import admin
 from .models import CustomUser
 from django.contrib.auth.admin import UserAdmin
 from django.utils.timezone import now
-from .models import Loan
+from .models import Loan, Author, Book, Genre, Editor
 
 class DateFilter(admin.SimpleListFilter):
     title = "Due Date"
@@ -14,7 +14,7 @@ class DateFilter(admin.SimpleListFilter):
         return [
             ("exp","Expiring"),
             ("over", "Overdue"),
-        ]     
+        ]
     def queryset(self, request, queryset):
         if self.value() == "exp":
             return queryset.exclude(active=False).filter(
@@ -73,3 +73,5 @@ class CustomUserAdmin(UserAdmin):
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
 admin.site.register(Book)
+admin.site.register(Genre, GenreAdmin)
+admin.site.register(Editor, EditorAdmin)
