@@ -9,7 +9,6 @@ loan = Loan.objects.get(pk=id)
 date = now().date() + timedelta(days=2)
 loans = Loan.objects.filter(due_date = date, active = True, status = Loan.Status.ON_LOAN)
 
-
 def expiration_email(user,loan):
     user_email = user.email
     user_name = user.name
