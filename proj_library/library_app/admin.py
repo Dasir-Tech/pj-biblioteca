@@ -2,6 +2,11 @@ from datetime import timedelta
 from django.contrib import admin
 from django.utils.timezone import now
 from .models import Loan
+from .models import Editor
+from .models import Genre
+from .models import Book
+from django.utils.translation.trans_null import activate
+from .models import Author
 
 class DateFilter(admin.SimpleListFilter):
     title = "Date"
@@ -14,17 +19,30 @@ class DateFilter(admin.SimpleListFilter):
         ]
 
     def queryset(self, request, queryset):
+      
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    list_filter = ('activate',)
+    search_fields = ('editor',)
 
-        if self.value() == "exp":
-            return queryset.filter(
-                due_date = now().date() + timedelta(days=2)
-            )
-        elif self.value() == "over":
-            return queryset.exclude(
-                due_date = now().date() - timedelta(days=1)
-            )
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
 
+admin.site.register(Editor, EditorAdmin)
 
+# Register your models here.
+#Modificare modello in admin
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ('author', 'insert_date', 'update_date', 'activate')
+    list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
+    actions = ('activate_or_deactivate')
+    def activate_or_deactivate(self, request, queryset): #cambia il boolean 'activate' in false
+        attivati= queryset.filter(activate=False).queryset.update(activate=True)
+        disattivati= queryset.filter(activate=True).queryset.update(activate=False)
+
+admin.site.register(Author, AuthorAdmin)
 
 class LoanAdmin(admin.ModelAdmin):
     list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
@@ -32,22 +50,17 @@ class LoanAdmin(admin.ModelAdmin):
 
 admin.site.register(Loan, LoanAdmin)
 
-'''
-admin.site.site_header = "Gestion Library"
-admin.site.site_title = "Admin - Library"
-admin.site.index_title = "Admin Control Pannel"
+class GenreAdmin(admin.ModelAdmin):
+    list_display = ("genre", "insert_date", "update_date", "activate")
+    actions = ['activate', 'deactivate']
+    list_filter = ('activate',)
+    search_fields = ('genre',)
 
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
 
-#nome_file.CSS per personalizzare la pag dell' Admin
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
 
-class CustomAdmin(admin.AdminSite):
-    def get_urls(self):
-        return super().get_urls()
-    
-    class Media:
-        css = {
-            "all" : ("admin/css/custom.css",)
-        }
-        
-admin.site = CustomAdmin()   
-'''
+admin.site.register(Genre, GenreAdmin)
+admin.site.register(Book)
