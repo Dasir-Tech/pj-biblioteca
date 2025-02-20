@@ -72,3 +72,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
+admin.site.register(Book)
