@@ -1,9 +1,13 @@
 from django.contrib import admin
+from .models import CustomUser
+from django.contrib.auth.admin import UserAdmin
+#from .models import Nome_model, elenco dei model
 from .models import Editor
 from .models import Genre
 from .models import Book
 from django.utils.translation.trans_null import activate
 from .models import Author
+
 
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
@@ -57,6 +61,16 @@ class CustomAdmin(admin.AdminSite):
 
 admin.site = CustomAdmin()
 '''
+class CustomUserAdmin(UserAdmin):
+    # Definizione dei campi personalizzati add user
+    add_fieldsets = UserAdmin.add_fieldsets + (
+        ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active', 'is_staff')}),
+    )
+
+   #Definizione vista lista user
+    list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+
+admin.site.register(CustomUser, CustomUserAdmin)
 
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")

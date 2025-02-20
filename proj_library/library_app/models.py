@@ -1,12 +1,29 @@
+from datetime import timedelta
 from django.db import models
+from django.db.models.functions import Now
 from django.db.models import UniqueConstraint
 from django.db.models.functions import Lower
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.urls import reverse
 from datetime import date
-from datetime import timedelta
-from django.db.models.functions import Now
+from django.contrib.auth.models import AbstractUser
+
+class Loan(models.Model):
+
+    class Status(models.IntegerChoices):
+        AVAILABLE = 1, "Available"
+        ON_LOAN = 2, "On Loan"
+        LOST = 3, "Lost"
+        DAMAGED = 4, "Damaged"
+
+    user = models.IntegerField(unique = True)
+    book = models.IntegerField(unique = True)
+    status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
+    due_date = models.DateField(db_default = Now() + timedelta(days=30))
+    insert_date = models.DateField(auto_now_add = True)
+    update_date = models.DateField(auto_now = True)
+
 # Create your models here.
 """
 class Loan(models.Model):
@@ -106,3 +123,10 @@ class Loan(models.Model):
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
     active = models.BooleanField(default=True)
+
+class CustomUser(AbstractUser):
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    is_active = models.BooleanField(default=True)                  # Per disattivazione utenti
+
+    def __str__(self):
+        return self.username

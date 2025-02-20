@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
     "library_app.apps.LibraryAppConfig"
 ]
 
@@ -67,6 +68,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "library.wsgi.application"
+AUTH_USER_MODEL = 'library_app.CustomUser'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -106,7 +108,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.1/topics/i18n/
 
-LANGUAGE_CODE = "it"
+LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "Europe/Rome"
 
