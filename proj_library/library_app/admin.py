@@ -21,8 +21,7 @@ class DateFilter(admin.SimpleListFilter):
         ]
 
     def queryset(self, request, queryset):
-      
-
+        pass
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
     list_filter = ('activate',)
