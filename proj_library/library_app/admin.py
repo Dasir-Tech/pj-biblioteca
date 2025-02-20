@@ -25,6 +25,16 @@ class DateFilter(admin.SimpleListFilter):
                 due_date__lte = now().date()
             ).filter(status=2)
 
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ('author', 'insert_date', 'update_date', 'activate')
+    list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
+    actions = ('activate_or_deactivate')
+    def activate_or_deactivate(self, request, queryset): #cambia il boolean 'activate' in false
+        attivati= queryset.filter(activate=False).queryset.update(activate=True)
+        disattivati= queryset.filter(activate=True).queryset.update(activate=False)
+
+admin.site.register(Author, AuthorAdmin)
+
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
     list_filter = ('activate',)
@@ -39,6 +49,18 @@ class LoanAdmin(admin.ModelAdmin):
     list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
     list_filter = ("active",DateFilter)
 
+class GenreAdmin(admin.ModelAdmin):
+    list_display = ("genre", "insert_date", "update_date", "activate")
+    actions = ['activate', 'deactivate']
+    list_filter = ('activate',)
+    search_fields = ('genre',)
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
@@ -50,3 +72,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
+admin.site.register(Book)
