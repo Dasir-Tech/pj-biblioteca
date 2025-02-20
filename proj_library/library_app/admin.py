@@ -25,6 +25,16 @@ class DateFilter(admin.SimpleListFilter):
                 due_date__lte = now().date()
             ).filter(status=2)
 
+class AuthorAdmin(admin.ModelAdmin):
+    list_display = ('author', 'insert_date', 'update_date', 'activate')
+    list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
+    actions = ('activate_or_deactivate')
+    def activate_or_deactivate(self, request, queryset): #cambia il boolean 'activate' in false
+        attivati= queryset.filter(activate=False).queryset.update(activate=True)
+        disattivati= queryset.filter(activate=True).queryset.update(activate=False)
+
+admin.site.register(Author, AuthorAdmin)
+
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
     list_filter = ('activate',)
