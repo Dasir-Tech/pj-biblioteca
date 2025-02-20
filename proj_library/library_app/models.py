@@ -55,6 +55,7 @@ class Editor(models.Model):
         return self.editor
 
 class Book(models.Model):
+    img = models.CharField(max_length=255)
     title = models.CharField(max_length=200)
     author = models.ManyToManyField(Author, help_text="Select one or more author for this book", null=False)
     genre = models.ManyToManyField(Genre, help_text="Select one or more genre for this book", null=False)
