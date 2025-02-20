@@ -3,8 +3,8 @@ from .models import Editor
 
 
 class EditorAdmin(admin.ModelAdmin):
-    list_display = ('editor', 'insert_date', 'update_date', 'is_active')
-    list_filter = ('is_active',)
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    list_filter = ('activate',)
     search_fields = ('editor',)
 
 admin.site.register(Editor, EditorAdmin)
