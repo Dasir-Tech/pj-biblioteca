@@ -15,7 +15,6 @@ class DateFilter(admin.SimpleListFilter):
             ("exp","Expiring"),
             ("over", "Overdue"),
         ]
-      
     def queryset(self, request, queryset):
         if self.value() == "exp":
             return queryset.exclude(active=False).filter(
@@ -51,23 +50,3 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
-
-'''
-admin.site.site_header = "Gestion Library"
-admin.site.site_title = "Admin - Library"
-admin.site.index_title = "Admin Control Pannel"
-
-
-#nome_file.CSS per personalizzare la pag dell' Admin
-
-class CustomAdmin(admin.AdminSite):
-    def get_urls(self):
-        return super().get_urls()
-    
-    class Media:
-        css = {
-            "all" : ("admin/css/custom.css",)
-        }
-        
-admin.site = CustomAdmin()   
-'''
