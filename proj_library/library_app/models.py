@@ -42,7 +42,6 @@ class Genre(models.Model):
     def __str__(self):
         return self.editor
 
-
 class Book(models.Model):
     img = models.CharField(max_length=255, null=True)
     title = models.CharField(max_length=200)
@@ -76,7 +75,6 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
-
 
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
