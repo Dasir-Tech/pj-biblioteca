@@ -32,15 +32,11 @@ class Genre(models.Model):
     def __str__(self):
         return self.genre
 
-# Create your models here.
-class Genre(models.Model):
-    genre = models.CharField(max_length=255)
+class Editor(models.Model):
+    editor = models.CharField(max_length=100)
     insert_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
-    activate = models.BooleanField(default=True) # Campo per disattivare senza cancellare
-
-    def __str__(self):
-        return self.editor
+    activate = models.BooleanField(default=True)
 
 class Book(models.Model):
     img = models.CharField(max_length=255, null=True)
@@ -102,18 +98,4 @@ class Loan(models.Model):
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
     active = models.BooleanField(default=True)
-
     activate = models.BooleanField(default=True)
-
-class Author(models.Model):
-    name_author = models.CharField(max_length=255)
-    insert_date = models.DateField(auto_now_add=True)
-    update_date = models.DateField(auto_now=True)
-    activate = models.BooleanField(default=True)
-
-class Editor(models.Model):
-    editor = models.CharField(max_length=100)
-    insert_date = models.DateField(auto_now_add=True)
-    update_date = models.DateField(auto_now=True)
-    activate = models.BooleanField(default=True)
-
