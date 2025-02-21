@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.utils.timezone import now
 from .models import Loan, Author, Book, Genre, Editor, CustomUser
 from django.contrib.auth.admin import UserAdmin
+from django.contrib import admin
 
 
 class AuthorAdmin(admin.ModelAdmin):
@@ -11,21 +12,7 @@ class AuthorAdmin(admin.ModelAdmin):
     actions = ('activate_or_deactivate')
     def activate_or_deactivate(self, request, queryset): #cambia il boolean 'activate' in false
         attivati= queryset.filter(activate=False).queryset.update(activate=True)
-        disattivati= queryset.filter(activate=True).queryset.update(activate=False)
-
-admin.site.register(Author, AuthorAdmin)
-
-class EditorAdmin(admin.ModelAdmin):
-    list_display = ('editor', 'insert_date', 'update_date', 'activate')
-    list_filter = ('activate',)
-    search_fields = ('editor',)
-
-    def activate(self, request, queryset):
-        queryset.update(activate=True)
-    def deactivate(self, request, queryset):
-        queryset.update(activate=False)
-
-admin.site.register(Editor, EditorAdmin)
+        disattivati= queryset.filter(activate=True).queryset.update(activate=False)  
 
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")
@@ -39,9 +26,14 @@ class GenreAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    
+admin.site.register(Author, AuthorAdmin)
+admin.site.register(Editor, EditorAdmin)
 admin.site.register(Genre, GenreAdmin)
-
 admin.site.register(Book)
+
 
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
@@ -51,6 +43,7 @@ class CustomUserAdmin(UserAdmin):
 
    #Definizione vista lista user
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
@@ -75,6 +68,7 @@ class DateFilter(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(
                 due_date__lte = now().date()
             ).filter(status=2)
+
 
 class Active(admin.SimpleListFilter):
     title = "Active"

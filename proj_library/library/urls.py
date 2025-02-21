@@ -19,10 +19,14 @@ from django.contrib import admin
 from django.urls import path
 
 
+
 app_name = "library_app"
 
 admin.site.site_header = "Biblioteca_Dasir"
 admin.site.site_title = "Biblioteca_Dasir"
+
+
+app_name = "library_app"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
