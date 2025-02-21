@@ -41,6 +41,7 @@ class Editor(models.Model):
     def __str__(self):
         return self.editor
 
+
 class Book(models.Model):
     img = models.CharField(max_length=255, null=True)
     title = models.CharField(max_length=200)
@@ -75,6 +76,14 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+
+class CustomUser(AbstractUser):
+    phone_number = models.CharField(max_length=15, blank=True, null=True)
+    is_active = models.BooleanField(default=True)                  # Per disattivazione utenti
+
+    def __str__(self):
+        return self.username
+
 class Loan(models.Model):
 
     class Status(models.IntegerChoices):
@@ -87,8 +96,8 @@ class Loan(models.Model):
     def AutoDueDate():
         return now().date() + timedelta(days=30)
 
-    user_ID = models.IntegerField(db_index = True)
-    book_ID = models.IntegerField(db_index = True)
+    user_ID = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    book_ID = models.ForeignKey(Book, on_delete=models.CASCADE)
     status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
     due_date = models.DateField(default=AutoDueDate)
     insert_date = models.DateField(auto_now_add = True)
