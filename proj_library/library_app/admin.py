@@ -1,8 +1,9 @@
 from datetime import timedelta
 from django.contrib import admin
 from django.utils.timezone import now
-from .models import Loan, Author, Book, Genre, Editor
+from .models import Loan, Author, Book, Genre, Editor, CustomUser
 from django.contrib.auth.admin import UserAdmin
+from django.contrib import admin
 
 class DateFilter(admin.SimpleListFilter):
     title = "Due Date"
@@ -43,10 +44,6 @@ class EditorAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
-class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
-    list_filter = ("active",DateFilter)
-
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")
     actions = ['activate', 'deactivate']
@@ -58,7 +55,6 @@ class GenreAdmin(admin.ModelAdmin):
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
@@ -66,13 +62,6 @@ class CustomUserAdmin(UserAdmin):
     )
    #Definizione vista lista user
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
-
-admin.site.register(CustomUserAdmin, CustomUserAdmin)
-admin.site.register(Loan, LoanAdmin)
-admin.site.register(Book)
-
-admin.site.register(Genre, GenreAdmin)
-admin.site.register(Editor, EditorAdmin)
 
 class Active(admin.SimpleListFilter):
     title = "Active"
@@ -115,4 +104,8 @@ class LoanAdmin(admin.ModelAdmin):
     list_display = ("id", "user_ID", "book_ID", "status", "due_date", "insert_date", "update_date", "active")
     list_filter = (DateFilter,Status ,Active)
 
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
+admin.site.register(Book)
+admin.site.register(Genre, GenreAdmin)
+admin.site.register(Editor, EditorAdmin)
