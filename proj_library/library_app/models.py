@@ -97,5 +97,4 @@ class Loan(models.Model):
     due_date = models.DateField(default=AutoDueDate)
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
-    active = models.BooleanField(default=True)
     activate = models.BooleanField(default=True)
