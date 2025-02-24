@@ -79,12 +79,12 @@ class DateFilter(admin.SimpleListFilter):
 
         if self.value() == "exp":
             return (queryset.exclude(active=False).filter(
-                due_date__gte = now().date() + timedelta(days=2)
-            ).filter(status=2))
+                due_date__gte = now().date()).filter(due_date__lte = now().date() + timedelta(days=2)
+            ).filter(status=2)).order_by('due_date')
         elif self.value() == "over":
             return queryset.exclude(active=False).filter(
                 due_date__lte = now().date()
-            ).filter(status=2)
+            ).filter(status=2).order_by('due_date')
 
 
 
@@ -117,13 +117,13 @@ class Status(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == "1":
-            return queryset.exclude(active=False).filter(status=1)
+            return queryset.exclude(active=False).filter(status=1).order_by('due_date')
         elif self.value() == "2":
-            return queryset.exclude(active=False).filter(status=2)
+            return queryset.exclude(active=False).filter(status=2).order_by('due_date')
         elif self.value() == "3":
-            return queryset.exclude(active=False).filter(status=3)
+            return queryset.exclude(active=False).filter(status=3).order_by('due_date')
         elif self.value() == "4":
-            return queryset.exclude(active=False).filter(status=4)
+            return queryset.exclude(active=False).filter(status=4).order_by('due_date')
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('img', 'title', 'isbn',  'qty', 'activate', 'insert_date', 'update_date')

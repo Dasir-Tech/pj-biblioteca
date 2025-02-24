@@ -73,12 +73,12 @@ AUTH_USER_MODEL = 'library_app.CustomUser'
 
 #Email settings
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_HOST = 'library_app.smtps.aruba.it '  # SMTP host
 EMAIL_HOST_USER = "laura.comparelli@dasir.it"  # email address
 EMAIL_HOST_PASSWORD = "$DasirLc9"  # email password
 EMAIL_PORT = 465  # SMTP port
-EMAIL_USE_SSL = True  # Use SSL for secure connection
+EMAIL_USE_TLS = True  # Use SSL for secure connection
 
 
 # Database
