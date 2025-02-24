@@ -1,11 +1,12 @@
 from datetime import timedelta
 from django.contrib import admin
+from django.core.mail import send_mail
 from django.utils.timezone import now
 from .models import Loan, Author, Book, Genre, Editor, CustomUser
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 
-
+#BOOK
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('author', 'insert_date', 'update_date', 'activate')
     list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
@@ -34,7 +35,7 @@ admin.site.register(Editor, EditorAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Book)
 
-
+#USER
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
@@ -44,10 +45,9 @@ class CustomUserAdmin(UserAdmin):
    #Definizione vista lista user
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
 
-
 admin.site.register(CustomUser, CustomUserAdmin)
 
-
+#LOAN
 class DateFilter(admin.SimpleListFilter):
     title = "Due Date"
     parameter_name = "select_date"
@@ -110,5 +110,31 @@ class Status(admin.SimpleListFilter):
 class LoanAdmin(admin.ModelAdmin):
     list_display = ("id", "user_ID", "book_ID", "status", "due_date", "insert_date", "update_date", "active")
     list_filter = (DateFilter,Status ,Active)
+    actions = ['sendEmail',]
 
+    @admin.action(description="Send expired_loan email")
+    def sendEmail(self, request, queryset):
+        emails = queryset.select_related("user_ID").values_list("user_ID__email", flat=True)
+        for email in emails:
+            send_mail(
+                "Expiration notice from Neighborhood Library",
+
+                f"--------------------------------\n"
+                f"Hello!\n"
+                f"We kindly remind you to return the book you have loaned.\n"
+                f"Thanks for your collaboration, see you in Neighborhood Libray ;)"
+                f"--------------------------------\n",
+                "laura.comparelli@dasir.it",
+                [email],
+                fail_silently=False,
+            )
+#LA funzione su cui sto lavorando
+'''
+    def save(self, *args, **kwargs):
+        # Controlla se il libro è disponibile prima di creare il prestito
+        if Loan.objects.filter(book_ID=self.book_ID, status=Loan.Status.ON_LOAN).exists():
+            raise ValidationError("Questo libro è già in prestito e non è disponibile.")
+
+        super().save(*args, **kwargs)
+'''
 admin.site.register(Loan, LoanAdmin)

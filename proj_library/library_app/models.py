@@ -1,16 +1,13 @@
 from datetime import timedelta
+
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.timezone import now
-from django.db.models import UniqueConstraint
-from django.db.models.functions import Lower
-from django.contrib.auth.models import User
-from django.conf import settings
 from django.urls import reverse
 from datetime import date
 from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
-
+# BOOK
 class Author(models.Model):
     author = models.CharField(max_length=255)
     insert_date = models.DateField(auto_now_add=True)
@@ -72,13 +69,15 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+#USER
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-    is_active = models.BooleanField(default=True)                  # Per disattivazione utenti
+    is_active = models.BooleanField(default=True)# Per disattivare gli utenti
 
     def __str__(self):
         return self.username
 
+#LOAN
 class Loan(models.Model):
 
     class Status(models.IntegerChoices):
