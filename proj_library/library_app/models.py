@@ -33,14 +33,13 @@ class Genre(models.Model):
         return self.genre
 
 class Editor(models.Model):
-    editor = models.CharField(max_length=100)
+    editor = models.CharField(max_length=255)
     insert_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
     activate = models.BooleanField(default=True) # Campo per disattivare senza cancellare
 
     def __str__(self):
         return self.editor
-
 
 class Book(models.Model):
     img = models.CharField(max_length=255, null=True)
@@ -76,7 +75,6 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
-
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
     is_active = models.BooleanField(default=True)                  # Per disattivazione utenti
@@ -102,4 +100,4 @@ class Loan(models.Model):
     due_date = models.DateField(default=AutoDueDate)
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
-    active = models.BooleanField(default=True)
+    activate = models.BooleanField(default=True)
