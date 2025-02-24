@@ -1,3 +1,4 @@
+"""
 from datetime import timedelta
 from django.core.mail import send_mail
 from django.utils.timezone import now
@@ -27,3 +28,4 @@ def expiration_email(user,loan):
     except Exception as e:
         print(f"Error sending expiration notice to {user_email}: {e}")
 
+"""

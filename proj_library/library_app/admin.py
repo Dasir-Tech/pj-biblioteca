@@ -3,26 +3,8 @@ from django.contrib import admin
 from django.utils.timezone import now
 from .models import Loan, Author, Book, Genre, Editor, CustomUser
 from django.contrib.auth.admin import UserAdmin
+from django.contrib import admin
 
-class DateFilter(admin.SimpleListFilter):
-    title = "Due Date"
-    parameter_name = "select_date"
-
-    def lookups(self, request, model_admin):
-        return [
-            ("exp","Expiring"),
-            ("over", "Overdue"),
-        ]
-    def queryset(self, request, queryset):
-
-        if self.value() == "exp":
-            return (queryset.exclude(active=False).filter(
-                due_date__gte = now().date() + timedelta(days=2)
-            ).filter(status=2))
-        elif self.value() == "over":
-            return queryset.exclude(active=False).filter(
-                due_date__lte = now().date()
-            ).filter(status=2)
 
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('author', 'insert_date', 'update_date', 'activate')
@@ -52,6 +34,7 @@ class LoanAdmin(admin.ModelAdmin):
     list_filter = ("active",DateFilter)
     search_fields = ('loan',)
 
+
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")
     actions = ['activate', 'deactivate']
@@ -64,6 +47,11 @@ class GenreAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    
+
+
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
@@ -74,6 +62,30 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
     search_fields = ('first_name','email',)
     list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+
+
+
+class DateFilter(admin.SimpleListFilter):
+    title = "Due Date"
+    parameter_name = "select_date"
+
+    def lookups(self, request, model_admin):
+        return [
+            ("exp","Expiring"),
+            ("over", "Overdue"),
+        ]
+
+    def queryset(self, request, queryset):
+
+        if self.value() == "exp":
+            return (queryset.exclude(active=False).filter(
+                due_date__gte = now().date() + timedelta(days=2)
+            ).filter(status=2))
+        elif self.value() == "over":
+            return queryset.exclude(active=False).filter(
+                due_date__lte = now().date()
+            ).filter(status=2)
+
 
 
 class Active(admin.SimpleListFilter):
