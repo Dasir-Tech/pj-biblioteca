@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block branding %}
-<div id="site-name"><a href="{% url 'admin:index' %}" style="color=red">Libbbbbbreria</a></div>
+<div id="site-name"><a href="{% url 'admin:index' %}">Libbbbbbreria</a></div>
 {% if user.is_anonymous %}
   {% include "admin/color_theme_toggle.html" %}
 {% endif %}
