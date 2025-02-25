@@ -29,11 +29,16 @@ class GenreAdmin(admin.ModelAdmin):
 
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
+
+class BookAdmin(admin.ModelAdmin):
+    list_display = ('img', 'title', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
+    list_filter = ('title', 'isbn', 'activate')
+    search_fields = ('title', 'isbn')
     
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Editor, EditorAdmin)
 admin.site.register(Genre, GenreAdmin)
-admin.site.register(Book)
+admin.site.register(Book,BookAdmin)
 
 #USER
 class CustomUserAdmin(UserAdmin):
@@ -51,15 +56,12 @@ admin.site.register(CustomUser, CustomUserAdmin)
 class DateFilter(admin.SimpleListFilter):
     title = "Due Date"
     parameter_name = "select_date"
-
     def lookups(self, request, model_admin):
         return [
             ("exp","Expiring"),
             ("over", "Overdue"),
         ]
-
     def queryset(self, request, queryset):
-
         if self.value() == "exp":
             return (queryset.exclude(active=False).filter(
                 due_date__gte = now().date()).filter(due_date__lte = now().date() + timedelta(days=2)
@@ -73,7 +75,6 @@ class DateFilter(admin.SimpleListFilter):
 class Active(admin.SimpleListFilter):
     title = "Active"
     parameter_name = "select_active"
-
     def lookups(self, request, model_admin):
         return [
             ("act","Active"),
@@ -88,7 +89,6 @@ class Active(admin.SimpleListFilter):
 class Status(admin.SimpleListFilter):
     title = "Status"
     parameter_name = "select_status"
-
     def lookups(self, request, model_admin):
         return [
             ("1", "Available"),
@@ -96,7 +96,6 @@ class Status(admin.SimpleListFilter):
             ("3", "Lost"),
             ("4", "Damaged"),
         ]
-
     def queryset(self, request, queryset):
         if self.value() == "1":
             return queryset.exclude(active=False).filter(status=1).order_by('due_date')
@@ -108,33 +107,25 @@ class Status(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(status=4).order_by('due_date')
 
 class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id", "user_ID", "book_ID", "status", "due_date", "insert_date", "update_date", "active")
+    list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
     list_filter = (DateFilter,Status ,Active)
+    search_fields = ('id','book__title')
     actions = ['sendEmail',]
 
     @admin.action(description="Send expired_loan email")
     def sendEmail(self, request, queryset):
-        emails = queryset.select_related("user_ID").values_list("user_ID__email", flat=True)
+        emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:
             send_mail(
                 "Expiration notice from Neighborhood Library",
-
                 f"--------------------------------\n"
                 f"Hello!\n"
                 f"We kindly remind you to return the book you have loaned.\n"
-                f"Thanks for your collaboration, see you in Neighborhood Libray ;)"
+                f"Thanks for your collaboration, see you in Neighborhood Libray ;)\n"
                 f"--------------------------------\n",
                 "laura.comparelli@dasir.it",
                 [email],
                 fail_silently=False,
             )
-#LA funzione su cui sto lavorando
-'''
-    def save(self, *args, **kwargs):
-        # Controlla se il libro è disponibile prima di creare il prestito
-        if Loan.objects.filter(book_ID=self.book_ID, status=Loan.Status.ON_LOAN).exists():
-            raise ValidationError("Questo libro è già in prestito e non è disponibile.")
 
-        super().save(*args, **kwargs)
-'''
 admin.site.register(Loan, LoanAdmin)

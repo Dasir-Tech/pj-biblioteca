@@ -1,6 +1,4 @@
 from datetime import timedelta
-
-from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.timezone import now
 from django.urls import reverse
@@ -90,9 +88,9 @@ class Loan(models.Model):
     def AutoDueDate():
         return now().date() + timedelta(days=30)
 
-    user_ID = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    book_ID = models.ForeignKey(Book, on_delete=models.CASCADE)
-    status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    status = models.IntegerField(choices = Status, default = Status.ON_LOAN)
     due_date = models.DateField(default=AutoDueDate)
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
