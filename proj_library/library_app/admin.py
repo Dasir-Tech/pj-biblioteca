@@ -46,10 +46,10 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active', 'is_staff')}),
     )
-
    #Definizione vista lista user
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
     search_fields = ('username',)
+    list_filter = ('username', 'email', 'phone_number', 'is_active', 'is_staff')
 
 class DateFilter(admin.SimpleListFilter):
     title = "Due Date"
@@ -111,7 +111,7 @@ class Status(admin.SimpleListFilter):
 
 class LoanAdmin(admin.ModelAdmin):
     list_display = ("id", "user_ID", "book_ID", "status", "due_date", "insert_date", "update_date", "active")
-    list_filter = (DateFilter,Status ,Active)
+    list_filter = (DateFilter, Status ,Active)
     search_fields = ('id',)
     actions = ['activate', 'deactivate']
 
