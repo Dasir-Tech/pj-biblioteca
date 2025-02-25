@@ -8,12 +8,38 @@ from django.contrib import admin
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('author', 'insert_date', 'update_date', 'activate')
     list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
+    search_fields = ('author',)
     actions = ['activate', 'deactivate']
+
     def activate(self, request, queryset):
         queryset.update(activate=True)
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
+
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    list_filter = ('activate',)
+    search_fields = ('editor',)
+    actions = ['activate', 'deactivate']
+    
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+        
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
+class LoanAdmin(admin.ModelAdmin):
+    list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
+    list_filter = ("active", DateFilter)
+    search_fields = ('loan',)
+    actions = ['activate', 'deactivate']
+    
+    def activate(self, request, queryset):
+        queryset.update(active=True)
+        
+    def deactivate(self, request, queryset):
+        queryset.update(active=False)
 
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")
@@ -27,26 +53,15 @@ class GenreAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
-class EditorAdmin(admin.ModelAdmin):
-    list_display = ('editor', 'insert_date', 'update_date', 'activate')
-    actions = ['activate', 'deactivate']
-    list_filter = ('activate',)
-    search_fields = ('editor',)
-
-    def activate(self, request, queryset):
-        queryset.update(activate=True)
-
-    def deactivate(self, request, queryset):
-        queryset.update(activate=False)
-
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active', 'is_staff')}),
     )
-
    #Definizione vista lista user
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+    search_fields = ('first_name','email',)
+    list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
 
 class DateFilter(admin.SimpleListFilter):
     title = "Due Date"
@@ -106,13 +121,21 @@ class Status(admin.SimpleListFilter):
         elif self.value() == "4":
             return queryset.exclude(active=False).filter(status=4)
 
-class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id", "user_ID", "book_ID", "status", "due_date", "insert_date", "update_date", "active")
-    list_filter = (DateFilter,Status ,Active)
+class BookAdmin(admin.ModelAdmin):
+    list_display = ('img', 'title', 'isbn',  'qty', 'activate', 'insert_date', 'update_date')
+    list_filter = ('title','isbn',  'activate' )
+    search_fields = ('title','isbn')
+    actions = ['activate', 'deactivate']
 
-admin.site.register(Loan, LoanAdmin)
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Editor, EditorAdmin)
 admin.site.register(Genre, GenreAdmin)
-admin.site.register(Book)
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(Book, BookAdmin)
+admin.site.register(Loan, LoanAdmin)
