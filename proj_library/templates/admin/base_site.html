@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+
+{% load static %}
+
+{% load static i18n %}
+
+{% block nav-global %}
+    <!-- Codice per il menu a tendina -->
+    <div id="dropdown-menu">
+        <button class="dropdown-button">Menu</button>
+        <div class="dropdown-content">
+                <p>Benvenuto, {{ user.get_username }}</p>
+            <a href="{% url 'admin:index' %}">Home</a>
+            <a href="{% url 'admin:app_list' app_label='auth' %}">Utenti</a>
+            <a href="{% url 'admin:password_change' %}">change-password</a>
+            <!-- Aggiungi altri link qui -->
+        </div>
+    </div>
+{% endblock %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
+
+{% block extrahead %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div id="site-name"><a href="{% url 'admin:index' %}">DASIR-LIBRARY.</a></div>
+
+{% if user.is_anonymous %}
+  {% include "admin/color_theme_toggle.html" %}
+{% endif %}
+{% endblock %}
+
+
+
+{% block footer %}
+    <footer>
+        <p>&copy; {% now "||Y-m-d||" %} La tua Biblioteca. Tutti i diritti riservati.</p>
+    </footer>
+{% endblock %}
