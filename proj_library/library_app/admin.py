@@ -1,5 +1,4 @@
 from datetime import timedelta
-from django.contrib import admin
 from django.core.mail import send_mail
 from django.utils.timezone import now
 from .models import Loan, Author, Book, Genre, Editor, CustomUser, New
@@ -12,13 +11,11 @@ class AuthorAdmin(admin.ModelAdmin):
     list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
     search_fields = ('author',)
     actions = ['activate', 'deactivate']
-
     def activate(self, request, queryset):
         queryset.update(activate=True)
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-
 
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
@@ -77,8 +74,6 @@ class DateFilter(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(
                 due_date__lte = now().date()
             ).filter(status=2).order_by('due_date')
-
-
 
 class Active(admin.SimpleListFilter):
     title = "Active"
