@@ -116,7 +116,7 @@ class LoanAdmin(admin.ModelAdmin):
     search_fields = ('id','book__title')
     actions = ['sendEmail',]
 
-    @admin.action(description="Send expired_loan email")
+    @admin.action(description="Send expired loan email")
     def sendEmail(self, request, queryset):
         emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:

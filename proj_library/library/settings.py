@@ -79,7 +79,6 @@ EMAIL_HOST_PASSWORD = "$DasirLc9"  # email password
 EMAIL_PORT = 465  # SMTP port
 EMAIL_USE_TLS = True  # Use SSL for secure connection
 
-
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
