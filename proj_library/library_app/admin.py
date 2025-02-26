@@ -3,7 +3,9 @@ from django.core.mail import send_mail
 from django.utils.timezone import now
 from .models import Loan, Author, Book, Genre, Editor, CustomUser, New
 from django.contrib.auth.admin import UserAdmin
-from django.contrib import admin
+
+from django.contrib.auth.models import Group
+
 
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
@@ -39,19 +41,50 @@ class GenreAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
+
 class BookAdmin(admin.ModelAdmin):
     list_display = ('img', 'title', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
     list_filter = ('title', 'isbn', 'activate')
     search_fields = ('title', 'isbn')
 
 #USER
+
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active', 'is_staff')}),
+        ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
 
    #Definizione vista lista user
+
+    list_display = ('username','first_name','last_name', 'email', 'phone_number',  'is_active')
+
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Gli utenti admin e bookseller vedono tutti gli utenti
+        if request.user.is_superuser or \
+           request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+            return qs
+        # Gli utenti "user" vedono solo se stessi
+        elif request.user.groups.filter(name="user").exists():
+            return qs.filter(id=request.user.id)
+        return qs.none()
+"""
+    def get_fieldsets(self, request, obj=None):
+        fs=super().get_fieldsets(request,obj)
+        if request.user.is_superuser or \
+           request.user.groups.filter(name="admin").exists():
+            return fs
+        elif request.user.groups.filter(name__in=["user", "bookseller"]).exists():
+            return
+        return fs.none()
+"""
+    def has_delete_permission(self, request, obj=None):
+        if request.user.groups.filter(name="user").exists():
+            return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
+        return super().has_delete_permission(request, obj)
+
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
     search_fields = ('first_name','email',)
     list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
@@ -74,6 +107,7 @@ class DateFilter(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(
                 due_date__lte = now().date()
             ).filter(status=2).order_by('due_date')
+
 
 class Active(admin.SimpleListFilter):
     title = "Active"
@@ -110,6 +144,8 @@ class Status(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(status=4).order_by('due_date')
 
 
+
+
 class LoanAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
     list_filter = (DateFilter,Status ,Active)
@@ -136,6 +172,19 @@ class NewAdmin(admin.ModelAdmin):
     list_display = ('img', 'header', 'text', 'activate',  'insert_date', 'update_date')
     list_filter = ('header', 'activate')
     search_fields = ('header', 'text')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Gli utenti admin e bookseller vedono tutti gli utenti
+        if request.user.is_superuser or \
+                request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+            return qs
+        # Gli utenti "user" vedono solo se stessi
+        elif request.user.groups.filter(name="user").exists():
+            return qs.filter(user_ID_id=request.user.id)
+        return qs.none()
+
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
