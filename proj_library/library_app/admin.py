@@ -142,6 +142,7 @@ class NewAdmin(admin.ModelAdmin):
     list_filter = ('header', 'activate')
     search_fields = ('header', 'text')
 
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(Genre, GenreAdmin)
