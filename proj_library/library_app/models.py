@@ -90,10 +90,22 @@ class Loan(models.Model):
     def AutoDueDate(self):
         return now().date() + timedelta(days=30)
 
-    user_ID = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    book_ID = models.ForeignKey(Book, on_delete=models.CASCADE)
-    status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, null=True)
+    status = models.IntegerField(choices = Status, default = Status.ON_LOAN)
     due_date = models.DateField(default=AutoDueDate)
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
     active = models.BooleanField(default=True)
+
+#NEWS
+class New(models.Model):
+    header = models.CharField(max_length=255)
+    text = models.TextField()
+    img = models.CharField(max_length=255)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    activate = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.header

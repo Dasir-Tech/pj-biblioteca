@@ -2,7 +2,7 @@ from datetime import timedelta
 from django.contrib import admin
 from django.core.mail import send_mail
 from django.utils.timezone import now
-from .models import Loan, Author, Book, Genre, Editor, CustomUser
+from .models import Loan, Author, Book, Genre, Editor, CustomUser, New
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 
@@ -18,7 +18,7 @@ class AuthorAdmin(admin.ModelAdmin):
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-admin.site.register(Author, AuthorAdmin)
+
 
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
@@ -29,13 +29,6 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=True)
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-
-class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
-    list_filter = ("active",DateFilter)
-    search_fields = ('loan',)
-
-
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")
     actions = ['activate', 'deactivate']
@@ -48,10 +41,6 @@ class GenreAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
-class EditorAdmin(admin.ModelAdmin):
-    list_display = ('editor', 'insert_date', 'update_date', 'activate')
-    
-
 #USER
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
@@ -63,9 +52,6 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
     search_fields = ('first_name','email',)
     list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
-
-
-admin.site.register(CustomUser, CustomUserAdmin)
 
 #LOAN
 class DateFilter(admin.SimpleListFilter):
@@ -130,13 +116,13 @@ class Status(admin.SimpleListFilter):
 
 
 class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id", "user_ID", "book_ID", "status", "due_date", "insert_date", "update_date", "active")
-    list_filter = (DateFilter,Status ,Active)
+    list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
+    list_filter = (DateFilter, Status ,Active)
     actions = ['sendEmail',]
 
     @admin.action(description="Send expired_loan email")
     def sendEmail(self, request, queryset):
-        emails = queryset.select_related("user_ID").values_list("user_ID__email", flat=True)
+        emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:
             send_mail(
                 "Expiration notice from Neighborhood Library",
@@ -162,15 +148,18 @@ class LoanAdmin(admin.ModelAdmin):
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('img', 'title', 'isbn',  'qty', 'activate', 'insert_date', 'update_date')
-    list_filter = ('title','isbn',  'activate' )
+    list_filter = ('title','isbn', 'activate' )
     search_fields = ('title','isbn')
 
+class NewAdmin(admin.ModelAdmin):
+    list_display = ('img', 'header', 'text', 'activate',  'insert_date', 'update_date')
+    list_filter = ('header', 'activate')
+    search_fields = ('header', 'text')
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
 admin.site.register(Book, BookAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Editor, EditorAdmin)
-
-
-
+admin.site.register(Author, AuthorAdmin)
+admin.site.register(New, NewAdmin)
