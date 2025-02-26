@@ -94,8 +94,8 @@ class Loan(models.Model):
     def AutoDueDate():
         return now().date() + timedelta(days=30)
 
-    user_ID = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    book_ID = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
     status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
     due_date = models.DateField(default=AutoDueDate)
     insert_date = models.DateField(auto_now_add = True)

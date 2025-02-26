@@ -110,7 +110,7 @@ class Status(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(status=4)
 
 class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id", "user_ID", "book_ID", "status", "due_date", "insert_date", "update_date", "active")
+    list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
     list_filter = (DateFilter, Status ,Active)
     search_fields = ('id',)
     actions = ['activate', 'deactivate']
