@@ -3,7 +3,7 @@ from django.core.mail import send_mail
 from django.utils.timezone import now
 from .models import Loan, Author, Book, Genre, Editor, CustomUser, New
 from django.contrib.auth.admin import UserAdmin
-
+from django.contrib import admin
 from django.contrib.auth.models import Group
 
 
@@ -70,16 +70,7 @@ class CustomUserAdmin(UserAdmin):
         elif request.user.groups.filter(name="user").exists():
             return qs.filter(id=request.user.id)
         return qs.none()
-"""
-    def get_fieldsets(self, request, obj=None):
-        fs=super().get_fieldsets(request,obj)
-        if request.user.is_superuser or \
-           request.user.groups.filter(name="admin").exists():
-            return fs
-        elif request.user.groups.filter(name__in=["user", "bookseller"]).exists():
-            return
-        return fs.none()
-"""
+
     def has_delete_permission(self, request, obj=None):
         if request.user.groups.filter(name="user").exists():
             return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
