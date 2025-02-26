@@ -13,19 +13,10 @@ class AuthorAdmin(admin.ModelAdmin):
     list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
     search_fields = ('author',)
     actions = ['activate', 'deactivate']
+
     def activate(self, request, queryset):
         queryset.update(activate=True)
 
-    def deactivate(self, request, queryset):
-        queryset.update(activate=False)
-
-class EditorAdmin(admin.ModelAdmin):
-    list_display = ('editor', 'insert_date', 'update_date', 'activate')
-    list_filter = ('activate',)
-    search_fields = ('editor',)
-    actions = ['activate', 'deactivate']
-    def activate(self, request, queryset):
-        queryset.update(activate=True)
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
@@ -41,11 +32,29 @@ class GenreAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    actions = ['activate', 'deactivate']
+    list_filter = ('activate',)
+    search_fields = ('editor',)
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
 
 class BookAdmin(admin.ModelAdmin):
     list_display = ('img', 'title', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
     list_filter = ('title', 'isbn', 'activate')
     search_fields = ('title', 'isbn')
+    actions = ['activate', 'deactivate']
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
 
 #USER
 
@@ -54,12 +63,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
-
    #Definizione vista lista user
-
-    list_display = ('username','first_name','last_name', 'email', 'phone_number',  'is_active')
-
-
     def get_queryset(self, request):
         qs = super().get_queryset(request)
         # Gli utenti admin e bookseller vedono tutti gli utenti
@@ -99,7 +103,6 @@ class DateFilter(admin.SimpleListFilter):
                 due_date__lte = now().date()
             ).filter(status=2).order_by('due_date')
 
-
 class Active(admin.SimpleListFilter):
     title = "Active"
     parameter_name = "select_active"
@@ -134,14 +137,17 @@ class Status(admin.SimpleListFilter):
         elif self.value() == "4":
             return queryset.exclude(active=False).filter(status=4).order_by('due_date')
 
-
-
-
 class LoanAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
     list_filter = (DateFilter,Status ,Active)
     search_fields = ('id','book__title')
-    actions = ['sendEmail',]
+    actions = ['sendEmail','activate', 'deactivate']
+
+    def activate(self, request, queryset):
+        queryset.update(active=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(active=False)
 
     @admin.action(description="Send expired_loan email")
     def sendEmail(self, request, queryset):
