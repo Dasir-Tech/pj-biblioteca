@@ -95,3 +95,15 @@ class Loan(models.Model):
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
     active = models.BooleanField(default=True)
+
+#NEWS
+class New(models.Model):
+    header = models.CharField(max_length=255)
+    text = models.TextField()
+    img = models.CharField(max_length=255)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
+    activate = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.header

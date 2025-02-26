@@ -1,8 +1,7 @@
 from datetime import timedelta
-from django.contrib import admin
 from django.core.mail import send_mail
 from django.utils.timezone import now
-from .models import Loan, Author, Book, Genre, Editor, CustomUser
+from .models import Loan, Author, Book, Genre, Editor, CustomUser, New
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 
@@ -12,13 +11,11 @@ class AuthorAdmin(admin.ModelAdmin):
     list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
     search_fields = ('author',)
     actions = ['activate', 'deactivate']
-
     def activate(self, request, queryset):
         queryset.update(activate=True)
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-admin.site.register(Author, AuthorAdmin)
 
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
@@ -29,7 +26,6 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=True)
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-
 
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")
@@ -43,20 +39,10 @@ class GenreAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
-class EditorAdmin(admin.ModelAdmin):
-    list_display = ('editor', 'insert_date', 'update_date', 'activate')
-
 class BookAdmin(admin.ModelAdmin):
     list_display = ('img', 'title', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
     list_filter = ('title', 'isbn', 'activate')
     search_fields = ('title', 'isbn')
-    
-
-admin.site.register(Author, AuthorAdmin)
-admin.site.register(Editor, EditorAdmin)
-admin.site.register(Genre, GenreAdmin)
-admin.site.register(Book,BookAdmin)
-
 
 #USER
 class CustomUserAdmin(UserAdmin):
@@ -69,9 +55,6 @@ class CustomUserAdmin(UserAdmin):
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
     search_fields = ('first_name','email',)
     list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
-
-
-admin.site.register(CustomUser, CustomUserAdmin)
 
 #LOAN
 class DateFilter(admin.SimpleListFilter):
@@ -91,8 +74,6 @@ class DateFilter(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(
                 due_date__lte = now().date()
             ).filter(status=2).order_by('due_date')
-
-
 
 class Active(admin.SimpleListFilter):
     title = "Active"
@@ -151,4 +132,15 @@ class LoanAdmin(admin.ModelAdmin):
                 fail_silently=False,
             )
 
+class NewAdmin(admin.ModelAdmin):
+    list_display = ('img', 'header', 'text', 'activate',  'insert_date', 'update_date')
+    list_filter = ('header', 'activate')
+    search_fields = ('header', 'text')
+
+admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
+admin.site.register(Book, BookAdmin)
+admin.site.register(Genre, GenreAdmin)
+admin.site.register(Editor, EditorAdmin)
+admin.site.register(Author, AuthorAdmin)
+admin.site.register(New, NewAdmin)
