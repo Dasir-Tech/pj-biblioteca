@@ -85,7 +85,7 @@ class Loan(models.Model):
         DAMAGED = 4, "Damaged"
 
     #automatic due_date
-    def AutoDueDate():
+    def AutoDueDate(self):
         return now().date() + timedelta(days=30)
 
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)

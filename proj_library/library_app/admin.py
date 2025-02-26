@@ -10,10 +10,26 @@ from django.contrib import admin
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('author', 'insert_date', 'update_date', 'activate')
     list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
-    actions = ('activate_or_deactivate')
-    def activate_or_deactivate(self, request, queryset): #cambia il boolean 'activate' in false
-        attivati= queryset.filter(activate=False).queryset.update(activate=True)
-        disattivati= queryset.filter(activate=True).queryset.update(activate=False)  
+    search_fields = ('author',)
+    actions = ['activate', 'deactivate']
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+admin.site.register(Author, AuthorAdmin)
+
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    list_filter = ('activate',)
+    search_fields = ('editor',)
+    actions = ['activate', 'deactivate']
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
 
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")
@@ -35,10 +51,12 @@ class BookAdmin(admin.ModelAdmin):
     list_filter = ('title', 'isbn', 'activate')
     search_fields = ('title', 'isbn')
     
+
 admin.site.register(Author, AuthorAdmin)
 admin.site.register(Editor, EditorAdmin)
 admin.site.register(Genre, GenreAdmin)
 admin.site.register(Book,BookAdmin)
+
 
 #USER
 class CustomUserAdmin(UserAdmin):
@@ -49,6 +67,9 @@ class CustomUserAdmin(UserAdmin):
 
    #Definizione vista lista user
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+    search_fields = ('first_name','email',)
+    list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+
 
 admin.site.register(CustomUser, CustomUserAdmin)
 
@@ -70,6 +91,7 @@ class DateFilter(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(
                 due_date__lte = now().date()
             ).filter(status=2).order_by('due_date')
+
 
 
 class Active(admin.SimpleListFilter):
@@ -105,6 +127,7 @@ class Status(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(status=3).order_by('due_date')
         elif self.value() == "4":
             return queryset.exclude(active=False).filter(status=4).order_by('due_date')
+
 
 class LoanAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
