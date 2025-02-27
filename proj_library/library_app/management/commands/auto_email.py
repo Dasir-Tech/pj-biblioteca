@@ -10,9 +10,9 @@ class Command(BaseCommand):
                 due_date__gte = now().date()).filter(due_date__lte = now().date() + timedelta(days=2)
             ).filter(status=2)
         for loan in loans:
-            emails = Loan.select_related("user").values_list("user__email", flat=True)
-            for email in emails:
-                send_mail(
+            email = loan.select_related("user").values_list("user__email", flat=True)
+
+            send_mail(
                     "Expiration notice from Neighborhood Library",
                     f"--------------------------------\n"
                     f"Hello!\n"
@@ -23,4 +23,4 @@ class Command(BaseCommand):
                     [email],
                     fail_silently=False,
                 )
-            self.stdout.write(self.style.SUCCESS(f'Email inviata a {loan.email}"'))
+            self.stdout.write(self.style.SUCCESS(f'Email inviata a {email}"'))
