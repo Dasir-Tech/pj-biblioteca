@@ -154,11 +154,11 @@ class LoanAdmin(admin.ModelAdmin):
         emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:
             send_mail(
-                "Expiration notice from Neighborhood Library",
+                "Expiration notice from Dasir Library",
                 f"--------------------------------\n"
                 f"Hello!\n"
                 f"We kindly remind you to return the book you have loaned.\n"
-                f"Thanks for your collaboration, see you in Neighborhood Libray ;)\n"
+                f"Thanks for your collaboration, see you in Dasir Libray ;)\n"
                 f"--------------------------------\n",
                 "laura.comparelli@dasir.it",
                 [email],
