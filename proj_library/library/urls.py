@@ -17,6 +17,7 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
+from library_app import views
 
 app_name = "library_app"
 
@@ -28,4 +29,7 @@ app_name = "library_app"
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("ajax-lost-books/", views.AjaxLostBooks, name='ajax-lost-books'),
+    path("ajax-users-year/", views.UsersPerYear, name='ajax-users-year'),
+    path("ajax-books-status/", views.BooksPerStatus, name='ajax-books-status'),
 ]

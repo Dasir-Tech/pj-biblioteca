@@ -21,7 +21,7 @@
     <div class ="row" style="display:flex;">
         <div class ="col" style="width: 50%; display: flex;">
             <div class ="card" style="height: 30rem; width: auto; display: flex; flex-direction: column; align-items: center;">
-                <canvas id="bar-chart"></canvas>
+                <canvas id="bar-chart" data-url="{% url 'ajax-lost-books' %}"></canvas>
                 <div class ="card-body">
                   <h5 class="card-title">Card title</h5>
                   <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -30,7 +30,7 @@
         </div>
         <div class ="col" style="width: 50%; display: flex;">
             <div class ="card" style="height: 20rem; width: auto; display: flex; flex-direction: column; align-items: center;">
-                <canvas id="pie-chart"></canvas>
+                <canvas id="pie-chart" data-url="{% url 'ajax-books-status' %}"></canvas>
                 <div class="card-body">
                   <h5 class="card-title">Card title</h5>
                   <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -41,63 +41,115 @@
     <div class ="row" style="display:flex;">
         <div class ="col" style="width: 50%;">
             <div class= "card">
-                <div class= "card-body">
+              <canvas id="pie-chart-2"></canvas>
+              <div class= "card-body">
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
-                </div>
+              </div>
             </div>
             </div>
             <div class ="col" style="width: 50%;">
             <div class="card">
-
-                <div class="card-body">
+              <canvas id="bar-chart-2" data-url="{% url 'ajax-users-year' %}"></canvas>
+              <div class="card-body">
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                </div>
+              </div>
             </div>
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
-    const bar_ctx = document.getElementById('bar-chart');
-    const pie_ctx = document.getElementById('pie-chart');
+  $(function () {
+    var $barChart = $("#bar-chart");
+    $.ajax({
+      url: $barChart.data("url"),
+      success: function (data) {
 
-    new Chart(bar_ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        datasets: [{
-          label: '# of Votes',
-          data: [12, 19, 3, 5, 2, 3],
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
+        var bar_ctx = $barChart[0].getContext("2d");
+
+        new Chart(bar_ctx, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Lost Books',
+              data: data.data,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
           }
-        }
+        });
       }
     });
+  });
 
-    new Chart(pie_ctx, {
-        type: 'doughnut',
-        data: {
-          labels: ['Red', 'Blue', 'Yellow'],
-          datasets: [{
-            label: 'My First Dataset',
-            data: [300, 50, 100],
-            backgroundColor: [
-              'rgb(255, 99, 132)',
-              'rgb(54, 162, 235)',
-              'rgb(255, 205, 86)'
-            ],
-            hoverOffset: 4
-          }]
-        },
-      });
+  $(function () {
+    var $pieChart = $("#pie-chart");
+    $.ajax({
+      url: $pieChart.data("url"),
+      success: function (data) {
+
+        var pie_ctx = $pieChart[0].getContext("2d");
+
+        new Chart(pie_ctx, {
+          type: 'pie',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Books per Status',
+              data: data.data,
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+              ],
+              hoverOffset: 4
+            }]
+          },
+        });
+      }
+    });
+  });
+
+  $(function () {
+    var $bar2Chart = $("#bar-chart-2");
+    $.ajax({
+      url: $bar2Chart.data("url"),
+      success: function (data) {
+
+        var bar2_ctx = $bar2Chart[0].getContext("2d");
+
+        new Chart(bar2_ctx, {
+          type: 'bar',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Users per Year',
+              data: data.data,
+              borderWidth: 1
+            }]
+          },
+          options: {
+            scales: {
+              y: {
+                beginAtZero: true
+              }
+            }
+          }
+        });
+      }
+    });
+  });
+
 </script>
 {% endblock %}
