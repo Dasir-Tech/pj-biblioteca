@@ -150,16 +150,16 @@ class LoanAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(active=False)
 
-    @admin.action(description="Send expired_loan email")
+    @admin.action(description="Send expired loan email")
     def sendEmail(self, request, queryset):
         emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:
             send_mail(
-                "Expiration notice from Neighborhood Library",
+                "Expiration notice from Dasir Library",
                 f"--------------------------------\n"
                 f"Hello!\n"
                 f"We kindly remind you to return the book you have loaned.\n"
-                f"Thanks for your collaboration, see you in Neighborhood Libray ;)\n"
+                f"Thanks for your collaboration, see you in Dasir Libray ;)\n"
                 f"--------------------------------\n",
                 "laura.comparelli@dasir.it",
                 [email],

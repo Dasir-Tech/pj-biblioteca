@@ -36,6 +36,12 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "library_app.apps.LibraryAppConfig",
+    "django_crontab",
+]
+
+#Crontab schedulations
+CRONJOBS = [
+    ('*/5***','library_app.cron.auto_email')
 ]
 
 MIDDLEWARE = [
