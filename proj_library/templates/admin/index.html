@@ -1,4 +1,4 @@
-{% extends "admin/base.html" %}
+{% extends "admin/base_site.html" %}
 
 {% load static %}
 
@@ -41,7 +41,7 @@
     <div class ="row" style="display:flex;">
         <div class ="col" style="width: 50%;">
             <div class= "card">
-              <canvas id="pie-chart-2"></canvas>
+              <canvas id="pie-chart-2" data-url="{% url 'ajax-users-book-genre' %}"></canvas>
               <div class= "card-body">
                 <h5 class="card-title">Card title</h5>
                 <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content.</p>
@@ -146,6 +146,34 @@
               }
             }
           }
+        });
+      }
+    });
+  });
+
+  $(function () {
+    var $pie2Chart = $("#pie-chart-2");
+    $.ajax({
+      url: $pie2Chart.data("url"),
+      success: function (data) {
+
+        var pie2_ctx = $pie2Chart[0].getContext("2d");
+
+        new Chart(pie2_ctx, {
+          type: 'pie',
+          data: {
+            labels: data.labels,
+            datasets: [{
+              label: 'Books per Status',
+              data: data.data,
+              backgroundColor: [
+                'rgb(255, 99, 132)',
+                'rgb(54, 162, 235)',
+                'rgb(255, 205, 86)'
+              ],
+              hoverOffset: 4
+            }]
+          },
         });
       }
     });

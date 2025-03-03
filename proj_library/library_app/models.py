@@ -58,7 +58,7 @@ class Book(models.Model):
     display_author.short_description = 'Author'
 
     def display_genre(self):
-        return ', '.join(genre.name for genre in self.genre.all()[:3])
+        return ', '.join(genre.genre for genre in self.genre.all()[:3])
 
     display_genre.short_description = 'Genre'
 

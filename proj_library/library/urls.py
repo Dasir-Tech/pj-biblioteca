@@ -32,4 +32,5 @@ urlpatterns = [
     path("ajax-lost-books/", views.AjaxLostBooks, name='ajax-lost-books'),
     path("ajax-users-year/", views.UsersPerYear, name='ajax-users-year'),
     path("ajax-books-status/", views.BooksPerStatus, name='ajax-books-status'),
+    path("ajax-users-book-genre/", views.UsersBookPerGenre, name="ajax-users-book-genre"),
 ]

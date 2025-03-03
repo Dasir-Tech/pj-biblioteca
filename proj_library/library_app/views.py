@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
-from library_app.models import Loan, CustomUser
+from library_app.models import Loan, CustomUser, Book
 from django.db.models import Count
 
 def hello(request):
@@ -40,7 +40,31 @@ def BooksPerStatus(request):
 
     queryset = Loan.objects.values("status").annotate(count=Count("id")).order_by("status")
     for x in queryset:
-        labels.append(str(x['status']))
+        if x["status"] == 1:
+            labels.append("Available")
+            queryset = Book.objects.values("title").annotate(count=Count("id"))
+            data.append(x["count"])
+        elif x["status"] == 2:
+            labels.append("On Loan")
+        elif x["status"] == 3:
+            labels.append("Lost")
+        elif x["status"] == 4:
+            labels.append("Damaged")
+
+        data.append(x['count'])
+
+    return JsonResponse(data={
+        'labels': labels,
+        'data': data,
+    })
+
+def UsersBookPerGenre(request):
+    labels = []
+    data = []
+
+    queryset = Loan.objects.values("book__genre__genre").annotate(count = Count("user", distinct=True)).order_by("book__genre__genre")
+    for x in queryset:
+        labels.append(str(x["book__genre__genre"]))
         data.append(x['count'])
 
     return JsonResponse(data={
