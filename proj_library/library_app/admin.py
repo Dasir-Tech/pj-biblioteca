@@ -6,7 +6,6 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('author', 'insert_date', 'update_date', 'activate')
@@ -45,8 +44,8 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=False)
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('img', 'title', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
-    list_filter = ('title', 'isbn', 'activate')
+    list_display = ('img', 'title', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date', 'update_date', 'activate')
+    list_filter = ('activate',)
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
 
@@ -57,7 +56,6 @@ class BookAdmin(admin.ModelAdmin):
         queryset.update(activate=False)
 
 #USER
-
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
@@ -142,6 +140,7 @@ class LoanAdmin(admin.ModelAdmin):
     list_filter = (DateFilter,Status ,Active)
     search_fields = ('id','book__title')
     actions = ['sendEmail','activate', 'deactivate']
+    add_form_template = "admin/loan_form.html"
 
     def activate(self, request, queryset):
         queryset.update(active=True)
