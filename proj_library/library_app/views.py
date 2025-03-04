@@ -38,20 +38,13 @@ def BooksPerStatus(request):
     labels = []
     data = []
 
-    queryset = Loan.objects.values("status").annotate(count=Count("id")).order_by("status")
+    queryset = Loan.objects.raw("select library_app_book.id, count(distinct library_app_book.id) as count, library_app_loan.update_date, library_app_loan.status from library_app_book left join library_app_loan on library_app_loan.book_ID = library_app_book.id group by library_app_loan.status, library_app_loan.update_date order by library_app_loan.update_date;")
     for x in queryset:
-        if x["status"] == 1:
-            labels.append("Available")
-            queryset = Book.objects.values("title").annotate(count=Count("id"))
-            data.append(x["count"])
-        elif x["status"] == 2:
-            labels.append("On Loan")
-        elif x["status"] == 3:
-            labels.append("Lost")
-        elif x["status"] == 4:
-            labels.append("Damaged")
-
-        data.append(x['count'])
+        if x.update_date:
+            labels.append(x.update_date)
+        else:
+            labels.append('Never Loaned')
+        data.append(x.count)
 
     return JsonResponse(data={
         'labels': labels,

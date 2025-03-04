@@ -36,7 +36,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "library_app.apps.LibraryAppConfig",
-    "django_crontab",
+    #"django_crontab",
 ]
 
 #Crontab schedulations

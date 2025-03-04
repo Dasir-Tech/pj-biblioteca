@@ -20,15 +20,15 @@
     <div class ="row align-items-center">
         <div class ="col-12 col-md-6">
             <div class ="card">
-                <canvas id="bar-chart" data-url="{% url 'ajax-lost-books' %}"></canvas>
+                <canvas id="bar-chart" width="150" height="150" data-url="{% url 'ajax-lost-books' %}"></canvas>
                 <div class ="card-body">
                 </div>
             </div>
         </div>
-        <div class ="col-12 col-md-6 my-5 my-md-0">
+        <div class ="col-12 col-md-6">
             <div class ="card">
-                <canvas id="pie-chart" data-url="{% url 'ajax-books-status' %}"></canvas>
-                <div class="card-body">
+                <canvas id="multibar-chart" width="150" height="150" data-url="{% url 'ajax-books-status' %}"></canvas>
+                <div class ="card-body">
                 </div>
             </div>
         </div>
@@ -36,14 +36,14 @@
     <div class ="row my-0 my-md-5 align-items-center">
         <div class ="col-12 col-md-6">
             <div class= "card">
-              <canvas id="pie-chart-2" data-url="{% url 'ajax-users-book-genre' %}"></canvas>
+              <canvas id="pie-chart-2" width="150" height="150" data-url="{% url 'ajax-users-book-genre' %}"></canvas>
               <div class= "card-body">
               </div>
             </div>
         </div>
-        <div class ="col-12 col-md-6  my-5 my-md-0">
-            <div class="card">
-              <canvas id="bar-chart-2" data-url="{% url 'ajax-users-year' %}"></canvas>
+        <div class ="col-12 col-md-6">
+            <div class ="card">
+              <canvas id="bar-chart-2" width="150" height="150" data-url="{% url 'ajax-users-year' %}"></canvas>
               <div class ="card-body">
               </div>
             </div>
@@ -179,13 +179,8 @@
               y: {
                 beginAtZero: true
               }
-            }
-            plugins:{
-              legend:{
-                title:{display:true, text: 'Users register year',size: 20,}
-                },
-              responsive: true,
-            }
+            },
+            responsive: true,
           }
         });
       }
@@ -193,28 +188,79 @@
   });
 
   $(function () {
-    var $pieChart = $("#pie-chart");
+    var $multibarChart = $("#multibar-chart");
     $.ajax({
-      url: $pieChart.data("url"),
+      url: $multibarChart.data("url"),
       success: function (data) {
 
-        var pie_ctx = $pieChart[0].getContext("2d");
+        var multibar_ctx = $multibarChart[0].getContext("2d");
 
-        new Chart(pie_ctx, {
-          type: 'pie',
+        new Chart(multibar_ctx, {
+          type: 'line',
           data: {
             labels: data.labels,
-            datasets: [{
-              label: 'Books per Status',
+            datasets: [
+            {
+              label: 'Available',
               data: data.data,
-              backgroundColor: [
+              borderColor: [
                 'rgb(255, 99, 132)',
+              ],
+              fill: false,
+              cubicInterpolationMode: 'monotone',
+              tension: 0.4
+            },
+            {
+              label: 'On Loan',
+              data: data.data,
+              borderColor: [
                 'rgb(54, 162, 235)',
+              ],
+              fill: false,
+              tension: 0.4
+            },
+            {
+              label: 'Lost',
+              data: data.data,
+              borderColor: [
                 'rgb(255, 205, 86)'
               ],
-              hoverOffset: 4
-            }]
+              fill: false,
+              tension: 0.4
+            },
+            {
+              label: 'Damaged',
+              data: data.data,
+              borderColor: [
+                'rgb(0, 255, 86)'
+              ],
+              fill: false
+            },
+            ]
           },
+          options: {
+            responsive: true,
+            interaction: {
+              intersect: false,
+            },
+            scales: {
+              x: {
+                display: true,
+                title: {
+                  display: true
+                }
+              },
+              y: {
+                display: true,
+                title: {
+                  display: true,
+                  text: 'Value'
+                },
+                suggestedMin: 0,
+                suggestedMax: 5
+              },
+            },
+          }
         });
       }
     });
@@ -242,16 +288,11 @@
             scales: {
               y: {
                 beginAtZero: true
-              }
-              plugins:{
-                legend:{
-                  title:{display:true, text: 'Users register year',size: 20,}
-                },
-              responsive: true,
-              }
+              },
+            responsive: true,
             }
-          });
-        }
+          }
+        });
       }
     });
   });
@@ -280,12 +321,6 @@
             }]
           },
           options: {
-            plugins:{
-              legend:{
-                title:{display:true, text: 'Book Genre',},
-
-              }
-            },
             responsive: true,
           }
         });
