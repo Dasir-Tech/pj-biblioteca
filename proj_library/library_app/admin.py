@@ -6,6 +6,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
+admin.site.index_title = ""
 
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
@@ -45,8 +46,8 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=False)
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('img', 'title', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
-    list_filter = ('title', 'isbn', 'activate')
+    list_display = ('img', 'title', 'display_author', 'display_genre', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
+    list_filter = ('title', 'genre', 'isbn', 'activate')
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
 
@@ -149,16 +150,16 @@ class LoanAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(active=False)
 
-    @admin.action(description="Send expired loan email")
+    @admin.action(description="Send expired_loan email")
     def sendEmail(self, request, queryset):
         emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:
             send_mail(
-                "Expiration notice from Dasir Library",
+                "Expiration notice from Neighborhood Library",
                 f"--------------------------------\n"
                 f"Hello!\n"
                 f"We kindly remind you to return the book you have loaned.\n"
-                f"Thanks for your collaboration, see you in Dasir Libray ;)\n"
+                f"Thanks for your collaboration, see you in Neighborhood Libray ;)\n"
                 f"--------------------------------\n",
                 "laura.comparelli@dasir.it",
                 [email],
