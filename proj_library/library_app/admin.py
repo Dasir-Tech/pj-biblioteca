@@ -141,6 +141,7 @@ class LoanAdmin(admin.ModelAdmin):
     search_fields = ('id','book__title')
     actions = ['sendEmail','activate', 'deactivate']
     add_form_template = "admin/loan_form.html"
+    change_form_template = "admin/loan_form.html"
 
     def activate(self, request, queryset):
         queryset.update(active=True)

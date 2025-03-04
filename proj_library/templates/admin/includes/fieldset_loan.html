@@ -4,33 +4,25 @@
 {% endblock %}
 
 <fieldset>
-    <div class="row g-2">
+    <div class="row">
         {% for line in fieldset %}
-            {% if line.fields|length == 1 %}{{ line.errors }}{% else %}<div>{% endif %}
+        <div class="col-3">
             {% for field in line %}
-                <div>
-                    {% if not line.fields|length == 1 and not field.is_readonly %}{{ field.errors }}{% endif %}
-                        <div class="col-6">
-                            {% if field.is_checkbox %}
-                                {{ field.field }}{{ field.label_tag }}
-                            {% else %}
-                                {{ field.label_tag }}
-                                {% if field.is_readonly %}
-                                    <div class="readonly">{{ field.contents }}</div>
-                                {% else %}
-                                    {{ field.field }}
-                                {% endif %}
-                            {% endif %}
-                        </div>
-                    {% if field.field.help_text %}
-                        <div class="help"{% if field.field.id_for_label %} id="{{ field.field.id_for_label }}_helptext"{% endif %}>
-                            <div>{{ field.field.help_text|safe }}</div>
-                        </div>
+                <div class="container-fluid">
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <div class="readonly">{{ field.contents }}</div>
+                        {% else %}
+                            <div></div>
+                            {{ field.field }}
+                        {% endif %}
                     {% endif %}
                 </div>
             {% endfor %}
-            {% if not line.fields|length == 1 %}</div>{% endif %}
+        </div>
         {% endfor %}
-        {% if fieldset.name and fieldset.is_collapsible %}</details>{% endif %}
     </div>
 </fieldset>
