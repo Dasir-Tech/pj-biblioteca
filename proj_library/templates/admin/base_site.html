@@ -5,13 +5,13 @@
 {% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | {{ site_title|default:_('Django site admin') }}{% endblock %}
 
 {% block extrahead %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}">
 {% endblock %}
 
 {% block branding %}
-<div id="site-name"><a href="{% url 'admin:index' %}">Libbbbbbreria</a></div>
+<div id="site-name"><a href="{% url 'admin:index' %}">Biblioteca</a></div>
 {% if user.is_anonymous %}
-  {% include "admin/color_theme_toggle.html" %}
+{% include "admin/color_theme_toggle.html" %}
 {% endif %}
 {% endblock %}
 
