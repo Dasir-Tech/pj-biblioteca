@@ -24,6 +24,8 @@ class GenreAdmin(admin.ModelAdmin):
     actions = ['activate', 'deactivate']
     list_filter = ('activate',)
     search_fields = ('genre',)
+    add_form_template = "admin/genre_form.html"
+    change_form_template = "admin/genre_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
