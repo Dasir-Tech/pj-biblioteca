@@ -6,6 +6,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
+admin.site.index_title = "Dasir Library Administration"
+
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('author', 'insert_date', 'update_date', 'activate')
