@@ -6,9 +6,6 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-
-
-
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('author', 'insert_date', 'update_date', 'activate')
@@ -27,6 +24,8 @@ class GenreAdmin(admin.ModelAdmin):
     actions = ['activate', 'deactivate']
     list_filter = ('activate',)
     search_fields = ('genre',)
+    add_form_template = "admin/genre_form.html"
+    change_form_template = "admin/genre_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
@@ -47,8 +46,8 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=False)
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'img', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
-    list_filter = ('title', 'isbn', 'activate')
+    list_display = ('img', 'title', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date', 'update_date', 'activate')
+    list_filter = ('activate',)
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
 
@@ -61,7 +60,6 @@ class BookAdmin(admin.ModelAdmin):
     change_form_template = "admin/book/change_add.html"
 
 #USER
-
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
@@ -171,6 +169,8 @@ class LoanAdmin(admin.ModelAdmin):
     list_filter = (DateFilter,Status ,Active)
     search_fields = ('id','book__title')
     actions = ['sendEmail','activate', 'deactivate']
+    add_form_template = "admin/loan_form.html"
+    change_form_template = "admin/loan_form.html"
 
     def activate(self, request, queryset):
         queryset.update(active=True)
@@ -178,7 +178,7 @@ class LoanAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(active=False)
 
-    @admin.action(description="Send expired_loan email")
+    @admin.action(description="Send expired loan email")
     def sendEmail(self, request, queryset):
         emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:
