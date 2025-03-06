@@ -6,7 +6,6 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
-admin.site.index_title = ""
 
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
@@ -26,6 +25,8 @@ class GenreAdmin(admin.ModelAdmin):
     actions = ['activate', 'deactivate']
     list_filter = ('activate',)
     search_fields = ('genre',)
+    add_form_template = "admin/genre_form.html"
+    change_form_template = "admin/genre_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
@@ -57,8 +58,9 @@ class BookAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
-#USER
+    change_form_template = "admin/book/change_add.html"
 
+#USER
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
@@ -75,6 +77,31 @@ class CustomUserAdmin(UserAdmin):
         elif request.user.groups.filter(name="user").exists():
             return qs.filter(id=request.user.id)
         return qs.none()
+
+    def get_fieldsets(self, request, obj=None):
+        fs = super().get_fieldsets(request, obj)
+
+        if request.user.is_superuser or request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+            return fs
+
+        elif request.user.groups.filter(name="user").exists():
+
+            new_fs = []
+            for fieldset in fs:
+                title, field_options = fieldset
+                fields = field_options.get("fields", ())
+
+
+                filtered_fields = tuple(f for f in fields if f not in ("groups", "user_permissions","is_active", "is_staff", "is_superuser", "last_login", "date_joined", "id_password_helptext",))
+
+                if filtered_fields:
+                    new_fs.append((title, {"fields": filtered_fields}))
+
+            return new_fs
+
+
+
+
 
     def has_delete_permission(self, request, obj=None):
         if request.user.groups.filter(name="user").exists():
@@ -143,6 +170,8 @@ class LoanAdmin(admin.ModelAdmin):
     list_filter = (DateFilter,Status ,Active)
     search_fields = ('id','book__title')
     actions = ['sendEmail','activate', 'deactivate']
+    add_form_template = "admin/loan_form.html"
+    change_form_template = "admin/loan_form.html"
 
     def activate(self, request, queryset):
         queryset.update(active=True)

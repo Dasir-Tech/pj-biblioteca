@@ -5,8 +5,15 @@ from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 
+
+
 def hello(request):
     return HttpResponse(" << Welcome into the Library_app >> ")
+
+
+
+
+
 
 def AjaxLostBooks(request):
     labels = []

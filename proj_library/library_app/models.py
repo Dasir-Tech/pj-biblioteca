@@ -1,3 +1,6 @@
+from distutils.command.upload import upload
+from email.policy import default
+from django.utils import timezone
 from datetime import timedelta, date
 from django.db import models
 from django.utils.timezone import now
@@ -36,10 +39,10 @@ class Editor(models.Model):
         return self.editor
 
 class Book(models.Model):
-    img = models.CharField(max_length=255, null=True)
+    img = models.ImageField(upload_to='copertina/',null=True, blank=True, default='copertina/book-default.png')
     title = models.CharField(max_length=200)
-    author = models.ManyToManyField(Author, help_text="Select one or more author for this book", null=False)
-    genre = models.ManyToManyField(Genre, help_text="Select one or more genre for this book", null=False)
+    author = models.ManyToManyField(Author, help_text="Select one or more author for this book",blank=True)
+    genre = models.ManyToManyField(Genre, help_text="Select one or more genre for this book", blank=True)
     editor = models.ForeignKey(Editor, help_text="Select an editor", null=False, on_delete=models.CASCADE)
     isbn = models.CharField('ISBN', max_length=13,
         unique=True,

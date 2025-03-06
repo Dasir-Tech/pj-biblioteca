@@ -18,6 +18,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from library_app import views
+from django.conf.urls.static import static
+from django.conf import settings
 
 app_name = "library_app"
 
@@ -32,4 +34,4 @@ urlpatterns = [
     path("ajax-users-year/", views.UsersPerYear, name='ajax-users-year'),
     path("ajax-books-status/", views.BooksPerStatus, name='ajax-books-status'),
     path("ajax-users-book-genre/", views.UsersBookPerGenre, name="ajax-users-book-genre"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
