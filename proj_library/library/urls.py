@@ -21,8 +21,7 @@ from library_app import views
 
 app_name = "library_app"
 
-admin.site.site_header = "Biblioteca_Dasir"
-admin.site.site_title = "Biblioteca_Dasir"
+admin.site.site_title = "Dasir library."
 
 
 app_name = "library_app"

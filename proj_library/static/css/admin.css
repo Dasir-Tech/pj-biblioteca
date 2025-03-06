@@ -1,3 +1,4 @@
+
 #header {
     background-color: #3B8EDE;
     width: auto;
@@ -18,5 +19,18 @@
 #content-main {
     float: left;
     width: 100%;
-    display:none;
 }
+#user-tools {
+    display: none;
+}
+#header a:link, #header a:visited  {
+    color: #ffffff;
+    padding: 13px 20px;
+    text-align:;
+}
+#site-name a:link, #site-name a:visited {
+    color: white;   
+}
+a.dropdown-item:hover {
+    background-color: #b8232300;
+}   
