@@ -1,0 +1,23 @@
+<fieldset>
+    <div class="row">
+        {% for line in fieldset %}
+        <div class="col-3">
+            {% for field in line %}
+                <div class="container-fluid">
+                    {% if field.is_checkbox %}
+                        {{ field.field }}{{ field.label_tag }}
+                    {% else %}
+                        {{ field.label_tag }}
+                        {% if field.is_readonly %}
+                            <div class="readonly">{{ field.contents }}</div>
+                        {% else %}
+                            <div></div>
+                            {{ field.field }}
+                        {% endif %}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+</fieldset>
