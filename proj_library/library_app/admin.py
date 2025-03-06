@@ -35,7 +35,6 @@ class AuthorAdmin(admin.ModelAdmin):
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-admin.site.register(Author, AuthorAdmin)
 
 class EditorAdmin(admin.ModelAdmin):
     list_display = ('editor', 'insert_date', 'update_date', 'activate')
@@ -46,11 +45,6 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=True)
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-
-class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
-    list_filter = ("active",DateFilter)
-    search_fields = ('loan',)
 
 class GenreAdmin(admin.ModelAdmin):
     list_display = ("genre", "insert_date", "update_date", "activate")
@@ -114,11 +108,63 @@ class Status(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(status=4)
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('img', 'title', 'isbn',  'qty', 'activate', 'insert_date', 'update_date')
-    list_filter = ('title','isbn',  'activate' )
-    search_fields = ('title','isbn')
+    list_display = ('img', 'title', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
+    list_filter = ('title', 'isbn', 'activate')
+    search_fields = ('title', 'isbn')
+    actions = ['activate', 'deactivate']
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
+class LoanAdmin(admin.ModelAdmin):
+    list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
+    list_filter = (DateFilter,Status ,Active)
+    search_fields = ('id','book__title')
+    actions = ['sendEmail','activate', 'deactivate']
+
+    def activate(self, request, queryset):
+        queryset.update(active=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(active=False)
+
+    @admin.action(description="Send expired loan email")
+    def sendEmail(self, request, queryset):
+        emails = queryset.select_related("user").values_list("user__email", flat=True)
+        for email in emails:
+            send_mail(
+                "Expiration notice from Dasir Library",
+                f"--------------------------------\n"
+                f"Hello!\n"
+                f"We kindly remind you to return the book you have loaned.\n"
+                f"Thanks for your collaboration, see you in Dasir Libray ;)\n"
+                f"--------------------------------\n",
+                "laura.comparelli@dasir.it",
+                [email],
+                fail_silently=False,
+            )
+
+class NewAdmin(admin.ModelAdmin):
+    list_display = ('img', 'header', 'text', 'activate',  'insert_date', 'update_date')
+    list_filter = ('header', 'activate')
+    search_fields = ('header', 'text')
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Gli utenti admin e bookseller vedono tutti gli utenti
+        if request.user.is_superuser or \
+                request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+            return qs
+        # Gli utenti "user" vedono solo se stessi
+        elif request.user.groups.filter(name="user").exists():
+            return qs.filter(user_ID_id=request.user.id)
+        return qs.none()
 
 
+admin.site.register(Author, AuthorAdmin)
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
 admin.site.register(Book, BookAdmin)

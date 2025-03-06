@@ -1,4 +1,4 @@
-from datetime import timedelta
+from datetime import timedelta, date
 from django.db import models
 from django.utils.timezone import now
 from django.db.models import UniqueConstraint
@@ -6,7 +6,6 @@ from django.db.models.functions import Lower
 from django.contrib.auth.models import User
 from django.conf import settings
 from django.urls import reverse
-from datetime import date
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
