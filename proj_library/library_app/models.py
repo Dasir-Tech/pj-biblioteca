@@ -1,4 +1,4 @@
-from distutils.command.upload import upload
+#from distutils.command.upload import upload
 from email.policy import default
 from django.utils import timezone
 from datetime import timedelta, date
