@@ -1,6 +1,6 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
-from library_app.models import Loan, CustomUser, Book
+from library_app.models import Loan, CustomUser, Book, New
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
@@ -8,6 +8,10 @@ from django.shortcuts import render
 def hello(request):
     return HttpResponse(" << Welcome into the Library_app >> ")
 
+#Ajax Functions for Librarian Index
+
+#Charts
+#Data for Lost Books
 def AjaxLostBooks(request):
     labels = []
     data = []
@@ -22,6 +26,7 @@ def AjaxLostBooks(request):
         'data': data,
     })
 
+#Data for Registered Users per Year
 def UsersPerYear(request):
     labels = []
     data = []
@@ -36,23 +41,111 @@ def UsersPerYear(request):
         'data': data,
     })
 
+#Data for Status of the Books during time
 def BooksPerStatus(request):
-    labels = []
-    data = []
+    labels = ["Never Loaned",]
+    available = []
+    onLoan = []
+    lost = []
+    damaged = []
+    neverLoanedAvailable = []
+    neverLoanedNotAvailable = []
+    status = []
+    y=0
 
-    queryset = Loan.objects.raw("select library_app_book.id, count(distinct library_app_book.id) as count, library_app_loan.update_date, library_app_loan.status from library_app_book left join library_app_loan on library_app_loan.book_ID = library_app_book.id group by library_app_loan.status, library_app_loan.update_date order by library_app_loan.update_date;")
-    for x in queryset:
-        if x.update_date:
-            labels.append(x.update_date)
+    dateQuery = Loan.objects.values('update_date').distinct().order_by('update_date')
+    for x in dateQuery:
+        labels.append(str(x['update_date']))
+
+    bookQuery = Book.objects.raw('select id, count(library_app_book.id) as count, library_app_book.qty\
+        from library_app_book\
+        where \
+        not exists (\
+            select 1\
+            from \
+            library_app_loan\
+            where \
+            book_ID = library_app_book.id\
+        )\
+        group by qty')
+    sum = 0
+    for x in bookQuery:
+        if x.qty == 0:
+            neverLoanedNotAvailable.append(x.count)
         else:
-            labels.append('Never Loaned')
-        data.append(x.count)
+            sum = sum + x.count
+
+    neverLoanedAvailable.append(sum)
+
+    queryset = Loan.objects.raw("select id, count(distinct book_ID) as count, update_date, status\
+        from library_app_loan\
+        group by status, update_date\
+        order by update_date;")
+    for x in queryset:
+        while y < len(labels):
+            if str(x.update_date) == str(labels[y]):
+                if x.status == 1:
+                    status.append('Available')
+                    available.append(x.count)
+                elif x.status == 2:
+                    status.append('On Loan')
+                    onLoan.append(x.count)
+                elif x.status == 3:
+                    status.append('Lost')
+                    lost.append(x.count)
+                elif x.status == 4:
+                    status.append('Damaged')
+                    damaged.append(x.count)
+            elif x.update_date and str(x.update_date) != str(labels[y]):
+                try:
+                    available[y]
+                except:
+                    available.append(0)
+                try:
+                    onLoan[y]
+                except:
+                    onLoan.append(0)
+                try:
+                    lost[y]
+                except:
+                    lost.append(0)
+                try:
+                    damaged[y]
+                except:
+                    damaged.append(0)
+                y=y+1
+                continue
+            break
+    try:
+        available[y]
+    except:
+        available.append(0)
+    try:
+        onLoan[y]
+    except:
+        onLoan.append(0)
+    try:
+        lost[y]
+    except:
+        lost.append(0)
+    try:
+        damaged[y]
+    except:
+        damaged.append(0)
+
 
     return JsonResponse(data={
         'labels': labels,
-        'data': data,
+        'available': available,
+        'onLoan': onLoan,
+        'lost': lost,
+        'damaged': damaged,
+        'neverLoanedAvailable': neverLoanedAvailable,
+        'neverLoanedNotAvailable': neverLoanedNotAvailable,
+        'status': status,
     })
 
+#Data for Book Genre loaned by Users
 def UsersBookPerGenre(request):
     labels = []
     data = []
@@ -66,3 +159,24 @@ def UsersBookPerGenre(request):
         'labels': labels,
         'data': data,
     })
+
+#Tables
+#Last 3 Loans
+def LastLoans(request):
+    queryset = Loan.objects.values('id', 'user__username', 'book__title', 'status', 'due_date', 'insert_date', 'update_date').filter(status = 2).order_by("update_date")[:3]
+
+    data = {
+        'loans': list(queryset)
+    }
+
+    return JsonResponse(data)
+
+#Last 3 News
+def LastNews(request):
+    queryset = New.objects.values("id", "img", "header", "text", "insert_date", "update_date").order_by("-insert_date")[:3]
+
+    data = {
+        'news': list(queryset)
+    }
+
+    return JsonResponse(data)
