@@ -26,9 +26,6 @@ app_name = "library_app"
 admin.site.site_header = "Biblioteca_Dasir"
 admin.site.site_title = "Dasir library."
 
-
-app_name = "library_app"
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("ajax-lost-books/", views.AjaxLostBooks, name='ajax-lost-books'),
