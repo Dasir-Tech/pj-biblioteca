@@ -1,13 +1,3 @@
-.button{
-    display: none;
-}
-
-.dropdown-menu {
-    display: none !important;
-}
-.dropdownMenuButton {
-    display: none !important;
-}
 #footer {
     background-color: #3B8EDE;
     color: #ffffff;
