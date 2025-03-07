@@ -1,11 +1,10 @@
-from datetime import timedelta
 from distutils.command.upload import upload
 from email.policy import default
 from django.utils import timezone
+from datetime import timedelta, date
 from django.db import models
 from django.utils.timezone import now
 from django.urls import reverse
-from datetime import date
 from django.contrib.auth.models import AbstractUser
 
 # BOOK
@@ -61,7 +60,7 @@ class Book(models.Model):
     display_author.short_description = 'Author'
 
     def display_genre(self):
-        return ', '.join(genre.name for genre in self.genre.all()[:3])
+        return ', '.join(genre.genre for genre in self.genre.all()[:3])
 
     display_genre.short_description = 'Genre'
 
