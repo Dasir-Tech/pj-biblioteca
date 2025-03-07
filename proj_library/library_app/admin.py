@@ -51,12 +51,43 @@ class GenreAdmin(admin.ModelAdmin):
     actions = ['activate', 'deactivate']
     list_filter = ('activate',)
     search_fields = ('genre',)
+    add_form_template = "admin/genre_form.html"
+    change_form_template = "admin/genre_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
+
+
+class EditorAdmin(admin.ModelAdmin):
+    list_display = ('editor', 'insert_date', 'update_date', 'activate')
+    actions = ['activate', 'deactivate']
+    list_filter = ('activate',)
+    search_fields = ('editor',)
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
+class BookAdmin(admin.ModelAdmin):
+    list_display = ('img', 'title', 'display_author', 'display_genre', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
+    list_filter = ('title', 'genre', 'isbn', 'activate')
+    search_fields = ('title', 'isbn')
+    actions = ['activate', 'deactivate']
+
+    def activate(self, request, queryset):
+        queryset.update(activate=True)
+
+    def deactivate(self, request, queryset):
+        queryset.update(activate=False)
+
+    change_form_template = "admin/book/change_add.html"
+
+#USER
 
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
@@ -65,6 +96,49 @@ class CustomUserAdmin(UserAdmin):
     )
 
    #Definizione vista lista user
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Gli utenti admin e bookseller vedono tutti gli utenti
+        if request.user.is_superuser or \
+           request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+            return qs
+        # Gli utenti "user" vedono solo se stessi
+        elif request.user.groups.filter(name="user").exists():
+            return qs.filter(id=request.user.id)
+        return qs.none()
+
+    def get_fieldsets(self, request, obj=None):
+        fs = super().get_fieldsets(request, obj)
+
+        if request.user.is_superuser or request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+            return fs
+
+        elif request.user.groups.filter(name="user").exists():
+
+            new_fs = []
+            for fieldset in fs:
+                title, field_options = fieldset
+                fields = field_options.get("fields", ())
+
+
+                filtered_fields = tuple(f for f in fields if f not in ("groups", "user_permissions","is_active", "is_staff", "is_superuser", "last_login", "date_joined", "id_password_helptext",))
+
+                if filtered_fields:
+                    new_fs.append((title, {"fields": filtered_fields}))
+
+            return new_fs
+
+
+
+
+
+    def has_delete_permission(self, request, obj=None):
+        if request.user.groups.filter(name="user").exists():
+            return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
+        return super().has_delete_permission(request, obj)
+
+
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
     search_fields = ('first_name','email',)
     list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
@@ -124,6 +198,8 @@ class LoanAdmin(admin.ModelAdmin):
     list_filter = (DateFilter,Status ,Active)
     search_fields = ('id','book__title')
     actions = ['sendEmail','activate', 'deactivate']
+    add_form_template = "admin/loan_form.html"
+    change_form_template = "admin/loan_form.html"
 
     def activate(self, request, queryset):
         queryset.update(active=True)
@@ -131,16 +207,16 @@ class LoanAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(active=False)
 
-    @admin.action(description="Send expired loan email")
+    @admin.action(description="Send expired_loan email")
     def sendEmail(self, request, queryset):
         emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:
             send_mail(
-                "Expiration notice from Dasir Library",
+                "Expiration notice from Neighborhood Library",
                 f"--------------------------------\n"
                 f"Hello!\n"
                 f"We kindly remind you to return the book you have loaned.\n"
-                f"Thanks for your collaboration, see you in Dasir Libray ;)\n"
+                f"Thanks for your collaboration, see you in Neighborhood Libray ;)\n"
                 f"--------------------------------\n",
                 "laura.comparelli@dasir.it",
                 [email],
