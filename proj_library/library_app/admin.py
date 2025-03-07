@@ -6,6 +6,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
+admin.site.index_title = "Dasir Library Administration"
 
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
@@ -47,8 +48,8 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=False)
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('img', 'title', 'display_author', 'display_genre', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
-    list_filter = ('title', 'genre', 'isbn', 'activate')
+    list_display = ('img', 'title', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date', 'update_date', 'activate')
+    list_filter = ('activate',)
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
 
@@ -179,7 +180,7 @@ class LoanAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(active=False)
 
-    @admin.action(description="Send expired_loan email")
+    @admin.action(description="Send expired loan email")
     def sendEmail(self, request, queryset):
         emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:
