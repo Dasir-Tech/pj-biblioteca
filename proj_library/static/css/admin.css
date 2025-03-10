@@ -16,12 +16,11 @@
 #changelist-filter details > summary {
     list-style-type: none;
     background-color: #3B8EDE;
+    color: white;
+    padding-bottom: 5px;
+    padding-top: 2px;
 }
-.dashboard .module table td a {
-    display: block;
-    padding-right: .6em;
-    display: None;
-}
+
 #changelist-filter h2 {
     font-size: 0.875rem;
     text-transform: uppercase;
