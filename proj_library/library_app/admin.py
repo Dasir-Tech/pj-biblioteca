@@ -54,10 +54,13 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=False)
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('img', 'title', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date', 'update_date', 'activate')
+    list_display = ('title', 'img', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date', 'update_date', 'activate')
     list_filter = ('activate',)
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
+
+    add_form_template = "admin/book_form.html"
+    change_form_template = "admin/book_form.html"
 
 
 
@@ -75,6 +78,10 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
+
+    add_form_template = "admin/user_form.html"
+    change_form_template = "admin/user_form.html"
+
    #Definizione vista lista user
     def get_queryset(self, request):
         qs = super().get_queryset(request)
