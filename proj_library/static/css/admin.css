@@ -9,6 +9,10 @@
     background-repeat: no-repeat;
 }
 
+.vLargeTextField, .vXMLLargeTextField {
+    width: 20em !important;
+}
+
 #changelist-filter details > summary {
     list-style-type: none;
     background-color: #3B8EDE;
@@ -64,7 +68,8 @@
 #footer {
     background-color: #3B8EDE;
     color: #ffffff;
-    padding: 3px;
+    padding-top: 2px;
+    padding-bottom: 5px;
     text-align: center;
 }
 
