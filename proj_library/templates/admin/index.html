@@ -16,7 +16,6 @@
 {% endblock %}
 
 {% block content %}
-
 <div class ="container d-flex flex-column">
     <div class ="row align-items-center">
         <div class ="col-12 col-md-6">
@@ -53,49 +52,47 @@
 </div>
 <div class="container ">
     <div class ="row">
-    <div class ="col-12">
-      <h5>On Loan Table</h5>
-      <div class ="table-responsive">
-        <table class ="table table-hover table-sm">
-          <thead>
-            <tr>
-              <th scope="col">ID</th>
-              <th scope="col">User</th>
-              <th scope="col">Book</th>
-              <th scope="col">Status</th>
-              <th scope="col">Due Date</th>
-              <th scope="col">Insert Date</th>
-              <th scope="col">Update Date</th>
-            </tr>
-          </thead>
-          <tbody id="last-loans">
-        </table>
+      <div class ="col-12">
+        <h5>On Loan Table</h5>
+        <div class ="table-responsive">
+          <table class ="table table-hover table-sm">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">User</th>
+                <th scope="col">Book</th>
+                <th scope="col">Status</th>
+                <th scope="col">Due Date</th>
+                <th scope="col">Insert Date</th>
+                <th scope="col">Update Date</th>
+              </tr>
+            </thead>
+            <tbody id="last-loans">
+          </table>
+        </div>
       </div>
-    </div>
     </div><!--chiusura tab 1-->
 
-
     <div class ="row mt-5">
-    <div class ="col-12">
-       <h5>News Table</h5>
-       <div class="table-responsive">
-         <table class="table table-hover table-sm">
-           <thead>
-             <tr>
-               <th scope="col">ID</th>
-               <th scope="col">Img</th>
-               <th scope="col">Header</th>
-               <th scope="col">Text</th>
-               <th scope="col">Insert Date</th>
-               <th scope="col">Update Date</th>
-             </tr>
-           </thead>
-             <tbody id="last-news">
-         </table>
-       </div>
-    </div>
+      <div class ="col-12">
+         <h5>News Table</h5>
+         <div class="table-responsive">
+           <table class="table table-hover table-sm">
+             <thead>
+               <tr>
+                 <th scope="col">ID</th>
+                 <th scope="col">Img</th>
+                 <th scope="col">Header</th>
+                 <th scope="col">Text</th>
+                 <th scope="col">Insert Date</th>
+                 <th scope="col">Update Date</th>
+               </tr>
+             </thead>
+               <tbody id="last-news">
+           </table>
+         </div>
+      </div>
     </div><!--chiusura tab 2-->
-
 </div><!--chiusura container tabelle-->
 
 
@@ -371,6 +368,4 @@
       }
   })
 </script>-->
-
-
 {% endblock %}
