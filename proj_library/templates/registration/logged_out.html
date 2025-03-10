@@ -1,0 +1,22 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% load i18n %}
+{% block breadcrumbs %}<div class="breadcrumbs"><a href="{% url 'admin:index' %}">{% translate 'Home' %}</a></div>{% endblock %}
+{% block title %}{% translate 'Logged out' %}{% endblock %}
+
+{% block extrahead %}{{ block.super }}
+  <link rel="stylesheet" type="text/css" href="{% static 'css/logout_custom.css' %}">
+{% endblock %}
+{% block branding %}
+
+{% endblock %}
+
+{% block nav-sidebar %}{% endblock %}
+
+{% block content %}
+
+<p>{% translate "Grazie per aver trascorso del tempo prezioso con il sito web oggi." %}</p>
+
+<p><a href="{% url 'admin:index' %}">{% translate 'Log in again' %}</a></p>
+
+{% endblock %}

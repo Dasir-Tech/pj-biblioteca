@@ -1,0 +1,32 @@
+{% load i18n static %}
+{% if cl.search_fields %}
+<div id="toolbar" style="background:none; border:none;">
+    <form id="changelist-search" method="get" role="search">
+<div><!-- DIV needed for valid HTML -->
+    <div class="input-group">
+        <span class="input-group-text" style="border-right:none; background-color:transparent; " for="searchbar">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+            </svg>
+            </span>
+        <input class="form-control" style="height:auto; border-left:none; border-radius:0px; border-color: #dee2e6;" type="text" name="{{ search_var }}" value="{{ cl.query }}" id="searchbar"{% if cl.search_help_text %} aria-describedby="searchbar_helptext"{% endif %}>
+        <button class="btn btn-outline-secondary" type="submit" value="{% translate 'Search' %}">Search</button>
+    </div>
+{% if show_result_count %}
+    <span class="small quiet">{% blocktranslate count counter=cl.result_count %}{{ counter }} result{% plural %}{{ counter }} results{% endblocktranslate %}
+        (<a href="?{% if cl.is_popup %}{{ is_popup_var }}=1{% if cl.add_facets %}&{% endif %}{% endif %}{% if cl.add_facets %}{{ is_facets_var }}{% endif %}">{% if cl.show_full_result_count %}{% blocktranslate with full_result_count=cl.full_result_count %}{{ full_result_count }} total{% endblocktranslate %}{% else %}{% translate "Show all" %}{% endif %}</a>)
+    </span>
+{% endif %}
+{% for pair in cl.params.items %}
+    {% if pair.0 != search_var %}
+    <input type="hidden" name="{{ pair.0 }}" value="{{ pair.1 }}">
+    {% endif %}
+{% endfor %}
+</div>
+{% if cl.search_help_text %}
+<br class="clear">
+<div class="help" id="searchbar_helptext">{{ cl.search_help_text }}</div>
+{% endif %}
+</form>
+</div>
+{% endif %}
