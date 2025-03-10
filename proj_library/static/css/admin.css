@@ -73,6 +73,11 @@
     text-align: center;
 }
 
+#footer p {
+    padding-top: 12px;
+    line-height: 155%;
+}
+
 #content-main {
     float: left;
     width: 100%;
@@ -89,4 +94,12 @@
 }
 a.dropdown-item:hover {
     background-color: #b8232300;
+}
+
+.dropdown-menu.show {
+    display: block;
+    text-align: center;
+}
+table {
+    caption-side: top !important;
 }

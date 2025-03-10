@@ -26,7 +26,7 @@
     <a class="dropdown-item" href="{% url 'admin:password_change' %}">Reset Password</a>
       <form action="{% url 'admin:logout' %}" method="post">
         {% csrf_token %}
-        <button type="submit" class="btn btn-primary" style="color: rgb(255, 255, 255); background: transparent; border-color: transparent;">Logout</button>
+        <button type="submit" class="btn btn-primary" style="color: rgb(255, 255, 255); background: transparent; border-color: transparent; --bs-btn-padding-: 5rem;">Logout</button>
       </form>
   </ul>
 </div>
