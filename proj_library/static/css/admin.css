@@ -3,20 +3,19 @@
     background-repeat: no-repeat;
     display: None;
 }
-
 .changelink {
     background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="16" viewBox="0 -960 960 960" width="16" fill="orange"><path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h357l-80 80H200v560h560v-278l80-80v358q0 33-23.5 56.5T760-120H200Zm280-360ZM360-360v-170l367-367q12-12 27-18t30-6q16 0 30.5 6t26.5 18l56 57q11 12 17 26.5t6 29.5q0 15-5.5 29.5T897-728L530-360H360Zm481-424-56-56 56 56ZM440-440h56l232-232-28-28-29-28-231 231v57Zm260-260-29-28 29 28 28 28-28-28Z"/></svg>');
     background-repeat: no-repeat;
 }
-
+.vLargeTextField, .vXMLLargeTextField {
+    width: 20em !important;
+}
 #changelist-filter details > summary {
     list-style-type: none;
     background-color: #3B8EDE;
-}
-.dashboard .module table td a {
-    display: block;
-    padding-right: .6em;
-    display: None;
+    color: white;
+    padding-bottom: 5px;
+    padding-top: 2px;
 }
 #changelist-filter h2 {
     font-size: 0.875rem;
@@ -38,7 +37,7 @@
     vertical-align: top;
     font-size: 0.8125rem;
     max-width: 100%;
-    borde-color: #b0c4de;
+    border-color: #b0c4de;
 }
 #toolbar form input[type="submit"] {
     border: 1px solid var(--border-color);
@@ -50,7 +49,6 @@
     cursor: pointer;
     color: var(--body-fg);
 }
-
 #header {
     background-color: #3B8EDE;
     width: auto;
@@ -60,14 +58,17 @@
     align-items: center;
     padding: 10px 40px;
 }
-
 #footer {
     background-color: #3B8EDE;
     color: #ffffff;
-    padding: 3px;
+    padding-top: 2px;
+    padding-bottom: 5px;
     text-align: center;
 }
-
+#footer p {
+    padding-top: 12px;
+    line-height: 155%;
+}
 #content-main {
     float: left;
     width: 100%;
@@ -83,5 +84,13 @@
     color: white;
 }
 a.dropdown-item:hover {
-    background-color: #b8232300;
+    background-color: #3B8EDE;
+}
+.dropdown-menu.show {
+    display: block;
+    text-align: left !important;
+
+}
+table {
+    caption-side: top !important;
 }
