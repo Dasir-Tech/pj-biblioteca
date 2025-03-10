@@ -1,19 +1,14 @@
-.button{
-    display: none;
-}
-
-.dropdown-menu {
-    display: none !important;
-}
-.dropdownMenuButton {
-    display: none !important;
-}
 #footer {
     background-color: #3B8EDE;
     color: #ffffff;
     padding: 3px;
     text-align: center;
 }
+#footer p {
+    padding-top: 12px;
+    line-height: 155%;
+}
+
 #site-name a:link, #site-name a:visited {
     color: white;   
 }
@@ -26,3 +21,9 @@
     align-items: center;
     padding: 10px 40px;
 }
+#main{
+    text-align: center;
+    font-size: large;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif !important;
+}
+
