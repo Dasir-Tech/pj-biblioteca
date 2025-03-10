@@ -7,7 +7,8 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 
 
-admin.site.index_title = "Dasir Library Administration"
+admin.site.index_title = "Admin panel" #titolo pagina admin
+
 
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
