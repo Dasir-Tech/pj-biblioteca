@@ -191,7 +191,7 @@ def add_book(request):
             return redirect('success_url')
     else:
         form = BookForm()
-    return render(request, 'add_book.html', {'form': form})
+    return render(request, 'book_form.html', {'form': form})
 
 def add_user(request):
     if request.method == 'POST':
