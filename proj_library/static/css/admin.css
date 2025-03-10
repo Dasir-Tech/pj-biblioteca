@@ -89,6 +89,7 @@ a.dropdown-item:hover {
 .dropdown-menu.show {
     display: block;
     text-align: left !important;
+
 }
 table {
     caption-side: top !important;
