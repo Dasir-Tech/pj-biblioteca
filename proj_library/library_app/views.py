@@ -3,7 +3,9 @@ from django.http import JsonResponse
 from library_app.models import Loan, CustomUser, Book, New
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .forms import BookForm, CustomUserForm
+from .models import Book, CustomUser
 
 def hello(request):
     return HttpResponse(" << Welcome into the Library_app >> ")
@@ -180,3 +182,23 @@ def LastNews(request):
     }
 
     return JsonResponse(data)
+
+def add_book(request):
+    if request.method == 'POST':
+        form = BookForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('success_url')
+    else:
+        form = BookForm()
+    return render(request, 'add_book.html', {'form': form})
+
+def add_user(request):
+    if request.method == 'POST':
+        form = CustomUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('success_url')
+    else:
+        form = CustomUserForm()
+    return render(request, 'add_user.html', {'form': form})

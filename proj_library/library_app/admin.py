@@ -6,7 +6,9 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
 
+
 admin.site.index_title = "Admin panel" #titolo pagina admin
+
 
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
@@ -53,13 +55,15 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
 
+
+
     def activate(self, request, queryset):
         queryset.update(activate=True)
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
-    change_form_template = "admin/book/change_add.html"
+
 
 #USER
 class CustomUserAdmin(UserAdmin):
