@@ -1,7 +1,8 @@
+{% block extrahead %}{% endblock %}
 <fieldset>
     <div class="row">
         {% for line in fieldset %}
-        <div class="col-6">
+        <div class="col-4">
             {% for field in line %}
                 <div class="container-fluid">
                     {% if field.is_checkbox %}
