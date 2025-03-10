@@ -24,10 +24,10 @@
   <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="background: #1873c9b2;">
     <a class="dropdown-item" href="{% url 'admin:index' %}">Home</a>
     <a class="dropdown-item" href="{% url 'admin:password_change' %}">Reset Password</a>
-      <form action="{% url 'admin:logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary" style="color: rgb(255, 255, 255); background: transparent; border-color: transparent;">Logout</button>
-      </form>
+    <form action="{% url 'admin:logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary" style="color: rgb(255, 255, 255); background: transparent; border-color: transparent; --bs-btn-padding-: 5rem;">Logout</button>
+    </form>
   </ul>
 </div>
 <script>
@@ -39,8 +39,4 @@
 
 {% endblock %}
 
-{% block footer %}
-<footer>
-    <p>&copy; {% now 'Y' %} Dasir Library. Tutti i diritti riservati.</p>
-</footer>
-{% endblock %}
+
