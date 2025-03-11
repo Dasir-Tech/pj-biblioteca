@@ -17,8 +17,8 @@ class AuthorAdmin(admin.ModelAdmin):
     list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
     search_fields = ('author',)
     actions = ['activate', 'deactivate']
-    add_form_template = "admin/genre_form.html"
-    change_form_template = "admin/genre_form.html"
+    add_form_template = "admin/author_form.html"
+    change_form_template = "admin/author_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
