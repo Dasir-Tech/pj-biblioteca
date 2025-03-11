@@ -180,7 +180,7 @@ class Status(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(status=4).order_by('due_date')
 
 class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
+    list_display = ("user", "book", "status", "due_date", "insert_date", "update_date", "active")
     list_filter = (DateFilter,Status ,Active)
     search_fields = ('id','book__title')
     actions = ['sendEmail','activate', 'deactivate']

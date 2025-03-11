@@ -10,6 +10,20 @@
 .vLargeTextField, .vXMLLargeTextField {
     width: 20em !important;
 }
+a.section:link, a.section:visited {
+    color: var(--header-link-color);
+    text-decoration: none;
+    font-weight: unset !important;
+}
+table thead th .text a {
+    display: block;
+    cursor: pointer;
+    padding: 8px 10px;
+    font-weight: bold !important;
+}
+.submit-row a.deletelink {
+    display: none !important;
+}
 #changelist-filter details > summary {
     list-style-type: none;
     background-color: #3B8EDE;
