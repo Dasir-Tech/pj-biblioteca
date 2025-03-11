@@ -72,7 +72,6 @@
 
 
           <fieldset>
-
             <div class="container">
               <div class="row mb-3 pb-3 border-bottom">
                 <div class="col-2">{{ adminform.form.first_name.label_tag }}</div>
@@ -96,11 +95,30 @@
           </fieldset>
 
         {% else %}
-          <!-- Se non è in fase di creazione (modifica dell'utente), mostra tutti i campi -->
-          {% for fieldset in adminform %}
-            {% include "admin/includes/user_fieldset.html" with heading_level=2 prefix="fieldset" id_prefix=0 id_suffix=forloop.counter0 %}
-          {% endfor %}
+          <fieldset>
+            <div class="container">
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-2">{{ adminform.form.username.label_tag }}</div>
+                <div class="col-4">{{ adminform.form.username }}</div>
+                <div class="col-2">{{ adminform.form.first_name.label_tag }}</div>
+                <div class="col-4">{{ adminform.form.first_name }}</div>
+              </div>
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-2">{{ adminform.form.last_name.label_tag }}</div>
+                <div class="col-4">{{ adminform.form.last_name }}</div>
+                <div class="col-2">{{ adminform.form.email.label_tag }}</div>
+                <div class="col-4">{{ adminform.form.email }}</div>
+              </div>
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-2">{{ adminform.form.phone_number.label_tag }}</div>
+                <div class="col-4">{{ adminform.form.phone_number }}</div>
+                <div class="col-2">{{ adminform.form.is_active.label_tag }}</div>
+                <div class="col-4">{{ adminform.form.is_active }}</div>
+              </div>
+            </div>
+          </fieldset>
         {% endif %}
+
       {% endblock %}
 
       {% block after_field_sets %}{% endblock %}
