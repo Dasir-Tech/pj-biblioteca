@@ -94,3 +94,9 @@ a.dropdown-item:hover {
 table {
     caption-side: top !important;
 }
+input#nav-filter{
+    display: none;
+}
+form{
+    margin-left: 4px;
+}
