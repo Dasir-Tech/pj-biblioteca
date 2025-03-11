@@ -59,6 +59,9 @@ class BookAdmin(admin.ModelAdmin):
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
 
+    add_form_template = "admin/book_form.html"
+    change_form_template = "admin/book_form.html"
+
 
 
     def activate(self, request, queryset):
@@ -75,6 +78,10 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
+
+    add_form_template = "admin/user_form.html"
+    change_form_template = "admin/user_form.html"
+
    #Definizione vista lista user
     def get_queryset(self, request):
         qs = super().get_queryset(request)

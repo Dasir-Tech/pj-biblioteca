@@ -182,23 +182,3 @@ def LastNews(request):
     }
 
     return JsonResponse(data)
-
-def add_book(request):
-    if request.method == 'POST':
-        form = BookForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('success_url')
-    else:
-        form = BookForm()
-    return render(request, 'add_book.html', {'form': form})
-
-def add_user(request):
-    if request.method == 'POST':
-        form = CustomUserForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('success_url')
-    else:
-        form = CustomUserForm()
-    return render(request, 'add_user.html', {'form': form})
