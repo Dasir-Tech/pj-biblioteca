@@ -84,15 +84,12 @@
     color: white;
 }
 a.dropdown-item:hover {
-    background-color: #b8232300;
+    background-color: #3B8EDE;
 }
 .dropdown-menu.show {
     display: block;
-    text-align: center;
+    text-align: left !important;
 }
 table {
     caption-side: top !important;
 }
-/*h1,h2,h3{
-    font-size:20px;
-}*/

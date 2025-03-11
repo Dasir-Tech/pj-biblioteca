@@ -3,10 +3,9 @@
 
 {% block extrahead %}{{ block.super }}
 <script src="{% url 'admin:jsi18n' %}"></script>
+<link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">
 {{ media }}
 {% endblock %}
-
-<!--- {% block extrastyle %}{{ block.super }}<link rel="stylesheet" href="{% static 'admin/css/forms.css' %}">{% endblock %} --->
 
 {% block coltype %}colM{% endblock %}
 
@@ -24,15 +23,6 @@
 {% endif %}
 
 {% block content %}<div id="content-main">
-{% block object-tools %}
-{% if change and not is_popup %}
-  <ul class="object-tools">
-    {% block object-tools-items %}
-      {% change_form_object_tools %}
-    {% endblock %}
-  </ul>
-{% endif %}
-{% endblock %}
 <div>
     <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>{% csrf_token %}{% block form_top %}{% endblock %}
     <div>
@@ -48,7 +38,7 @@
 </div>
 {% block field_sets %}
 {% for fieldset in adminform %}
-  {% include "admin/includes/user_fieldset.html" with heading_level=2 prefix="fieldset" id_prefix=0 id_suffix=forloop.counter0 %}
+  {% include "admin/includes/editor_fieldset.html" with heading_level=2 prefix="fieldset" id_prefix=0 id_suffix=forloop.counter0 %}
 {% endfor %}
 {% endblock %}
 
@@ -60,8 +50,6 @@
 {% endfor %}
 {% endblock %}
 <br>
-{% block after_related_objects %}{% endblock %}
-<br>
 {% block submit-row %}
 <div class="submit-row">
     <input type="submit" value="{% translate 'Save' %}" class="default" name="_save">
@@ -69,19 +57,7 @@
     <input type="submit" value="{% translate 'Save and continue editing' %}" name="_continue">
 </div>
 {% endblock %}
-<style>
-    .submit-row {
-        padding: 12px 14px 12px;
-        margin: 0 0 20px;
-        background: var(--darkened-bg);
-        border: 1px solid var(--hairline-color);
-        border-radius: 4px;
-        overflow: hidden;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-</style>
+
 {% block admin_change_form_document_ready %}
     <script id="django-admin-form-add-constants"
             src="{% static 'admin/js/change_form.js' %}"

@@ -1,73 +1,42 @@
 <fieldset>
-  <legend>{{ fieldset.name }}</legend>
-  <div class="container center">
 
-    <div class="row mb-3 pb-3 border-bottom">
-      <div class="col-1">
-        {{ adminform.form.username.label_tag }}
-      </div>
-      <div class="col-5">
-        {{ adminform.form.username }}
-      </div>
-      <div class="col-1">
-        {{ adminform.form.password.label_tag }}
-      </div>
-      <div class="col-5">
-        {{ adminform.form.password }}
-      </div>
-    </div>
-
-
-    <div class="row mb-4 pb-3 border-bottom">
-      <div class="col-1">
-        {{ adminform.form.phone_number.label_tag }}
-      </div>
-      <div class="col-5">
-        {{ adminform.form.phone_number }}
-      </div>
-      <div class="col-1">
-        {{ adminform.form.email_address.label_tag }}
-      </div>
-      <div class="col-5"
-        {{ adminform.form.email_address }}
-      </div>
-    </div>
+  <div class="container">
 
 
     <div class="row mb-3 pb-3 border-bottom">
-      <div class="col-1">
+      <div class="col-2">
         {{ adminform.form.first_name.label_tag }}
       </div>
-      <div class="col-5">
+      <div class="col-4">
         {{ adminform.form.first_name }}
       </div>
-      <div class="col-1">
+      <div class="col-2">
         {{ adminform.form.last_name.label_tag }}
       </div>
-      <div class="col-5">
+      <div class="col-4">
         {{ adminform.form.last_name }}
       </div>
     </div>
-
-
-    <div class="row mb-3 pb-3 border-bottom">
-      <div class="col-1">
-        {{ adminform.form.active.label_tag }}
+    <div class="row mb-4 pb-3 border-bottom">
+      <div class="col-2">
+        {{ adminform.form.phone_number.label_tag }}
       </div>
-      <div class="col-5">
-        {{ adminform.form.active }}
+      <div class="col-4">
+        {{ adminform.form.phone_number }}
       </div>
-
+      <div class="col-2">
+        {{ adminform.form.email.label_tag }}
+      </div>
+      <div class="col-4">
+        {{ adminform.form.email }}
+      </div>
     </div>
-
-
-
-    <div class="row">
-      <div class="col">
-        <div class="form-check">
-          {{ adminform.form.available }}
-          {{ adminform.form.available.label_tag }}
-        </div>
+    <div class="row mb-3 pb-3 border-bottom">
+      <div class="col-2">
+        {{ adminform.form.is_active.label_tag }}
+      </div>
+      <div class="col-4">
+        {{ adminform.form.is_active }}
       </div>
     </div>
 

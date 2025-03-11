@@ -5,6 +5,7 @@ from .models import Loan, Author, Book, Genre, Editor, CustomUser, New
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from django.utils.html import format_html
 
 
 admin.site.index_title = "Admin panel" #titolo pagina admin
@@ -16,8 +17,8 @@ class AuthorAdmin(admin.ModelAdmin):
     list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
     search_fields = ('author',)
     actions = ['activate', 'deactivate']
-    add_form_template = "admin/genre_form.html"
-    change_form_template = "admin/genre_form.html"
+    add_form_template = "admin/author_form.html"
+    change_form_template = "admin/author_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
@@ -44,8 +45,8 @@ class EditorAdmin(admin.ModelAdmin):
     actions = ['activate', 'deactivate']
     list_filter = ('activate',)
     search_fields = ('editor',)
-    add_form_template = "admin/genre_form.html"
-    change_form_template = "admin/genre_form.html"
+    add_form_template = "admin/editor_form.html"
+    change_form_template = "admin/editor_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
@@ -62,15 +63,18 @@ class BookAdmin(admin.ModelAdmin):
     add_form_template = "admin/book_form.html"
     change_form_template = "admin/book_form.html"
 
+    def image_preview(self, obj):
+        if obj.img:  # Controlla se l'immagine è presente
+            return format_html('<img src="{}" width="50" height="50" style="object-fit: cover; border-radius: 5px;"/>',
+                               obj.img.url)
 
+    image_preview.short_description = 'Preview'
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-
-
 
 #USER
 class CustomUserAdmin(UserAdmin):
@@ -106,18 +110,12 @@ class CustomUserAdmin(UserAdmin):
             for fieldset in fs:
                 title, field_options = fieldset
                 fields = field_options.get("fields", ())
-
-
                 filtered_fields = tuple(f for f in fields if f not in ("groups", "user_permissions","is_active", "is_staff", "is_superuser", "last_login", "date_joined", "id_password_helptext",))
 
                 if filtered_fields:
                     new_fs.append((title, {"fields": filtered_fields}))
 
             return new_fs
-
-
-
-
 
     def has_delete_permission(self, request, obj=None):
         if request.user.groups.filter(name="user").exists():
@@ -215,8 +213,8 @@ class NewAdmin(admin.ModelAdmin):
     list_display = ('img', 'header', 'text', 'activate',  'insert_date', 'update_date')
     list_filter = ('header', 'activate')
     search_fields = ('header', 'text')
-    add_form_template = "admin/genre_form.html"
-    change_form_template = "admin/genre_form.html"
+    add_form_template = "admin/new_form.html"
+    change_form_template = "admin/new_form.html"
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)

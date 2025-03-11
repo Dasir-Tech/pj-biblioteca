@@ -48,7 +48,7 @@
 </div>
 {% block field_sets %}
 {% for fieldset in adminform %}
-  {% include "admin/includes/user_fieldset.html" with heading_level=2 prefix="fieldset" id_prefix=0 id_suffix=forloop.counter0 %}
+  {% include "admin/includes/new_fieldset.html" with heading_level=2 prefix="fieldset" id_prefix=0 id_suffix=forloop.counter0 %}
 {% endfor %}
 {% endblock %}
 
@@ -69,19 +69,7 @@
     <input type="submit" value="{% translate 'Save and continue editing' %}" name="_continue">
 </div>
 {% endblock %}
-<style>
-    .submit-row {
-        padding: 12px 14px 12px;
-        margin: 0 0 20px;
-        background: var(--darkened-bg);
-        border: 1px solid var(--hairline-color);
-        border-radius: 4px;
-        overflow: hidden;
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-</style>
+
 {% block admin_change_form_document_ready %}
     <script id="django-admin-form-add-constants"
             src="{% static 'admin/js/change_form.js' %}"
