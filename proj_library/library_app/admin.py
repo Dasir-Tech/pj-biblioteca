@@ -5,6 +5,7 @@ from .models import Loan, Author, Book, Genre, Editor, CustomUser, New
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from django.utils.html import format_html
 
 
 admin.site.index_title = "Admin panel" #titolo pagina admin
@@ -53,14 +54,25 @@ class EditorAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
+
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'img', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date', 'update_date', 'activate')
+    list_display = (
+    'title', 'image_preview', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date', 'update_date',
+    'activate')
     list_filter = ('activate',)
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
 
     add_form_template = "admin/book_form.html"
     change_form_template = "admin/book_form.html"
+
+    def image_preview(self, obj):
+        if obj.img:  # Controlla se l'immagine è presente
+            return format_html('<img src="{}" width="50" height="50" style="object-fit: cover; border-radius: 5px;"/>',
+                               obj.img.url)
+
+
+    image_preview.short_description = 'Preview'
 
 
 
@@ -217,6 +229,11 @@ class NewAdmin(admin.ModelAdmin):
     search_fields = ('header', 'text')
     add_form_template = "admin/genre_form.html"
     change_form_template = "admin/genre_form.html"
+
+    add_form_template = "admin/new_form.html"
+    change_form_template = "admin/new_form.html"
+
+
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
