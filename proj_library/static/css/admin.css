@@ -24,6 +24,9 @@ table thead th .text a {
 .submit-row a.deletelink {
     display: none !important;
 }
+img, svg {
+    vertical-align: top !important;
+}
 #changelist-filter details > summary {
     list-style-type: none;
     background-color: #3B8EDE;

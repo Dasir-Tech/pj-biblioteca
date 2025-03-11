@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group
 from django.utils.html import format_html
 
 
-admin.site.index_title = "Admin panel" #titolo pagina admin
+admin.site.index_title = "Dashboard" #titolo pagina admin
 
 
 #BOOK
