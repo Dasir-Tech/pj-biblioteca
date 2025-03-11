@@ -55,7 +55,7 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=False)
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('img', 'title', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date', 'update_date', 'activate')
+    list_display = ('title', 'image_preview', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date','update_date','activate')
     list_filter = ('activate',)
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
