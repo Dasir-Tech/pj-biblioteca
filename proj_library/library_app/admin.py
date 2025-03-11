@@ -91,6 +91,8 @@ class CustomUserAdmin(UserAdmin):
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
 
+
+
     add_form_template = "admin/user_form.html"
     change_form_template = "admin/user_form.html"
 
@@ -198,8 +200,20 @@ class LoanAdmin(admin.ModelAdmin):
     list_filter = (DateFilter,Status ,Active)
     search_fields = ('id','book__title')
     actions = ['sendEmail','activate', 'deactivate']
+
     add_form_template = "admin/loan_form.html"
     change_form_template = "admin/loan_form.html"
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Gli utenti admin e bookseller vedono tutti gli utenti
+        if request.user.is_superuser or \
+           request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+            return qs
+        # Gli utenti "user" vedono solo se stessi
+        elif request.user.groups.filter(name="User").exists():
+            return qs.filter(user=request.user.id)
+        return qs.none()
 
     def activate(self, request, queryset):
         queryset.update(active=True)
@@ -223,6 +237,7 @@ class LoanAdmin(admin.ModelAdmin):
                 fail_silently=False,
             )
 
+
 class NewAdmin(admin.ModelAdmin):
     list_display = ('img', 'header', 'text', 'activate',  'insert_date', 'update_date')
     list_filter = ('header', 'activate')
@@ -242,7 +257,7 @@ class NewAdmin(admin.ModelAdmin):
                 request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
             return qs
         # Gli utenti "user" vedono solo se stessi
-        elif request.user.groups.filter(name="user").exists():
+        elif request.user.groups.filter(name="User").exists():
             return qs.filter(user_ID_id=request.user.id)
         return qs.none()
 
