@@ -8,7 +8,7 @@ from django.contrib.auth.models import Group
 from django.utils.html import format_html
 
 
-admin.site.index_title = "Admin panel" #titolo pagina admin
+admin.site.index_title = "Dashboard" #titolo pagina admin
 
 
 #BOOK
@@ -45,8 +45,8 @@ class EditorAdmin(admin.ModelAdmin):
     actions = ['activate', 'deactivate']
     list_filter = ('activate',)
     search_fields = ('editor',)
-    add_form_template = "admin/genre_form.html"
-    change_form_template = "admin/genre_form.html"
+    add_form_template = "admin/editor_form.html"
+    change_form_template = "admin/editor_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
@@ -54,11 +54,8 @@ class EditorAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
-
 class BookAdmin(admin.ModelAdmin):
-    list_display = (
-    'title', 'image_preview', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date', 'update_date',
-    'activate')
+    list_display = ('title', 'image_preview', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date','update_date','activate')
     list_filter = ('activate',)
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
@@ -127,10 +124,6 @@ class CustomUserAdmin(UserAdmin):
 
             return new_fs
 
-
-
-
-
     def has_delete_permission(self, request, obj=None):
         if request.user.groups.filter(name="user").exists():
             return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
@@ -194,9 +187,9 @@ class Status(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(status=4).order_by('due_date')
 
 class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
+    list_display = ("user", "book", "status", "due_date", "insert_date", "update_date", "active")
     list_filter = (DateFilter,Status ,Active)
-    search_fields = ('id','book__title')
+    search_fields = ('book__title',)
     actions = ['sendEmail','activate', 'deactivate']
     add_form_template = "admin/loan_form.html"
     change_form_template = "admin/loan_form.html"
@@ -227,12 +220,8 @@ class NewAdmin(admin.ModelAdmin):
     list_display = ('img', 'header', 'text', 'activate',  'insert_date', 'update_date')
     list_filter = ('header', 'activate')
     search_fields = ('header', 'text')
-    add_form_template = "admin/genre_form.html"
-    change_form_template = "admin/genre_form.html"
-
     add_form_template = "admin/new_form.html"
     change_form_template = "admin/new_form.html"
-
 
 
     def get_queryset(self, request):

@@ -1,25 +1,23 @@
-{% block extrahead %}{% endblock %}
 <fieldset>
-    <div class="row">
-        {% for line in fieldset %}
-        <div class="col-4">
-            {% for field in line %}
-                <div class="container-fluid">
-                    {% if field.is_checkbox %}
-                        <div><br></div>
-                        {{ field.field }}{{ field.label_tag }}
-                    {% else %}
-                        {{ field.label_tag }}
-                        {% if field.is_readonly %}
-                            <div class="readonly">{{ field.contents }}</div>
-                        {% else %}
-                            <div></div>
-                            {{ field.field }}
-                        {% endif %}
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-        {% endfor %}
+  <div class="container">
+
+
+    <div class="row mb-3 pb-3 border-bottom">
+      <div class="col-1">
+        {{ adminform.form.genre.label_tag }}
+      </div>
+      <div class="col-4">
+        {{ adminform.form.genre }}
+      </div>
+      <div class="col-1"></div>
+      <div class="col-1">
+        {{ adminform.form.activate.label_tag }}
+      </div>
+      <div class="col-1">
+        {{ adminform.form.activate }}
+      </div>
     </div>
+
+
+  </div>
 </fieldset>
