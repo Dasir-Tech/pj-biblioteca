@@ -91,6 +91,12 @@ class CustomUserAdmin(UserAdmin):
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
 
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super().formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == "is_active":
+            formfield.label = ("Active")
+        return formfield
+
 
 
     add_form_template = "admin/user_form.html"
@@ -138,9 +144,14 @@ class CustomUserAdmin(UserAdmin):
             return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
         return super().has_delete_permission(request, obj)
 
-    list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+    list_display = ('username', 'email', 'phone_number',  'active', 'is_staff')
     search_fields = ('first_name','email',)
     list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+
+    def active(self, obj):
+        return obj.is_active  # Mappa al campo esistente
+
+    active.boolean = True
 
 #LOAN
 class DateFilter(admin.SimpleListFilter):
