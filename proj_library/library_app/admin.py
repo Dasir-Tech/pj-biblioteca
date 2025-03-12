@@ -88,6 +88,14 @@ class CustomUserAdmin(UserAdmin):
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
 
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super().formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == "is_active":
+            formfield.label = ("Active")
+        return formfield
+
+
+
     add_form_template = "admin/user_form.html"
     change_form_template = "admin/user_form.html"
 
@@ -129,9 +137,14 @@ class CustomUserAdmin(UserAdmin):
             return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
         return super().has_delete_permission(request, obj)
 
-    list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+    list_display = ('username', 'email', 'phone_number',  'active', 'is_staff')
     search_fields = ('first_name','email',)
     list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+
+    def active(self, obj):
+        return obj.is_active  # Mappa al campo esistente
+
+    active.boolean = True
 
 #LOAN
 class DateFilter(admin.SimpleListFilter):
@@ -191,8 +204,20 @@ class LoanAdmin(admin.ModelAdmin):
     list_filter = (DateFilter,Status ,Active)
     search_fields = ('book__title',)
     actions = ['sendEmail','activate', 'deactivate']
+
     add_form_template = "admin/loan_form.html"
     change_form_template = "admin/loan_form.html"
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Gli utenti admin e bookseller vedono tutti gli utenti
+        if request.user.is_superuser or \
+           request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+            return qs
+        # Gli utenti "user" vedono solo se stessi
+        elif request.user.groups.filter(name="User").exists():
+            return qs.filter(user=request.user.id)
+        return qs.none()
 
     def activate(self, request, queryset):
         queryset.update(active=True)
@@ -216,6 +241,7 @@ class LoanAdmin(admin.ModelAdmin):
                 fail_silently=False,
             )
 
+
 class NewAdmin(admin.ModelAdmin):
     list_display = ('img', 'header', 'text', 'activate',  'insert_date', 'update_date')
     list_filter = ('header', 'activate')
@@ -231,7 +257,7 @@ class NewAdmin(admin.ModelAdmin):
                 request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
             return qs
         # Gli utenti "user" vedono solo se stessi
-        elif request.user.groups.filter(name="user").exists():
+        elif request.user.groups.filter(name="User").exists():
             return qs.filter(user_ID_id=request.user.id)
         return qs.none()
 
