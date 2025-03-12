@@ -126,15 +126,16 @@ class CustomUserAdmin(UserAdmin):
                     new_fs.append((title, {"fields": filtered_fields}))
 
             return new_fs
-
-
-
-
-
     def has_delete_permission(self, request, obj=None):
         if request.user.groups.filter(name="user").exists():
             return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
         return super().has_delete_permission(request, obj)
+    
+    def has_module_permission(self, request):
+        if request.user.is_superuser:
+            return True
+        # Solo gli utenti nel gruppo "user" possono vedere il modulo "Account"
+        return request.user.groups.filter(name="user").exists()
 
     list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
     search_fields = ('first_name','email',)
