@@ -132,6 +132,12 @@ class CustomUserAdmin(UserAdmin):
 
             return new_fs
 
+        def has_module_permission(self, request):
+            if request.user.is_superuser:
+                return True
+            # Solo gli utenti nel gruppo "user" possono vedere il modulo "Account"
+            return request.user.groups.filter(name="user").exists()
+
     def has_delete_permission(self, request, obj=None):
         if request.user.groups.filter(name="user").exists():
             return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
