@@ -227,8 +227,6 @@ class NewAdmin(admin.ModelAdmin):
             return qs.filter(user_ID_id=request.user.id)
         return qs.none()
 
-
-
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
 admin.site.register(Book, BookAdmin)
