@@ -7,8 +7,6 @@ from django.shortcuts import render, redirect
 
 from .models import Book, CustomUser
 
-def hello(request):
-    return HttpResponse(" << Welcome into the Library_app >> ")
 
 #Ajax Functions for Librarian Index
 
@@ -182,3 +180,4 @@ def LastNews(request):
     }
 
     return JsonResponse(data)
+
