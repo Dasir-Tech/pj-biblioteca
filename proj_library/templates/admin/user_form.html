@@ -23,6 +23,7 @@
 
 {% block content %}
 <div id="content-main">
+
   {% block object-tools %}
   {% if change and not is_popup %}
     <ul class="object-tools">
@@ -55,70 +56,59 @@
         {% if add %}
 
           <fieldset>
-
-            <div class="container">
+            <div class="container center">
               <div class="row mb-3 pb-3 border-bottom">
-                <div class="col-2">{{ adminform.form.username.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.username }}</div>
-                <div class="col-2">{{ adminform.form.password1.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.password1 }}</div>
+                <div class="col-1">{{ adminform.form.username.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.username }}</div>
+                <div class="col-1">{{ adminform.form.first_name.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.first_name }}</div>
               </div>
               <div class="row mb-3 pb-3 border-bottom">
-                <div class="col-2">{{ adminform.form.password2.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.password2 }}</div>
+                <div class="col-1">{{ adminform.form.password1.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.password1 }}</div>
+                <div class="col-1">{{ adminform.form.last_name.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.last_name }}</div>
+              </div>
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-1">{{ adminform.form.password2.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.password2 }}</div>
+                <div class="col-1">{{ adminform.form.phone_number.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.phone_number }}</div>
+              </div>
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-1">{{ adminform.form.email.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.email }}</div>
+                <div class="col-1">{{ adminform.form.is_active.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.is_active }}</div>
               </div>
             </div>
           </fieldset>
-
-
-          <fieldset>
-            <div class="container">
-              <div class="row mb-3 pb-3 border-bottom">
-                <div class="col-2">{{ adminform.form.first_name.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.first_name }}</div>
-                <div class="col-2">{{ adminform.form.last_name.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.last_name }}</div>
-              </div>
-
-              <div class="row mb-4 pb-3 border-bottom">
-                <div class="col-2">{{ adminform.form.phone_number.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.phone_number }}</div>
-                <div class="col-2">{{ adminform.form.email.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.email }}</div>
-              </div>
-
-              <div class="row mb-3 pb-3 border-bottom">
-                <div class="col-2">{{ adminform.form.active.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.active }}</div>
-              </div>
-            </div>
-          </fieldset>
-
         {% else %}
+
           <fieldset>
-            <div class="container">
+            <div class="container center">
               <div class="row mb-3 pb-3 border-bottom">
-                <div class="col-2">{{ adminform.form.username.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.username }}</div>
-                <div class="col-2">{{ adminform.form.first_name.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.first_name }}</div>
+                <div class="col-1">{{ adminform.form.username.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.username }}</div>
+                <div class="col-1">{{ adminform.form.first_name.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.first_name }}</div>
               </div>
               <div class="row mb-3 pb-3 border-bottom">
-                <div class="col-2">{{ adminform.form.last_name.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.last_name }}</div>
-                <div class="col-2">{{ adminform.form.email.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.email }}</div>
+                <div class="col-1">{{ adminform.form.email.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.email }}</div>
+                <div class="col-1">{{ adminform.form.last_name.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.last_name }}</div>
               </div>
               <div class="row mb-3 pb-3 border-bottom">
-                <div class="col-2">{{ adminform.form.phone_number.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.phone_number }}</div>
-                <div class="col-2">{{ adminform.form.active.label_tag }}</div>
-                <div class="col-4">{{ adminform.form.active }}</div>
+                <div class="col-1">{{ adminform.form.is_active.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.is_active }}</div>
+                <div class="col-1">{{ adminform.form.phone_number.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.phone_number }}</div>
               </div>
+
             </div>
           </fieldset>
         {% endif %}
-
       {% endblock %}
 
       {% block after_field_sets %}{% endblock %}
@@ -154,7 +144,6 @@
           flex-wrap: wrap;
         }
       </style>
-
 
       {% block admin_change_form_document_ready %}
         <script id="django-admin-form-add-constants"
