@@ -101,8 +101,10 @@
         <!-- Content -->
         <div id="content" class="{% block coltype %}colM{% endblock %}">
           {% block pretitle %}{% endblock %}
-          {% block content_title %}{% if title %}<h5>{{ title }}</h5>{% endif %}{% endblock %}
-          {% block content_subtitle %}{% if subtitle %}<h5>{{ subtitle }}</h5>{% endif %}{% endblock %}
+            <div class="row justify-content-start">
+                {% block content_title %}{% if title %}<h3 class="col-auto">{{ title }}</h3>{% endif %}{% endblock %}
+                {% block content_subtitle %}{% if subtitle %}<h3 class="col-auto text-center">:</h3><h3 class="col-auto">{{ subtitle }}</h3>{% endif %}{% endblock %}
+            </div>
           <br>
           {% block content %}
             {% block object-tools %}{% endblock %}

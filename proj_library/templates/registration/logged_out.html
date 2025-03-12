@@ -7,16 +7,17 @@
 {% block extrahead %}{{ block.super }}
   <link rel="stylesheet" type="text/css" href="{% static 'css/logout_custom.css' %}">
 {% endblock %}
+
 {% block branding %}
-<div id="site-name"><a href="{% url 'admin:index' %}">Dasir Library</a></div>
+    <div id="site-name"><a href="{% url 'admin:index' %}">Dasir Library</a></div>
 {% endblock %}
 
-{% block nav-sidebar %}{% endblock %}
+{% block nav-sidebar %}
+{% endblock %}
 
 {% block content %}
 
-<p>{% translate "Grazie per aver trascorso del tempo prezioso con il sito web oggi." %}</p>
-
+<p>{% translate "Thanks for spending some quality time with the web site today." %}</p>
 <p><a href="{% url 'admin:index' %}">{% translate 'Log in again' %}</a></p>
 
 {% endblock %}
