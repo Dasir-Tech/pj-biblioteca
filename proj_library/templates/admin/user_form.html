@@ -1,0 +1,163 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls static admin_modify %}
+
+{% block extrahead %}{{ block.super }}
+<script src="{% url 'admin:jsi18n' %}"></script>
+{{ media }}
+{% endblock %}
+
+{% block coltype %}colM{% endblock %}
+
+{% block bodyclass %}{{ block.super }} app-{{ opts.app_label }} model-{{ opts.model_name }} change-form{% endblock %}
+
+{% if not is_popup %}
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+  <a href="{% url 'admin:index' %}">{% translate 'Home' %}</a>
+  &rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+  &rsaquo; {% if has_view_permission %}<a href="{% url opts|admin_urlname:'changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>{% else %}{{ opts.verbose_name_plural|capfirst }}{% endif %}
+  &rsaquo; {% if add %}{% blocktranslate with name=opts.verbose_name %}Add {{ name }}{% endblocktranslate %}{% else %}{{ original|truncatewords:"18" }}{% endif %}
+</div>
+{% endblock %}
+{% endif %}
+
+{% block content %}
+<div id="content-main">
+
+  {% block object-tools %}
+  {% if change and not is_popup %}
+    <ul class="object-tools">
+      {% block object-tools-items %}
+        {% change_form_object_tools %}
+      {% endblock %}
+    </ul>
+  {% endif %}
+  {% endblock %}
+
+  <div>
+    <form {% if has_file_field %}enctype="multipart/form-data" {% endif %}{% if form_url %}action="{{ form_url }}" {% endif %}method="post" id="{{ opts.model_name }}_form" novalidate>
+      {% csrf_token %}
+      {% block form_top %}{% endblock %}
+
+      <div>
+        {% if is_popup %}<input type="hidden" name="{{ is_popup_var }}" value="1">{% endif %}
+        {% if to_field %}<input type="hidden" name="{{ to_field_var }}" value="{{ to_field }}">{% endif %}
+        {% if save_on_top %}{% block submit_buttons_top %}{% submit_row %}{% endblock %}{% endif %}
+
+        {% if errors %}
+        <p class="errornote">
+          {% blocktranslate count counter=errors|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+        </p>
+        {{ adminform.form.non_field_errors }}
+        {% endif %}
+      </div>
+
+      {% block field_sets %}
+        {% if add %}
+
+          <fieldset>
+            <div class="container center">
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-1">{{ adminform.form.username.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.username }}</div>
+                <div class="col-1">{{ adminform.form.first_name.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.first_name }}</div>
+              </div>
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-1">{{ adminform.form.password1.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.password1 }}</div>
+                <div class="col-1">{{ adminform.form.last_name.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.last_name }}</div>
+              </div>
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-1">{{ adminform.form.password2.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.password2 }}</div>
+                <div class="col-1">{{ adminform.form.phone_number.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.phone_number }}</div>
+              </div>
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-1">{{ adminform.form.email.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.email }}</div>
+                <div class="col-1">{{ adminform.form.is_active.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.is_active }}</div>
+              </div>
+            </div>
+          </fieldset>
+        {% else %}
+
+          <fieldset>
+            <div class="container center">
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-1">{{ adminform.form.username.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.username }}</div>
+                <div class="col-1">{{ adminform.form.first_name.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.first_name }}</div>
+              </div>
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-1">{{ adminform.form.email.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.email }}</div>
+                <div class="col-1">{{ adminform.form.last_name.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.last_name }}</div>
+              </div>
+              <div class="row mb-3 pb-3 border-bottom">
+                <div class="col-1">{{ adminform.form.is_active.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.is_active }}</div>
+                <div class="col-1">{{ adminform.form.phone_number.label_tag }}</div>
+                <div class="col-5">{{ adminform.form.phone_number }}</div>
+              </div>
+
+            </div>
+          </fieldset>
+        {% endif %}
+      {% endblock %}
+
+      {% block after_field_sets %}{% endblock %}
+
+      {% block inline_field_sets %}
+        {% for inline_admin_formset in inline_admin_formsets %}
+          {% include inline_admin_formset.opts.template %}
+        {% endfor %}
+      {% endblock %}
+
+      <br>
+      {% block after_related_objects %}{% endblock %}
+      <br>
+
+      {% block submit-row %}
+        <div class="submit-row">
+          <input type="submit" value="{% translate 'Save' %}" class="default" name="_save">
+          <input type="submit" value="{% translate 'Save and add another' %}" name="_addanother">
+          <input type="submit" value="{% translate 'Save and continue editing' %}" name="_continue">
+        </div>
+      {% endblock %}
+
+      <style>
+        .submit-row {
+          padding: 12px 14px 12px;
+          margin: 0 0 20px;
+          background: var(--darkened-bg);
+          border: 1px solid var(--hairline-color);
+          border-radius: 4px;
+          overflow: hidden;
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+      </style>
+
+      {% block admin_change_form_document_ready %}
+        <script id="django-admin-form-add-constants"
+                src="{% static 'admin/js/change_form.js' %}"
+                {% if adminform and add %}
+                    data-model-name="{{ opts.model_name }}"
+                {% endif %}
+                async>
+        </script>
+      {% endblock %}
+
+      {# JavaScript per i campi pre-popolati #}
+      {% prepopulated_fields_js %}
+    </form>
+  </div>
+</div>
+{% endblock %}

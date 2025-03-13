@@ -124,7 +124,7 @@ fieldset .inline-heading,
 }
 
 .colMS .aligned .vLargeTextField, .colMS .aligned .vXMLLargeTextField {
-    width: 350px;
+    width: 160px;
 }
 
 form .aligned ul {
@@ -335,7 +335,7 @@ body.popup .submit-row {
 }
 
 .vLargeTextField, .vXMLLargeTextField {
-    width: 48em;
+    width: 20em !important;
 }
 
 .flatpages-flatpage #id_content {

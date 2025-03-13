@@ -5,6 +5,10 @@ from .models import Loan, Author, Book, Genre, Editor, CustomUser, New
 from django.contrib.auth.admin import UserAdmin
 from django.contrib import admin
 from django.contrib.auth.models import Group
+from django.utils.html import format_html
+
+
+admin.site.index_title = "Dashboard" #titolo pagina admin
 
 
 #BOOK
@@ -13,6 +17,8 @@ class AuthorAdmin(admin.ModelAdmin):
     list_filter = ('author', 'insert_date', 'update_date', 'activate') #filtri laterali
     search_fields = ('author',)
     actions = ['activate', 'deactivate']
+    add_form_template = "admin/author_form.html"
+    change_form_template = "admin/author_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
@@ -39,6 +45,8 @@ class EditorAdmin(admin.ModelAdmin):
     actions = ['activate', 'deactivate']
     list_filter = ('activate',)
     search_fields = ('editor',)
+    add_form_template = "admin/editor_form.html"
+    change_form_template = "admin/editor_form.html"
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
@@ -47,10 +55,23 @@ class EditorAdmin(admin.ModelAdmin):
         queryset.update(activate=False)
 
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('img', 'title', 'display_author', 'display_genre', 'isbn', 'qty', 'activate', 'insert_date', 'update_date')
-    list_filter = ('title', 'genre', 'isbn', 'activate')
+    list_display = ('title', 'image_preview', 'display_author', 'display_genre', 'editor', 'isbn', 'qty', 'insert_date','update_date','activate')
+    list_filter = ('activate',)
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
+
+    add_form_template = "admin/book_form.html"
+    change_form_template = "admin/book_form.html"
+
+    def image_preview(self, obj):
+        if obj.img:  # Controlla se l'immagine è presente
+            return format_html('<img src="{}" width="50" height="50" style="object-fit: cover; border-radius: 5px;"/>',
+                               obj.img.url)
+
+
+    image_preview.short_description = 'Preview'
+
+
 
     def activate(self, request, queryset):
         queryset.update(activate=True)
@@ -58,7 +79,7 @@ class BookAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
 
-    change_form_template = "admin/book/change_add.html"
+
 
 #USER
 class CustomUserAdmin(UserAdmin):
@@ -66,6 +87,18 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super().formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == "is_active":
+            formfield.label = ("Active")
+        return formfield
+
+
+
+    add_form_template = "admin/user_form.html"
+    change_form_template = "admin/user_form.html"
+
    #Definizione vista lista user
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -99,18 +132,25 @@ class CustomUserAdmin(UserAdmin):
 
             return new_fs
 
-
-
-
+        def has_module_permission(self, request):
+            if request.user.is_superuser:
+                return True
+            # Solo gli utenti nel gruppo "user" possono vedere il modulo "Account"
+            return request.user.groups.filter(name="user").exists()
 
     def has_delete_permission(self, request, obj=None):
         if request.user.groups.filter(name="user").exists():
             return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
         return super().has_delete_permission(request, obj)
 
-    list_display = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+    list_display = ('username', 'email', 'phone_number',  'active', 'is_staff')
     search_fields = ('first_name','email',)
     list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
+
+    def active(self, obj):
+        return obj.is_active  # Mappa al campo esistente
+
+    active.boolean = True
 
 #LOAN
 class DateFilter(admin.SimpleListFilter):
@@ -166,12 +206,24 @@ class Status(admin.SimpleListFilter):
             return queryset.exclude(active=False).filter(status=4).order_by('due_date')
 
 class LoanAdmin(admin.ModelAdmin):
-    list_display = ("id", "user", "book", "status", "due_date", "insert_date", "update_date", "active")
+    list_display = ("user", "book", "status", "due_date", "insert_date", "update_date", "active")
     list_filter = (DateFilter,Status ,Active)
-    search_fields = ('id','book__title')
+    search_fields = ('book__title',)
     actions = ['sendEmail','activate', 'deactivate']
+
     add_form_template = "admin/loan_form.html"
     change_form_template = "admin/loan_form.html"
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        # Gli utenti admin e bookseller vedono tutti gli utenti
+        if request.user.is_superuser or \
+           request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+            return qs
+        # Gli utenti "user" vedono solo se stessi
+        elif request.user.groups.filter(name="User").exists():
+            return qs.filter(user=request.user.id)
+        return qs.none()
 
     def activate(self, request, queryset):
         queryset.update(active=True)
@@ -179,7 +231,7 @@ class LoanAdmin(admin.ModelAdmin):
     def deactivate(self, request, queryset):
         queryset.update(active=False)
 
-    @admin.action(description="Send expired_loan email")
+    @admin.action(description="Send expired loan email")
     def sendEmail(self, request, queryset):
         emails = queryset.select_related("user").values_list("user__email", flat=True)
         for email in emails:
@@ -195,10 +247,14 @@ class LoanAdmin(admin.ModelAdmin):
                 fail_silently=False,
             )
 
+
 class NewAdmin(admin.ModelAdmin):
     list_display = ('img', 'header', 'text', 'activate',  'insert_date', 'update_date')
     list_filter = ('header', 'activate')
     search_fields = ('header', 'text')
+    add_form_template = "admin/new_form.html"
+    change_form_template = "admin/new_form.html"
+
 
     def get_queryset(self, request):
         qs = super().get_queryset(request)
@@ -207,7 +263,7 @@ class NewAdmin(admin.ModelAdmin):
                 request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
             return qs
         # Gli utenti "user" vedono solo se stessi
-        elif request.user.groups.filter(name="user").exists():
+        elif request.user.groups.filter(name="User").exists():
             return qs.filter(user_ID_id=request.user.id)
         return qs.none()
 

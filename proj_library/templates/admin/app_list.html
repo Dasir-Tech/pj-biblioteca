@@ -1,10 +1,10 @@
 {% load i18n %}
 
-<!--{% if app_list %}
+{% if app_list %}
   {% for app in app_list %}
     <div class="app-{{ app.app_label }} module{% if app.app_url in request.path|urlencode %} current-app{% endif %}">
       <table>
-        <caption>
+        <caption style="background-color:#3B8EDE;">
           <a href="{{ app.app_url }}" class="section" title="{% blocktranslate with name=app.name %}Models in the {{ name }} application{% endblocktranslate %}">{{ app.name }}</a>
         </caption>
         {% for model in app.models %}
@@ -42,4 +42,3 @@
 {% else %}
   <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
 {% endif %}
--->

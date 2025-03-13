@@ -3,12 +3,10 @@ from django.http import JsonResponse
 from library_app.models import Loan, CustomUser, Book, New
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
+from .models import Book, CustomUser
 
-
-def hello(request):
-    return HttpResponse(" << Welcome into the Library_app >> ")
 
 #Ajax Functions for Librarian Index
 
@@ -182,3 +180,4 @@ def LastNews(request):
     }
 
     return JsonResponse(data)
+

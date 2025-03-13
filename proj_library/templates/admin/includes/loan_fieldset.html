@@ -1,23 +1,41 @@
 <fieldset>
-    <div class="row">
-        {% for line in fieldset %}
-        <div class="col-3">
-            {% for field in line %}
-                <div class="container-fluid">
-                    {% if field.is_checkbox %}
-                        {{ field.field }}{{ field.label_tag }}
-                    {% else %}
-                        {{ field.label_tag }}
-                        {% if field.is_readonly %}
-                            <div class="readonly">{{ field.contents }}</div>
-                        {% else %}
-                            <div></div>
-                            {{ field.field }}
-                        {% endif %}
-                    {% endif %}
-                </div>
-            {% endfor %}
-        </div>
-        {% endfor %}
+
+  <div class="container center d-flex flex-column">
+    <div class="row mb-3 pb-3 border-bottom">
+      <div class="col-1">
+        {{ adminform.form.user.label_tag }}
+      </div>
+      <div class="col-4">
+        {{ adminform.form.user }}
+      </div>
+      <div class="col-1">
+        {{ adminform.form.book.label_tag }}
+      </div>
+      <div class="col-4">
+        {{ adminform.form.book }}
+      </div>
     </div>
+    <div class="row mb-4 pb-3 border-bottom ">
+      <div class="col-1">
+        {{ adminform.form.status.label_tag }}
+      </div>
+      <div class="col-4">
+        {{ adminform.form.status }}
+      </div>
+      <div class="col-1">
+        {{ adminform.form.due_date.label_tag }}
+      </div>
+      <div class="col-4">
+        {{ adminform.form.due_date }}
+      </div>
+    </div>
+    <div class="row mb-4 pb-3 border-bottom ">
+      <div class="col-1">
+          {{ adminform.form.active.label_tag }}
+        </div>
+        <div class="col-3">
+          {{ adminform.form.active }}
+        </div>
+    </div>
+  </div>
 </fieldset>
