@@ -37,8 +37,8 @@
     padding: 13px 20px;
 }
 #site-name a:link, #site-name a:visited {
-    color: white;   
+    color: white;
 }
 a.dropdown-item:hover {
     background-color: #b8232300;
-}   
+}
