@@ -29,3 +29,6 @@
 #content{
     padding: 220px 40px;
 }
+.justify-content-start {
+    justify-content: center !important;
+}

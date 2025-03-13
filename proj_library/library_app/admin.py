@@ -82,6 +82,11 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super().formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == "is_active":
+            formfield.label = ("Active")
+        return formfield
 
     add_form_template = "admin/user_form.html"
     change_form_template = "admin/user_form.html"
