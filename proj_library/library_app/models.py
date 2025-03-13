@@ -51,7 +51,7 @@ class Book(models.Model):
     publication_date = models.DateField(null=False)
     qty = models.IntegerField(null=False)
     activate = models.BooleanField(default=True)
-    insert_date = models.DateField(default=date.today(), null=False)
+    insert_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True, null=True)
 
     def display_author(self):

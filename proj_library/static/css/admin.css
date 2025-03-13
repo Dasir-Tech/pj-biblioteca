@@ -27,6 +27,10 @@ table thead th .text a {
 img, svg {
     vertical-align: top !important;
 }
+.delete-confirmation form .cancel-link {
+    height: 44px !important;
+}
+
 #changelist-filter details > summary {
     list-style-type: none;
     background-color: #3B8EDE;
