@@ -150,7 +150,7 @@ def UsersBookPerGenre(request):
     labels = []
     data = []
 
-    queryset = Loan.objects.values("book__genre__genre").annotate(count = Count("user", distinct=True)).order_by("book__genre__genre")
+    queryset = Loan.objects.values("book__genre__genre").annotate(count = Count("user", distinct=True)).order_by("-count", "book__genre__genre")[:4]
     for x in queryset:
         labels.append(str(x["book__genre__genre"]))
         data.append(x['count'])
