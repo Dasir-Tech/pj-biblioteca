@@ -51,7 +51,7 @@ class Book(models.Model):
     publication_date = models.DateField(null=False)
     qty = models.IntegerField(null=False)
     activate = models.BooleanField(default=True)
-    insert_date = models.DateField(default=date.today(), null=False)
+    insert_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True, null=True)
 
     def display_author(self):
@@ -75,7 +75,7 @@ class Book(models.Model):
 #USER
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-    is_active = models.BooleanField(default=True)# Per disattivare gli utenti
+    is_active = models.BooleanField(default=True)  # Per disattivare gli utenti
 
     def __str__(self):
         return self.username
