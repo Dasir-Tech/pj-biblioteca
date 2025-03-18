@@ -11,6 +11,7 @@ from django.utils.html import format_html
 admin.site.index_title = "Dashboard" #titolo pagina admin
 
 
+
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
     list_display = ('author', 'insert_date', 'update_date', 'activate')
@@ -104,9 +105,12 @@ class CustomUserAdmin(UserAdmin):
         qs = super().get_queryset(request)
         # Gli utenti admin e bookseller vedono tutti gli utenti
         if request.user.is_superuser or \
-           request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+           request.user.groups.filter(name="Admin").exists():
             return qs
         # Gli utenti "user" vedono solo se stessi
+        elif request.user.groups.filter(name="bookseller").exists():
+            users_in_user_group = qs.filter(groups__name="user")
+            return qs.filter(id=request.user.id) | users_in_user_group    #unisce le due queryset
         elif request.user.groups.filter(name="user").exists():
             return qs.filter(id=request.user.id)
         return qs.none()
@@ -114,7 +118,7 @@ class CustomUserAdmin(UserAdmin):
     def get_fieldsets(self, request, obj=None):
         fs = super().get_fieldsets(request, obj)
 
-        if request.user.is_superuser or request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
+        if request.user.is_superuser or request.user.groups.filter(name__in=["Admin", "bookseller"]).exists():
             return fs
 
         elif request.user.groups.filter(name="user").exists():
@@ -143,7 +147,7 @@ class CustomUserAdmin(UserAdmin):
             return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
         return super().has_delete_permission(request, obj)
 
-    list_display = ('username', 'email', 'phone_number',  'active', 'is_staff')
+    list_display = ('username', 'email', 'phone_number',  'active',  'get_groups')
     search_fields = ('first_name','email',)
     list_filter = ('username', 'email', 'phone_number',  'is_active', 'is_staff')
 
@@ -151,6 +155,11 @@ class CustomUserAdmin(UserAdmin):
         return obj.is_active  # Mappa al campo esistente
 
     active.boolean = True
+
+    def get_groups(self, obj):
+        return ", ".join([group.name for group in obj.groups.all()])
+
+    get_groups.short_description = 'Gruppi'
 
 #LOAN
 class DateFilter(admin.SimpleListFilter):
@@ -266,6 +275,7 @@ class NewAdmin(admin.ModelAdmin):
         elif request.user.groups.filter(name="User").exists():
             return qs.filter(user_ID_id=request.user.id)
         return qs.none()
+
 
 
 

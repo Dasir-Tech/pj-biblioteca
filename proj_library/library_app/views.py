@@ -13,6 +13,7 @@ from .models import Book, CustomUser
 #Charts
 #Data for Lost Books
 def AjaxLostBooks(request):
+
     labels = []
     data = []
 
