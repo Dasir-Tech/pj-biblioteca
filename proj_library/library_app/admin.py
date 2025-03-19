@@ -31,7 +31,7 @@ class EditorAdmin(admin.ModelAdmin):
 
 class LoanAdmin(admin.ModelAdmin):
     list_display = ("id","user_ID","book_ID","status","due_date","insert_date","update_date","active")
-    list_filter = ("active",DateFilter)
+    list_filter = ("active","DateFilter")
     search_fields = ('loan',)
 
 
