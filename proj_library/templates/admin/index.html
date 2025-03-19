@@ -16,42 +16,50 @@
 {% endblock %}
 
 {% block content %}
-<div class ="container d-flex flex-column">
+<div class ="container d-flex flex-column m-0 p-0">
     <div class ="row align-items-center">
+        <!--grafico LOST-->
         <div class ="col-12 col-md-6">
-            <div class ="card mt-5 my-md-0" style="border:none;">
-                <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Lost</div>
-                <div class ="card-body" style="width:400px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
-                    <canvas id="bar-chart" width="150" height="150" data-url="{% url 'ajax-lost-books' %}"></canvas>
+            <div class ="card mt-5 my-md-0" style="border:none; text-transform : uppercase;">
+                <div class="card-header" style="background-color:transparent;border:none;">Lost</div>
+                <div class ="card-body px-0 ratio ratio-16x9" style="position:relative;">
+                    <canvas id="bar-chart" data-url="{% url 'ajax-lost-books' %}"></canvas>
                 </div>
             </div>
         </div>
+        <!--chiusura grafico LOST-->
+        <!--grafico STATUS-->
         <div class ="col-12 col-md-6">
-            <div class ="card mt-5 my-md-0" style="border:none;">
-                <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Status</div>
-                <div class ="card-body" style="width:500px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
-                    <canvas id="multibar-chart" width="150" height="150" data-url="{% url 'ajax-books-status' %}"></canvas>
+            <div class ="card mt-5 my-md-0" style="border:none; text-transform:uppercase;">
+                <div class="card-header" style="border:none; background-color:transparent;">Status</div>
+                <div class ="card-body px-0 ratio ratio-16x9" style="position:relative;">
+                    <canvas id="multibar-chart" data-url="{% url 'ajax-books-status' %}"></canvas>
                 </div>
             </div>
         </div>
+        <!--chiusura grafico STATUS-->
     </div>
     <div class ="row my-0 my-md-5 align-items-center">
+        <!--chiusura grafico TORTA-->
         <div class ="col-12 col-md-6">
-            <div class= "card mt-5 my-md-0" style="border:none;">
-                <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Genres</div>
-                <div class ="card-body" style="width:400px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
-                    <canvas id="pie-chart-2" width="150" height="150" data-url="{% url 'ajax-users-book-genre' %}"></canvas>
+            <div class= "card mt-5 my-md-0" style="border:none; text-transform:uppercase;">
+                <div class="card-header" style="border:none; background-color:transparent;">Genres</div>
+                <div class ="card-body px-0 ratio ratio-16x9" style="position:relative;">
+                    <canvas id="pie-chart-2" data-url="{% url 'ajax-users-book-genre' %}"></canvas>
                 </div>
             </div>
         </div>
+        <!--chiusura grafico TORTA-->
+        <!--chiusura grafico YEARS-->
         <div class ="col-12 col-md-6">
-            <div class ="card mt-5 my-md-0" style="border:none;">
-                <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Users for years</div>
-                <div class ="card-body" style="width:400px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
-                    <canvas id="bar-chart-2" width="150" height="150" data-url="{% url 'ajax-users-year' %}"></canvas>
+            <div class ="card mt-5 my-md-0" style="border:none; text-transform:uppercase;">
+                <div class="card-header" style="border:none; background-color:transparent;">Users for years</div>
+                <div class ="card-body px-0 ratio ratio-16x9" style="position:relative;">
+                    <canvas id="bar-chart-2" data-url="{% url 'ajax-users-year' %}"></canvas>
                 </div>
             </div>
         </div>
+        <!--chiusura grafico YEARS-->
     </div>
 </div>
 <div class="container mt-5 my-md-0">
@@ -106,7 +114,7 @@
 <script>
     //Charts
 
-    //Lost Books
+    //Lost Books - 153
     $(function () {
       var $barChart = $("#bar-chart");
       $.ajax({
@@ -137,14 +145,14 @@
                 legend: {
                   position: 'bottom'
                 }
-            }
+              }
             }
           });
         }
       });
     });
 
-    //Books Status
+    //Books Status - 249
     $(function () {
       var $multibarChart = $("#multibar-chart");
       $.ajax({
@@ -220,18 +228,13 @@
               },
               scales: {
                 x: {
-                  display: true,
-                  title: {
-                    display: true
-                  }
+                  display: false
                 },
                 y: {
-                  display: true,
-                  title: {
-                    display: true,
-                  },
-                  suggestedMin: 0,
-                  suggestedMax: 5
+                  stacked: true,
+                  grid: {
+                    display: true
+                  }
                 },
               },
               plugins: {
@@ -245,7 +248,7 @@
       });
     });
 
-    //Book Genre by Users
+    //Book Genre by Users - 287
     $(function () {
       var $bar2Chart = $("#bar-chart-2");
       $.ajax({
@@ -283,7 +286,7 @@
       });
     });
 
-    //Register Users per Year
+    //Register Users per Year - 328
     $(function () {
       var $pie2Chart = $("#pie-chart-2");
       $.ajax({
