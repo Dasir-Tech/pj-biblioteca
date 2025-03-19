@@ -120,3 +120,6 @@ input#nav-filter{
 form{
     margin-left: 4px;
 }
+#nav-sidebar {
+    border-top: 86px solid transparent;
+}
