@@ -155,6 +155,11 @@ def UsersBookPerGenre(request):
         labels.append(str(x["book__genre__genre"]))
         data.append(x['count'])
 
+    other_count_queryset = Loan.objects.values("book__genre__genre").annotate(other_count = Count("user", distinct=True)).exclude(book__genre__genre__in=[x["book__genre__genre"] for x in queryset]).order_by("book__genre__genre")
+    labels.append("Others")
+    for x in other_count_queryset:
+        data.append(x['other_count'])
+
     return JsonResponse(data={
         'labels': labels,
         'data': data,
