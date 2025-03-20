@@ -9,6 +9,7 @@ LISTA VERSIONI:
     sqlparse    0.5.3
     tzdata      2025.1
     wheel       0.41.2
+    pillow      11.1.0
 
 ------------------------
 
@@ -18,6 +19,11 @@ SUPERUSER (ricordate che gli spazi prima e dopo DEVONO ESSERE TOLTI):
     EMAIL: lauracomparelli912@gmail.com
     PASSWORD: Proj_Library_SuperAdmin_2025
 
+    USERNAME: pino (utente)
+    PASSWORD: 32PROVA44
+
+    USERNAME: deb (bibliotecaria)
+    PASSWORD: 57_libri_letti
 ------------------------
 
 
