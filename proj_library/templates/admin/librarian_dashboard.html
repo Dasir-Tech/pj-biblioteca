@@ -1,65 +1,39 @@
-{% extends "admin/base_site.html" %}
-
-{% load static %}
-
-{% block extrahead %}
-<link rel="stylesheet" type="text/css" href="{% static 'css/admin.css' %}">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-{% endblock %}
-
-{% block branding %}
-  <div id="site-name"><a href="{% url 'admin:index' %}">Dasir Library</a></div>
-    {% if user.is_anonymous %}
-      {% include "admin/color_theme_toggle.html" %}
-    {% endif %}
-{% endblock %}
-
-{% block content %}
-
-<div class ="container d-flex flex-column m-0 p-0">
+<div class ="container d-flex flex-column">
     <div class ="row align-items-center">
-        <!--grafico LOST-->
         <div class ="col-12 col-md-6">
-            <div class ="card mt-5 my-md-0" style="border:none; text-transform : uppercase;">
-                <div class="card-header" style="background-color:transparent;border:none;">Lost</div>
-                <div class ="card-body px-0 ratio ratio-16x9" style="position:relative;">
-                    <canvas id="bar-chart" data-url="{% url 'ajax-lost-books' %}"></canvas>
+            <div class ="card mt-5 my-md-0" style="border:none;">
+                <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Lost</div>
+                <div class ="card-body" style="width:400px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
+                    <canvas id="bar-chart" width="150" height="150" data-url="{% url 'ajax-lost-books' %}"></canvas>
                 </div>
             </div>
         </div>
-        <!--chiusura grafico LOST-->
-        <!--grafico STATUS-->
         <div class ="col-12 col-md-6">
-            <div class ="card mt-5 my-md-0" style="border:none; text-transform:uppercase;">
-                <div class="card-header" style="border:none; background-color:transparent;">Status</div>
-                <div class ="card-body px-0 ratio ratio-16x9" style="position:relative;">
-                    <canvas id="multibar-chart" data-url="{% url 'ajax-books-status' %}"></canvas>
+            <div class ="card mt-5 my-md-0" style="border:none;">
+                <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Status</div>
+                <div class ="card-body" style="width:600px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
+                    <canvas id="multibar-chart" width="150" height="150" data-url="{% url 'ajax-books-status' %}"></canvas>
                 </div>
             </div>
         </div>
-        <!--chiusura grafico STATUS-->
     </div>
     <div class ="row my-0 my-md-5 align-items-center">
-        <!--chiusura grafico TORTA-->
         <div class ="col-12 col-md-6">
-            <div class= "card mt-5 my-md-0" style="border:none; text-transform:uppercase;">
-                <div class="card-header" style="border:none; background-color:transparent;">Genres</div>
-                <div class ="card-body px-0 ratio ratio-16x9" style="position:relative;">
-                    <canvas id="pie-chart-2" data-url="{% url 'ajax-users-book-genre' %}"></canvas>
+            <div class= "card mt-5 my-md-0" style="border:none;">
+                <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Genres</div>
+                <div class ="card-body" style="width:400px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
+                    <canvas id="pie-chart-2" width="150" height="150" data-url="{% url 'ajax-users-book-genre' %}"></canvas>
                 </div>
             </div>
         </div>
-        <!--chiusura grafico TORTA-->
-        <!--chiusura grafico YEARS-->
         <div class ="col-12 col-md-6">
-            <div class ="card mt-5 my-md-0" style="border:none; text-transform:uppercase;">
-                <div class="card-header" style="border:none; background-color:transparent;">Users for years</div>
-                <div class ="card-body px-0 ratio ratio-16x9" style="position:relative;">
-                    <canvas id="bar-chart-2" data-url="{% url 'ajax-users-year' %}"></canvas>
+            <div class ="card mt-5 my-md-0" style="border:none;">
+                <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Users for years</div>
+                <div class ="card-body" style="width:400px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
+                    <canvas id="bar-chart-2" width="150" height="150" data-url="{% url 'ajax-users-year' %}"></canvas>
                 </div>
             </div>
         </div>
-        <!--chiusura grafico YEARS-->
     </div>
 </div>
 <div class="container mt-5 my-md-0">
@@ -107,26 +81,13 @@
     </div><!--chiusura tab 2-->
 </div><!--chiusura container Tab-->
 
-{% if request.user.groups.exists %}
-  {% for group in request.user.groups.all %}
-    {% if group.name == 'Bookseller' %}
-      {% include "admin/librarian_dashboard.html" %}
-    {% endif %}
-  {% endfor %}
-{% endif %}
-{% if request.user.is_superuser %}
-      {% include "admin/admin_dashboard.html" %}
-{% endif %}
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
     //Charts
 
-    //Lost Books - 153
+    //Lost Books
     $(function () {
       var $barChart = $("#bar-chart");
       $.ajax({
@@ -157,14 +118,14 @@
                 legend: {
                   position: 'bottom'
                 }
-              }
+            }
             }
           });
         }
       });
     });
 
-    //Books Status - 249
+    //Books Status
     $(function () {
       var $multibarChart = $("#multibar-chart");
       $.ajax({
@@ -212,7 +173,8 @@
                 borderColor: [
                   'rgb(0, 255, 86)'
                 ],
-                fill: false
+                fill: false,
+                tension: 0.4
               },
               {
                 label: 'Available Never Loaned',
@@ -240,13 +202,18 @@
               },
               scales: {
                 x: {
-                  display: false
-                },
-                y: {
-                  stacked: true,
-                  grid: {
+                  display: true,
+                  title: {
                     display: true
                   }
+                },
+                y: {
+                  display: true,
+                  title: {
+                    display: true,
+                  },
+                  suggestedMin: 0,
+                  suggestedMax: 5
                 },
               },
               plugins: {
@@ -260,7 +227,7 @@
       });
     });
 
-    //Book Genre by Users - 287
+    //Book Genre by Users
     $(function () {
       var $bar2Chart = $("#bar-chart-2");
       $.ajax({
@@ -298,7 +265,7 @@
       });
     });
 
-    //Register Users per Year - 328
+    //Register Users per Year
     $(function () {
       var $pie2Chart = $("#pie-chart-2");
       $.ajax({
@@ -319,7 +286,8 @@
                   'rgb(54, 162, 235)',
                   'rgb(255, 205, 86)',
                   'rgb(22, 231, 22)',
-                  'rgb(245, 88, 15)'
+                  'rgb(245, 88, 15)',
+                  'rgb(255, 10, 20)'
 
                 ],
                 hoverOffset: 4
@@ -392,5 +360,3 @@
         }
     })
 </script>
-
-{% endblock %}
