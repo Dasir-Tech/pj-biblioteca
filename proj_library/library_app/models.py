@@ -1,16 +1,13 @@
-from datetime import timedelta
+#from distutils.command.upload import upload
+from email.policy import default
+from django.utils import timezone
+from datetime import timedelta, date
 from django.db import models
 from django.utils.timezone import now
-from django.db.models import UniqueConstraint
-from django.db.models.functions import Lower
-from django.contrib.auth.models import User
-from django.conf import settings
 from django.urls import reverse
-from datetime import date
 from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
-
+# BOOK
 class Author(models.Model):
     author = models.CharField(max_length=255)
     insert_date = models.DateField(auto_now_add=True)
@@ -36,13 +33,16 @@ class Editor(models.Model):
     editor = models.CharField(max_length=100)
     insert_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True)
-    activate = models.BooleanField(default=True)
+    activate = models.BooleanField(default=True) # Campo per disattivare senza cancellare
+
+    def __str__(self):
+        return self.editor
 
 class Book(models.Model):
-    img = models.CharField(max_length=255, null=True)
+    img = models.ImageField(upload_to='copertina/',null=True, blank=True, default='copertina/book-default.png')
     title = models.CharField(max_length=200)
-    author = models.ManyToManyField(Author, help_text="Select one or more author for this book", null=False)
-    genre = models.ManyToManyField(Genre, help_text="Select one or more genre for this book", null=False)
+    author = models.ManyToManyField(Author, help_text="Select one or more author for this book",blank=True)
+    genre = models.ManyToManyField(Genre, help_text="Select one or more genre for this book", blank=True)
     editor = models.ForeignKey(Editor, help_text="Select an editor", null=False, on_delete=models.CASCADE)
     isbn = models.CharField('ISBN', max_length=13,
         unique=True,
@@ -51,7 +51,7 @@ class Book(models.Model):
     publication_date = models.DateField(null=False)
     qty = models.IntegerField(null=False)
     activate = models.BooleanField(default=True)
-    insert_date = models.DateField(default=date.today(), null=False)
+    insert_date = models.DateField(auto_now_add=True)
     update_date = models.DateField(auto_now=True, null=True)
 
     def display_author(self):
@@ -60,7 +60,7 @@ class Book(models.Model):
     display_author.short_description = 'Author'
 
     def display_genre(self):
-        return ', '.join(genre.name for genre in self.genre.all()[:3])
+        return ', '.join(genre.genre for genre in self.genre.all()[:3])
 
     display_genre.short_description = 'Genre'
 
@@ -72,13 +72,18 @@ class Book(models.Model):
     def __str__(self):
         return self.title
 
+#USER
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-    is_active = models.BooleanField(default=True)                  # Per disattivazione utenti
+    is_active = models.BooleanField(default=True)  # Per disattivare gli utenti
 
     def __str__(self):
         return self.username
 
+    class Meta:
+        verbose_name_plural = "Account"
+
+#LOAN
 class Loan(models.Model):
 
     class Status(models.IntegerChoices):
@@ -88,13 +93,25 @@ class Loan(models.Model):
         DAMAGED = 4, "Damaged"
 
     #automatic due_date
-    def AutoDueDate(self):
+    def AutoDueDate():
         return now().date() + timedelta(days=30)
 
-    user_ID = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    book_ID = models.ForeignKey(Book, on_delete=models.CASCADE)
-    status = models.IntegerField(choices = Status, default = Status.AVAILABLE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    status = models.IntegerField(choices = Status, default = Status.ON_LOAN)
     due_date = models.DateField(default=AutoDueDate)
     insert_date = models.DateField(auto_now_add = True)
     update_date = models.DateField(auto_now = True)
+    active = models.BooleanField(default=True)
+
+#NEWS
+class New(models.Model):
+    header = models.CharField(max_length=255)
+    text = models.TextField()
+    img = models.CharField(max_length=255)
+    insert_date = models.DateField(auto_now_add=True)
+    update_date = models.DateField(auto_now=True)
     activate = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.header
