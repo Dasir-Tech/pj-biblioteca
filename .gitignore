@@ -2,5 +2,9 @@
 # Ignora file compilati di Python
 **/__pycache__/
 *.pyc
+
 /.idea/
 /.venv/
+
+/.idea/
+

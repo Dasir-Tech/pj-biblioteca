@@ -1,0 +1,232 @@
+/*SCHEDE LIBRI*/
+    .card-title {
+    background-color: #3B8EDE !important;
+    color: #ffffff;
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+    }
+    .card {
+        background-color: #f5fcff;
+        border: none
+    }
+
+/*FOOTER*/
+    footer {
+    background-color: #3B8EDE !important;
+    color: white !important;
+    }
+    .td { /*SFONDO ORARIO DI APERTURA*/
+    background-color: #3B8EDE !important;
+    border-bottom: white !important;
+    color: white !important;
+    }
+    .btn {
+        color: white
+    }
+    .btn-lg:hover {
+        background-color: #ffffff !important;
+        border:#ffffff !important;
+        color:#3B8EDE !important;
+    }
+
+/*NAVBAR*/
+    .custom-navbar {
+    background-color: #ffffff !important;
+    }
+    .nav-link {
+    height: 90px; /* Altezza del contenitore */
+    line-height: 90px; /* Stessa altezza per allineare verticalmente */
+    color: rgb(0, 0, 0)
+    }
+    a.nav-link:hover {
+    text-align:unset;
+    color: rgb(13, 110, 253)
+    }
+/*PULSANTE RICERCA*/
+    .btn-outline-primary  {
+    border-color: black;
+    color: rgb(0, 0, 0) !important
+    }
+    .btn-outline-primary:hover  {
+    background-color: rgb(13, 110, 253);
+    border-color: rgb(13, 110, 253);
+    color: rgb(255, 255, 255) !important
+    }
+
+
+
+/*LIBRI*/
+    .container {
+    display: flex;
+    flex-wrap: wrap;
+    }
+    .card-img-top{
+    padding-top: 40px;
+    padding-right: 20px;
+    padding-left: 20px;
+    padding-bottom: 10px;
+    }
+    .card-img-top{
+    width: 100%; /* L'immagine riempie il contenitore */
+    height: auto; /* Mantiene le proporzioni */
+    transition: transform 0.3s ease; /* Transizione per l'effetto zoom */
+    }
+    .card-img-top:hover {
+    transform: scale(1.1); /* Ingrandimento dell'immagine al passaggio del mouse */
+    padding-bottom: 10px;
+    }
+
+/*NEWS*/
+    .img-fluid{
+        width: 40%;
+    }
+
+
+    .uss {
+    padding-top: 30px;
+    background-color: #e4e9f89d;
+    }
+    .usst {
+        padding-top: 20px;
+        padding-bottom: 20px;
+        background-color: #e4e9f89d;
+        }
+    .ust {
+    background-color: #ffffff9d
+    }
+    .ust-row-cols-5 {
+    background-color: #fbfbfb9d !important;
+    }
+
+/*CAROSELLO*/
+        .carousel-caption {
+        position: absolute;
+        bottom: 45%; /* Modifica questo valore per spostare il testo */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%; /* Imposta la larghezza */
+        text-align: center; /* Centra il testo */
+    }
+
+/*TITOLI*/
+    h5 {
+    -webkit-text-stroke-width: 1px;
+    -webkit-text-stroke-color: rgba(0, 0, 0, 0.993) !important;
+    }
+    .h8{
+        -webkit-text-stroke-width: 1px;
+        -webkit-text-stroke-color: rgba(0, 0, 0, 0.993) !important;
+    }
+
+
+/*LINEA DI SEPARAZIONE*/
+    .custom-hr  {
+        border: none; /* Rimuovi il bordo predefinito */
+        height: 5px; /* Altezza della linea */
+        max-width: 60%;
+        background: linear-gradient(to right, transparent, rgb(0, 0, 0), rgb(0, 0, 0), transparent); /* Gradiente per assottigliare */
+        margin: 4px 0; /* Margine sopra e sotto */
+        color: rgb(0, 0, 0);
+
+        border: none; /* Rimuovi il bordo predefinito */
+        height: 5px; /* Altezza della linea */
+        width: 80%; /* Larghezza della linea (puoi modificarla come desideri) */
+        background: linear-gradient(to right, #000, #000,); /* Gradiente per assottigliare con colore più marcato */
+        margin: 4px auto; /* Margine sopra e sotto, centrata nella pagina */
+        color: #000;
+    }
+
+/*IMMAGINE STORIA*/
+    .columnu {
+        padding-top: 20px ;
+        padding-right:80px ;
+    }
+
+/*PARALLAX*/
+.parallax {
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 500px;
+    position: relative;
+}
+.parallax-caption {
+    position: absolute;
+    top: 50%; /* Posiziona verticalmente al centro */
+    left: 60%; /* Posiziona orizzontalmente al centro */
+    transform: translate(-50%, -50%); /* Allinea esattamente al centro */
+    text-align: center; /* Centra il testo orizzontalmente */
+    color: white; /* Colore del testo */
+}
+.parallax-caption h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: right;
+}
+.parallax-caption p {
+    font-size: 1.2rem;
+}
+
+.parallax-1 {
+    background-image: url("https://www.keypersonofinfluence.com/wp-content/uploads/2016/01/entrevo-keypersonofinfluence-business-speaker.jpg");
+}
+
+.parallax-caption-1 {
+    position: absolute;
+    top: 50%; /* Posiziona verticalmente al centro */
+    left: 50%; /* Posiziona orizzontalmente al centro */
+    transform: translate(-50%, -50%); /* Allinea esattamente al centro */
+    text-align: center; /* Centra il testo orizzontalmente */
+    color: white; /* Colore del testo */
+}
+.parallax-2 {
+    background-image: url("https://cdn.prod.website-files.com/660ef11a7de7380ca7f2e535/66f5383e8c5531b2a97a1cd1_general_query.jpg");
+}
+.parallax-caption-1 h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: right;
+}
+.parallax-caption-1 p {
+    font-size: 2rem;
+}
+
+
+    .content { /*pagina STORIA*/
+        position: relative;
+        text-align: center;
+        top: 30% !important; /* Sposta il contenuto verso il basso per centrarlo verticalmente */
+        left: 10%;
+        transform: translateY(70%); /* Centra il contenuto esattamente */
+        color: white; /* Colore del testo */
+        z-index: 1; /* Assicurati che il contenuto sia sopra il parallax */
+        padding: 90px; /* Spaziatura interna */
+        border-radius: 10px; /* Angoli arrotondati */
+    }
+    .content h1 {
+        font-size: 6em; /* Dimensione del titolo */
+    }
+    .content p {
+        font-size: 2.5em; /* Dimensione del paragrafo */
+    }
+
+/*CONTATTI*/
+
+    .contents { /*pagina CONTATTI*/
+        position: relative;
+        text-align: center;
+        top: 30% !important; /* Sposta il contenuto verso il basso per centrarlo verticalmente */
+        transform: translateY(35%); /* Centra il contenuto esattamente */
+        color: white; /* Colore del testo */
+        z-index: 1; /* Assicurati che il contenuto sia sopra il parallax */
+        padding: 90px; /* Spaziatura interna */
+        border-radius: 10px; /* Angoli arrotondati */
+    }
+    .content h1 {
+        font-size: 6em; /* Dimensione del titolo */
+    }
+    .content p {
+        font-size: 2.5em; /* Dimensione del paragrafo */
+    }

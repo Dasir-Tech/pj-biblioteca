@@ -75,7 +75,7 @@ class Book(models.Model):
 #USER
 class CustomUser(AbstractUser):
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-    is_active = models.BooleanField(default=True)# Per disattivare gli utenti
+    is_active = models.BooleanField(default=True)  # Per disattivare gli utenti
 
     def __str__(self):
         return self.username
