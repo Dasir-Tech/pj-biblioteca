@@ -18,36 +18,36 @@
 {% block content %}
 <div class ="container d-flex flex-column">
     <div class ="row align-items-center">
-        <div class ="col-12 col-md-6">
+        <div class ="col-12 col-lg-6">
             <div class ="card mt-5 my-md-0" style="border:none;">
                 <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Lost</div>
-                <div class ="card-body" style="width:400px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
+                <div class ="card-body" style="height:400px; border:none; background-color: transparent; text-transform : uppercase;">
                     <canvas id="bar-chart" width="150" height="150" data-url="{% url 'ajax-lost-books' %}"></canvas>
                 </div>
             </div>
         </div>
-        <div class ="col-12 col-md-6">
+        <div class ="col-12 col-lg-6">
             <div class ="card mt-5 my-md-0" style="border:none;">
                 <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Status</div>
-                <div class ="card-body" style="width:500px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
+                <div class ="card-body" style="height:400px;border:none; background-color: transparent; text-transform : uppercase;">
                     <canvas id="multibar-chart" width="150" height="150" data-url="{% url 'ajax-books-status' %}"></canvas>
                 </div>
             </div>
         </div>
     </div>
     <div class ="row my-0 my-md-5 align-items-center">
-        <div class ="col-12 col-md-6">
+        <div class ="col-12 col-lg-6">
             <div class= "card mt-5 my-md-0" style="border:none;">
                 <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Genres</div>
-                <div class ="card-body" style="width:400px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
+                <div class ="card-body" style="height:400px;border:none; background-color: transparent; text-transform : uppercase;">
                     <canvas id="pie-chart-2" width="150" height="150" data-url="{% url 'ajax-users-book-genre' %}"></canvas>
                 </div>
             </div>
         </div>
-        <div class ="col-12 col-md-6">
+        <div class ="col-12 col-lg-6">
             <div class ="card mt-5 my-md-0" style="border:none;">
                 <div class="card-header" style="border:none; background-color: transparent; text-transform : uppercase;">Users for years</div>
-                <div class ="card-body" style="width:400px; height:400px;border:none; background-color: transparent; text-transform : uppercase;">
+                <div class ="card-body" style="height:400px;border:none; background-color: transparent; text-transform : uppercase;">
                     <canvas id="bar-chart-2" width="150" height="150" data-url="{% url 'ajax-users-year' %}"></canvas>
                 </div>
             </div>
