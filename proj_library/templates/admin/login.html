@@ -3,6 +3,7 @@
 
 {% block extrastyle %}{{ block.super }}{{ form.media }}{% endblock %}
 
+
 {% block bodyclass %}{{ block.super }} login{% endblock %}
 
 {% block usertools %}{% endblock %}
@@ -18,14 +19,18 @@
 {% block content %}
 {% if form.errors and not form.non_field_errors %}
 <p class="errornote">
+
   {% blocktranslate count counter=form.errors.items|length %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktranslate %}
+
 </p>
 {% endif %}
 
 {% if form.non_field_errors %}
 {% for error in form.non_field_errors %}
 <p class="errornote">
+
   {{ error }}
+
 </p>
 {% endfor %}
 {% endif %}
@@ -34,12 +39,13 @@
   {% if user.is_authenticated %}
   <p class="errornote">
     {% blocktranslate trimmed %}
+
     You are authenticated as {{ username }}, but are not authorized to
     access this page. Would you like to login to a different account?
+
     {% endblocktranslate %}
   </p>
   {% endif %}
-
   <div class="container d-flex justify-content-center position-absolute top-50 start-50 translate-middle">
     <div class="card" style="border-color:#3B8EDE;">
       <div class="card-body">
@@ -71,6 +77,7 @@
       </div>
     </div>
   </div>
+
 
 </div>
 {% endblock %}

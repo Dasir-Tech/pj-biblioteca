@@ -2,5 +2,9 @@
 /.idea/
 # Ignora file compilati di Python
 **/__pycache__/
+
+*.pyc
+
 *.pyc
 /migrations/
+

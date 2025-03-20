@@ -1,6 +1,7 @@
 {% load i18n %}
 
 {% if app_list %}
+
 {% for app in app_list %}
 <div class="app-{{ app.app_label }} module{% if app.app_url in request.path|urlencode %} current-app{% endif %}">
   <table>
@@ -41,4 +42,5 @@
 {% endfor %}
 {% else %}
 <p>{% translate 'You don’t have permission to view or edit anything.' %}</p>
+
 {% endif %}

@@ -26,6 +26,7 @@ app_name = "library_app"
 admin.site.site_header = "Biblioteca_Dasir"
 admin.site.site_title = "Dasir library"
 
+
 urlpatterns = [
     path("", views.home, name="home"),
     path("admin/", admin.site.urls),

@@ -7,9 +7,7 @@ from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.utils.html import format_html
 
-
 admin.site.index_title = "Dashboard" #titolo pagina admin
-
 
 #BOOK
 class AuthorAdmin(admin.ModelAdmin):
@@ -59,7 +57,6 @@ class BookAdmin(admin.ModelAdmin):
     list_filter = ('activate',)
     search_fields = ('title', 'isbn')
     actions = ['activate', 'deactivate']
-
     add_form_template = "admin/book_form.html"
     change_form_template = "admin/book_form.html"
 
@@ -70,16 +67,21 @@ class BookAdmin(admin.ModelAdmin):
 
 
     image_preview.short_description = 'Preview'
+    add_form_template = "admin/book_form.html"
+    change_form_template = "admin/book_form.html"
 
 
+    def image_preview(self, obj):
+        if obj.img:  # Controlla se l'immagine è presente
+            return format_html('<img src="{}" width="50" height="50" style="object-fit: cover; border-radius: 5px;"/>',
+                               obj.img.url)
 
+    image_preview.short_description = 'Preview'
     def activate(self, request, queryset):
         queryset.update(activate=True)
 
     def deactivate(self, request, queryset):
         queryset.update(activate=False)
-
-
 
 #USER
 class CustomUserAdmin(UserAdmin):
@@ -87,14 +89,20 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
     )
-
     def formfield_for_dbfield(self, db_field, **kwargs):
         formfield = super().formfield_for_dbfield(db_field, **kwargs)
         if db_field.name == "is_active":
             formfield.label = ("Active")
         return formfield
 
+    add_form_template = "admin/user_form.html"
+    change_form_template = "admin/user_form.html"
 
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        formfield = super().formfield_for_dbfield(db_field, **kwargs)
+        if db_field.name == "is_active":
+            formfield.label = ("Active")
+        return formfield
 
     add_form_template = "admin/user_form.html"
     change_form_template = "admin/user_form.html"
@@ -124,7 +132,6 @@ class CustomUserAdmin(UserAdmin):
                 title, field_options = fieldset
                 fields = field_options.get("fields", ())
 
-
                 filtered_fields = tuple(f for f in fields if f not in ("groups", "user_permissions","is_active", "is_staff", "is_superuser", "last_login", "date_joined", "id_password_helptext",))
 
                 if filtered_fields:
@@ -138,10 +145,12 @@ class CustomUserAdmin(UserAdmin):
             # Solo gli utenti nel gruppo "user" possono vedere il modulo "Account"
             return request.user.groups.filter(name="user").exists()
 
+
     def has_delete_permission(self, request, obj=None):
         if request.user.groups.filter(name="user").exists():
             return False  # Gli utenti nel gruppo "user" non possono eliminare utenti
         return super().has_delete_permission(request, obj)
+
 
     list_display = ('username', 'email', 'phone_number',  'active', 'is_staff')
     search_fields = ('first_name','email',)
@@ -151,6 +160,7 @@ class CustomUserAdmin(UserAdmin):
         return obj.is_active  # Mappa al campo esistente
 
     active.boolean = True
+
 
 #LOAN
 class DateFilter(admin.SimpleListFilter):
@@ -225,6 +235,7 @@ class LoanAdmin(admin.ModelAdmin):
             return qs.filter(user=request.user.id)
         return qs.none()
 
+
     def activate(self, request, queryset):
         queryset.update(active=True)
 
@@ -263,7 +274,9 @@ class NewAdmin(admin.ModelAdmin):
                 request.user.groups.filter(name__in=["admin", "bookseller"]).exists():
             return qs
         # Gli utenti "user" vedono solo se stessi
+
         elif request.user.groups.filter(name="User").exists():
+
             return qs.filter(user_ID_id=request.user.id)
         return qs.none()
 
