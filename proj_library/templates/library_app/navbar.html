@@ -1,0 +1,47 @@
+ <!-- NAVBAR -->
+        <section id="nav">
+            <div class="container-fluid">
+                <div class="col">
+                    <nav class="navbar navbar-expand-lg ">
+                        <div class="container-fluid">
+                            <a class="navbar-brand text-primary fs-1" href="index.html">Dasir Library</a>
+                            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                                data-bs-target="#navbarMenu" aria-controls="navbarMenu" aria-expanded="false"
+                                aria-label="Toggle navigation">
+                                <span class="navbar-toggler-icon"></span>
+                            </button>
+                            <div class="collapse navbar-collapse justify-content-end" id="navbarMenu">
+                                <ul class="navbar-nav">
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-hover fs-5" href="{% url 'index' %}">Home</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-hover fs-5" href="{% url 'libri' %}">Libri</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-hover fs-5" href="{% url 'storia' %}">Storia</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-hover fs-5" href="{% url 'news' %}">News</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-hover fs-5" href="{% url 'contatti' %}">Contatti</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link nav-link-hover fs-5" href="#">Accesso</a>
+                                    </li>
+                                </ul>
+                                <div class="collapse navbar-collapse">
+                                    <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+                                    <form class="d-flex" role="search">
+                                        <input class="form-control me-2" type="search" placeholder="Cerca"
+                                            aria-label="Cerca">
+                                        <button class="btn btn-outline-primary" type="submit">Cerca</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </section>
