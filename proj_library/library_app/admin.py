@@ -274,9 +274,6 @@ class NewAdmin(admin.ModelAdmin):
         elif request.user.groups.filter(name="user").exists():
             return qs.filter(user_ID_id=request.user.id)
         return qs.none()
-        elif request.user.groups.filter(name="User").exists():
-            return qs.filter(user_ID_id=request.user.id)
-        return qs.none()
 
 admin.site.register(CustomUser, CustomUserAdmin)
 admin.site.register(Loan, LoanAdmin)
