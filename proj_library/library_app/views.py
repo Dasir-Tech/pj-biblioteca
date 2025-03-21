@@ -189,3 +189,23 @@ def LastNews(request):
     }
 
     return JsonResponse(data)
+
+
+def base(request):
+    return render(request, "library_app/base.html")
+
+def libri(request):
+    book_list = Book.objects.all()
+    return render(request, "library_app/libri.html")
+
+def index(request):
+    return render(request, "library_app/index.html")
+
+def storia(request):
+    return render(request, "library_app/storia.html")
+
+def contatti(request):
+    return render(request, "library_app/contatti.html")
+
+def news(request):
+    return render(request, "library_app/news.html")

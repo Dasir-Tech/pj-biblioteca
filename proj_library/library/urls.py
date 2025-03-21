@@ -28,7 +28,12 @@ admin.site.site_title = "Dasir library."
 
 
 urlpatterns = [
-    path("", views.home, name="home"),
+    path("", views.base, name="base"),
+    path("index/", views.index, name="index"),
+    path("storia/", views.storia, name="storia"),
+    path("contatti/", views.contatti, name="contatti"),
+    path("news/", views.news, name="news"),
+    path("libri/", views.libri, name="libri"),
     path("admin/", admin.site.urls),
     path("ajax-lost-books/", views.AjaxLostBooks, name='ajax-lost-books'),
     path("ajax-users-year/", views.UsersPerYear, name='ajax-users-year'),
