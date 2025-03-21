@@ -24,9 +24,11 @@ from library_app import views
 app_name = "library_app"
 
 admin.site.site_header = "Biblioteca_Dasir"
-admin.site.site_title = "Dasir library"
+admin.site.site_title = "Dasir library."
+
 
 urlpatterns = [
+    path("", views.home, name="home"),
     path("admin/", admin.site.urls),
     path("ajax-lost-books/", views.AjaxLostBooks, name='ajax-lost-books'),
     path("ajax-users-year/", views.UsersPerYear, name='ajax-users-year'),
