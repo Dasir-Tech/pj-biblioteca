@@ -1,39 +1,40 @@
 <fieldset>
-
-  <div class="container center">
+  <div class="container center d-flex flex-column">
     <div class="row mb-3 pb-3 border-bottom">
       <div class="col-1">
         {{ adminform.form.user.label_tag }}
       </div>
-      <div class="col-3">
+      <div class="col-4">
         {{ adminform.form.user }}
       </div>
       <div class="col-1">
         {{ adminform.form.book.label_tag }}
       </div>
-      <div class="col-3">
+      <div class="col-5">
         {{ adminform.form.book }}
       </div>
-        <div class="col-1">
-        {{ adminform.form.status.label_tag }}
-        </div>
-        <div class="col-3">
-        {{ adminform.form.status }}
-        </div>
     </div>
     <div class="row mb-4 pb-3 border-bottom ">
       <div class="col-1">
+        {{ adminform.form.status.label_tag }}
+      </div>
+      <div class="col-4">
+        {{ adminform.form.status }}
+      </div>
+      <div class="col-1">
         {{ adminform.form.due_date.label_tag }}
       </div>
-      <div class="col-3">
+      <div class="col-4">
         {{ adminform.form.due_date }}
       </div>
-        <div class="col-1">
-        {{ adminform.form.active.label_tag }}
-      </div>
-      <div class="col-3">
-        {{ adminform.form.active }}
-      </div>
+    </div>
+    <div class="row mb-4 pb-3 border-bottom ">
+      <div class="col-1">
+          {{ adminform.form.active.label_tag }}
+        </div>
+        <div class="col-3">
+          {{ adminform.form.active }}
+        </div>
     </div>
   </div>
 </fieldset>

@@ -1,14 +1,17 @@
+
 <!DOCTYPE html>{% load i18n static %}
 {% get_current_language as LANGUAGE_CODE %}{% get_current_language_bidi as LANGUAGE_BIDI %}
 <html lang="{{ LANGUAGE_CODE|default:'en-us' }}" dir="{{ LANGUAGE_BIDI|yesno:'rtl,ltr,auto' }}">
 <head>
 <title>{% block title %}{% endblock %}</title>
 <link rel="stylesheet" href="{% block stylesheet %}{% static 'admin/css/base.css' %}{% endblock %}">
+
 <!--{% block dark-mode-vars %}
   <link rel="stylesheet" href="{% static "admin/css/dark_mode.css" %}">
   <script src="{% static "admin/js/theme.js" %}"></script>
 {% endblock %}-->
 {% if not is_popup and is_nav_sidebar_enabled %}
+
   <link rel="stylesheet" href="{% static 'admin/css/nav_sidebar.css' %}">
   <script src="{% static 'admin/js/nav_sidebar.js' %}" defer></script>
 {% endif %}
@@ -19,12 +22,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'admin/css/responsive.css' %}">
     {% if LANGUAGE_BIDI %}<link rel="stylesheet" href="{% static 'admin/css/responsive_rtl.css' %}">{% endif %}
+
 {% endblock %}
 {% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE">{% endblock %}
 </head>
 
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
+
   data-admin-utc-offset="{% now 'Z' %}">
+
 <a href="#content-start" class="skip-to-content-link">{% translate 'Skip to main content' %}</a>
 
 <!-- Container -->
@@ -136,3 +142,4 @@
 
 </body>
 </html>
+

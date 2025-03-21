@@ -16,6 +16,7 @@ def home(request):
 #Charts
 #Data for Lost Books
 def AjaxLostBooks(request):
+
     labels = []
     data = []
 
@@ -153,10 +154,15 @@ def UsersBookPerGenre(request):
     labels = []
     data = []
 
-    queryset = Loan.objects.values("book__genre__genre").annotate(count = Count("user", distinct=True)).order_by("book__genre__genre")
+    queryset = Loan.objects.values("book__genre__genre").annotate(count = Count("user", distinct=True)).order_by("-count", "book__genre__genre")[:4]
     for x in queryset:
         labels.append(str(x["book__genre__genre"]))
         data.append(x['count'])
+
+    other_count_queryset = Loan.objects.values("book__genre__genre").annotate(other_count = Count("user", distinct=True)).exclude(book__genre__genre__in=[x["book__genre__genre"] for x in queryset]).order_by("book__genre__genre")
+    labels.append("Others")
+    for x in other_count_queryset:
+        data.append(x['other_count'])
 
     return JsonResponse(data={
         'labels': labels,
@@ -183,6 +189,3 @@ def LastNews(request):
     }
 
     return JsonResponse(data)
-
-
-#-----------------------------------------
