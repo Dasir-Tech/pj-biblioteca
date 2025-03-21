@@ -4,15 +4,19 @@ from library_app.models import Loan, CustomUser, Book, New
 from django.db.models import Count
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
-
+from .forms import BookForm, CustomUserForm
 from .models import Book, CustomUser
+from django.template import loader
 
+def home(request):
+    return render(request, "library_app/home.html")
 
 #Ajax Functions for Librarian Index
 
 #Charts
 #Data for Lost Books
 def AjaxLostBooks(request):
+
     labels = []
     data = []
 
@@ -186,6 +190,7 @@ def LastNews(request):
 
     return JsonResponse(data)
 
+
 def base(request):
     return render(request, "library_app/base.html")
 
@@ -204,8 +209,3 @@ def contatti(request):
 
 def news(request):
     return render(request, "library_app/news.html")
-
-
-
-
-
