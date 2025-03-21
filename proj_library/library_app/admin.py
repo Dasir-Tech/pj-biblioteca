@@ -86,7 +86,7 @@ class BookAdmin(admin.ModelAdmin):
 class CustomUserAdmin(UserAdmin):
     # Definizione dei campi personalizzati add user
     add_fieldsets = UserAdmin.add_fieldsets + (
-        ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active')}),
+        ('Informazioni Aggiuntive', {'fields': ('phone_number',  'email', 'first_name', 'last_name','is_active', 'groups')}),
     )
 
     def formfield_for_dbfield(self, db_field, **kwargs):
@@ -160,6 +160,8 @@ class CustomUserAdmin(UserAdmin):
         return ", ".join([group.name for group in obj.groups.all()])
 
     get_groups.short_description = 'Gruppi'
+
+
 
 #LOAN
 class DateFilter(admin.SimpleListFilter):
